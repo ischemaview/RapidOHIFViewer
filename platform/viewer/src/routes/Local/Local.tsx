@@ -21,7 +21,7 @@ const getLoadButton = (onDrop, text, isDir) => {
             disabled={false}
             endIcon={<Icon name="launch-arrow" />} // launch-arrow | launch-info
             className={classnames('font-bold', 'ml-2')}
-            onClick={() => {}}
+            onClick={() => { }}
           >
             {text}
             {isDir ? (
@@ -83,8 +83,8 @@ function Local() {
             <div className="py-8 px-8 mx-auto bg-secondary-dark drop-shadow-md space-y-2 rounded-lg">
               <img
                 className="block mx-auto h-10"
-                src="./customLogo.svg"
-                alt="OHIF"
+                src="./assets/gradient.svg"
+                alt="Gradient Health"
               />
               <div className="text-center space-y-2 pt-4">
                 <div className="space-y-2">
