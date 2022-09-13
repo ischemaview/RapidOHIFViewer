@@ -96,10 +96,10 @@ function LoginComponent(userManager) {
 }
 
 function OpenIdConnectRoutes({
-                         oidc,
-                         routerBasename,
-                         UserAuthenticationService
-                        }) {
+  oidc,
+  routerBasename,
+  UserAuthenticationService
+}) {
   const userManager = initUserManager(oidc, routerBasename);
 
   const getAuthorizationHeader = () => {
@@ -178,11 +178,11 @@ function OpenIdConnectRoutes({
             pathname,
             search
           })
-        }}/>}
+        }} />}
       />
       <Route
         path="/login"
-        element={<LoginComponent userManager={userManager} oidcAuthority={oidcAuthority}/>}
+        element={<LoginComponent userManager={userManager} oidcAuthority={oidcAuthority} />}
       />
     </Routes>
   );
