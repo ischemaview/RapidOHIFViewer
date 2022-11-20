@@ -33,7 +33,7 @@ function defaultRouteInit(
     unsubscribe: instanceAddedUnsubscribe,
   } = DicomMetadataStore.subscribe(
     DicomMetadataStore.EVENTS.INSTANCES_ADDED,
-    function({ StudyInstanceUID, SeriesInstanceUID, madeInClient = false }) {
+    function ({ StudyInstanceUID, SeriesInstanceUID, madeInClient = false }) {
       const seriesMetadata = DicomMetadataStore.getSeries(
         StudyInstanceUID,
         SeriesInstanceUID
@@ -184,6 +184,14 @@ export default function ModeRoute({
     return () => {
       layoutTemplateData.current = null;
     };
+  }, [location]);
+
+  useEffect(() => {
+    if (dataSource.onNewStudy) {
+      dataSource.onNewStudy(({ studyInstanceUIDs }) => {
+        setStudyInstanceUIDs(studyInstanceUIDs);
+      })
+    }
   }, [location]);
 
   useEffect(() => {
@@ -370,7 +378,7 @@ export default function ModeRoute({
     <ImageViewerProvider
       // initialState={{ StudyInstanceUIDs: StudyInstanceUIDs }}
       StudyInstanceUIDs={studyInstanceUIDs}
-      // reducer={reducer}
+    // reducer={reducer}
     >
       <CombinedContextProvider>
         <DragAndDropProvider>
