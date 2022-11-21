@@ -374,7 +374,7 @@ export default async function init({
 
       // check if reference lines are active
       const referenceLinesEnabled =
-        toolGroup._toolInstances['ReferenceLines'].mode ===
+        toolGroup._toolInstances?.['ReferenceLines']?.mode ===
         Enums.ToolModes.Enabled;
 
       if (!referenceLinesEnabled) {
