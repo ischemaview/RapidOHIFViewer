@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import ReactResizeDetector from 'react-resize-detector';
 import PropTypes from 'prop-types';
-import { useViewportGrid } from '@ohif/ui';
 import * as cs3DTools from '@cornerstonejs/tools';
 import {
   Enums,
@@ -89,7 +88,7 @@ function areEqual(prevProps, nextProps) {
 
 // Todo: This should be done with expose of internal API similar to react-vtkjs-viewport
 // Then we don't need to worry about the re-renders if the props change.
-const OHIFCornerstoneViewport = React.memo(props => {
+const OHIFCornerstoneViewport = React.memo(React.forwardRef((props, ref) => {
   const {
     viewportIndex,
     displaySets,
@@ -103,11 +102,17 @@ const OHIFCornerstoneViewport = React.memo(props => {
     // of the imageData in the OHIFCornerstoneViewport. This prop is used
     // to set the initial state of the viewport's first image to render
     initialImageIndex,
+    disableViewportImageScrollbar,
+    disableViewportOverlay,
+    disableViewportImageSliceLoadingIndicator,
+    disableViewportOrientationMarkers,
   } = props;
 
   const [scrollbarHeight, setScrollbarHeight] = useState('100px');
 
   const elementRef = useRef();
+
+  React.useImperativeHandle(ref, () => elementRef.current);
 
   const {
     MeasurementService,
@@ -339,6 +344,12 @@ const OHIFCornerstoneViewport = React.memo(props => {
         ref={elementRef}
       ></div>
       <CornerstoneOverlays
+        disableViewportImageScrollbar={disableViewportImageScrollbar}
+        disableViewportOverlay={disableViewportOverlay}
+        disableViewportImageSliceLoadingIndicator={
+          disableViewportImageSliceLoadingIndicator
+        }
+        disableViewportOrientationMarkers={disableViewportOrientationMarkers}
         viewportIndex={viewportIndex}
         ToolBarService={ToolBarService}
         element={elementRef.current}
@@ -347,7 +358,9 @@ const OHIFCornerstoneViewport = React.memo(props => {
       />
     </div>
   );
-}, areEqual);
+  }),
+  areEqual
+);
 
 function _subscribeToJumpToMeasurementEvents(
   MeasurementService,
@@ -355,7 +368,7 @@ function _subscribeToJumpToMeasurementEvents(
   elementRef,
   viewportIndex,
   displaySets,
-  viewportGridService,
+  ViewportGridService,
   CornerstoneViewportService
 ) {
   const displaysUIDs = displaySets.map(
