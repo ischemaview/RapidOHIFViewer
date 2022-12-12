@@ -21,6 +21,7 @@ function create({
   deleteStudyMetadataPromise,
   getImageIdsForDisplaySet,
   getImageIdsForInstance,
+  getImageIdsForStudy = null,
   onNewStudy = null,
   setNewStudy = null,
   updateConfig = null,
@@ -69,6 +70,7 @@ function create({
     deleteStudyMetadataPromise,
     getImageIdsForDisplaySet,
     getImageIdsForInstance,
+    getImageIdsForStudy,
     setNewStudy,
     onNewStudy,
     updateConfig
