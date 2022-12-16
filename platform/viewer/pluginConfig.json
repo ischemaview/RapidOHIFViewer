@@ -31,6 +31,10 @@
     {
       "packageName": "@ohif/extension-cornerstone-dicom-seg",
       "version": "3.0.0"
+    },
+    {
+      "packageName": "@ischemaview/dicom-rapidai-extension",
+      "version": "0.0.1"
     }
   ],
   "modes": [
@@ -41,6 +45,22 @@
     {
       "packageName": "@ohif/mode-tmtv",
       "version": "3.0.0"
+    },
+    {
+      "packageName": "@ischemaview/dicom-neuro-rma",
+      "version": "0.0.2"
+    },
+    {
+      "packageName": "@ischemaview/dicom-neuro-rwa",
+      "version": "0.0.2"
+    },
+    {
+      "packageName": "@ischemaview/dicom-pulmonary-rma",
+      "version": "0.0.2"
+    },
+    {
+      "packageName": "@ischemaview/dicom-pulmonary-rwa",
+      "version": "0.0.2"
     }
   ],
   "modesFactory": [],
