@@ -104,7 +104,7 @@ function LoginComponent(userManager) {
 function OpenIdConnectRoutes({
   oidc,
   routerBasename,
-  UserAuthenticationService,
+  UserAuthenticationService
 }) {
   const userManager = initUserManager(oidc, routerBasename);
 
@@ -192,36 +192,22 @@ function OpenIdConnectRoutes({
       />
       <Route
         path={redirect_uri}
-        element={
-          <CallbackPage
-            userManager={userManager}
-            onRedirectSuccess={user => {
-              const { pathname, search = '' } = JSON.parse(
-                sessionStorage.getItem('ohif-redirect-to')
-              );
+        element={<CallbackPage userManager={userManager} onRedirectSuccess={(user) => {
+          const { pathname, search = '' } = JSON.parse(
+            sessionStorage.getItem('ohif-redirect-to')
+          );
 
-              UserAuthenticationService.setUser(user);
+          UserAuthenticationService.setUser(user);
 
-              navigate({
-                pathname,
-                search,
-              });
-            }}
-          />
-        }
+          navigate({
+            pathname,
+            search
+          })
+        }} />}
       />
       <Route
         path="/login"
-        element={
-          <LoginComponent
-            userManager={userManager}
-            oidcAuthority={oidcAuthority}
-          />
-        }
-      />
-      <Route
-        path="/logout"
-        element={<LogoutComponent userManager={userManager} />}
+        element={<LoginComponent userManager={userManager} oidcAuthority={oidcAuthority} />}
       />
     </Routes>
   );

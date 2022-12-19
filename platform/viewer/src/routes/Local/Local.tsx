@@ -20,8 +20,8 @@ const getLoadButton = (onDrop, text, isDir) => {
             variant="contained" // outlined
             disabled={false}
             endIcon={<Icon name="launch-arrow" />} // launch-arrow | launch-info
-            className={classnames('font-medium', 'ml-2')}
-            onClick={() => {}}
+            className={classnames('font-bold', 'ml-2')}
+            onClick={() => { }}
           >
             {text}
             {isDir ? (
@@ -90,9 +90,9 @@ function Local() {
           <div className="h-screen w-screen flex justify-center items-center ">
             <div className="py-8 px-8 mx-auto bg-secondary-dark drop-shadow-md space-y-2 rounded-lg">
               <img
-                className="block mx-auto h-14"
-                src="./ohif-logo.svg"
-                alt="OHIF"
+                className="block mx-auto h-10"
+                src="./assets/gradient.svg"
+                alt="Gradient Health"
               />
               <div className="text-center space-y-2 pt-4">
                 {dropInitiated ? (

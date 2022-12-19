@@ -26,6 +26,10 @@ function ViewerLayout({
   hotkeysManager,
   commandsManager,
   // From Modes
+  leftPanels,
+  rightPanels,
+  leftPanelDefaultClosed,
+  rightPanelDefaultClosed,
   viewports,
   ViewportGridComp,
   leftPanels = [],
@@ -70,7 +74,7 @@ function ViewerLayout({
       onClick: () =>
         show({
           content: AboutModal,
-          title: 'About OHIF Viewer',
+          title: 'About Gradient OHIF Viewer',
           contentProps: { versionNumber, buildNumber },
         }),
     },
@@ -216,17 +220,26 @@ function ViewerLayout({
         className="bg-black flex flex-row items-stretch w-full overflow-hidden flex-nowrap relative"
         style={{ height: viewerLayoutHeight }}
       >
-        <React.Fragment>
-          {showLoadingIndicator && (
-            <LoadingIndicatorProgress className="h-full w-full bg-black" />
-          )}
-          {/* LEFT SIDEPANELS */}
-          {leftPanelComponents.length ? (
-            <ErrorBoundary context="Left Panel">
-              <SidePanel
-                side="left"
-                activeTabIndex={leftPanelDefaultClosed ? null : 0}
-                tabs={leftPanelComponents}
+        {/* LEFT SIDEPANELS */}
+        {leftPanelComponents.length ? (
+          <ErrorBoundary context="Left Panel">
+            <SidePanel
+              side="left"
+              defaultComponentOpen={
+                leftPanelDefaultClosed ? null : leftPanelComponents[0].name
+              }
+              childComponents={leftPanelComponents}
+            />
+          </ErrorBoundary>
+        ) : null}
+        {/* TOOLBAR + GRID */}
+        <div className="flex flex-col flex-1 h-full">
+          <div className="flex items-center justify-center flex-1 h-full overflow-hidden bg-black">
+            <ErrorBoundary context="Grid">
+              <ViewportGridComp
+                servicesManager={servicesManager}
+                viewportComponents={viewportComponents}
+                commandsManager={commandsManager}
               />
             </ErrorBoundary>
           ) : null}
@@ -242,16 +255,18 @@ function ViewerLayout({
               </ErrorBoundary>
             </div>
           </div>
-          {rightPanelComponents.length ? (
-            <ErrorBoundary context="Right Panel">
-              <SidePanel
-                side="right"
-                activeTabIndex={rightPanelDefaultClosed ? null : 0}
-                tabs={rightPanelComponents}
-              />
-            </ErrorBoundary>
-          ) : null}
-        </React.Fragment>
+        </div>
+        {rightPanelComponents.length ? (
+          <ErrorBoundary context="Right Panel">
+            <SidePanel
+              side="right"
+              defaultComponentOpen={
+                rightPanelDefaultClosed ? null : rightPanelComponents[0].name
+              }
+              childComponents={rightPanelComponents}
+            />
+          </ErrorBoundary>
+        ) : null}
       </div>
     </div>
   );
@@ -270,8 +285,13 @@ ViewerLayout.propTypes = {
   rightPanelDefaultClosed: PropTypes.bool.isRequired,
   /** Responsible for rendering our grid of viewports; provided by consuming application */
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-  disableHeader: PropTypes.bool.isRequired,
-  viewerLayoutHeight: PropTypes.string.isRequired,
+};
+
+ViewerLayout.defaultProps = {
+  leftPanels: [],
+  rightPanels: [],
+  leftPanelDefaultClosed: false,
+  rightPanelDefaultClosed: false,
 };
 
 export default ViewerLayout;

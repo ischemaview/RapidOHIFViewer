@@ -29,8 +29,8 @@
       "version": "3.0.0"
     },
     {
-      "packageName": "@ohif/extension-cornerstone-dicom-seg",
-      "version": "3.0.0"
+      "packageName": "@gradienthealth/ohif-gradienthealth-extension",
+      "version": "0.0.2"
     }
   ],
   "modes": [
@@ -41,6 +41,10 @@
     {
       "packageName": "@ohif/mode-tmtv",
       "version": "3.0.0"
+    },
+    {
+      "packageName": "@gradienthealth/breast-density-mode",
+      "version": "0.0.2"
     }
   ],
   "modesFactory": [],

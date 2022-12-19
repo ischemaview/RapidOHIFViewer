@@ -16,6 +16,7 @@ const ViewportActionBar = ({
   onDoubleClick,
   getStatusComponent,
   //
+  onPillClick,
   showPatientInfoIcon,
 }) => {
   const [showPatientInfo, setShowPatientInfo] = useState(patientInfoVisibility);
@@ -127,21 +128,19 @@ const ViewportActionBar = ({
           <CinePlayer {...cineProps} />
         </div>
       )}
-      {showPatientInfoIcon && (
-        <div className="flex h-8 mt-2 mr-1" onClick={onPatientInfoClick}>
-          <PatientInfo
-            showPatientInfoRef={showPatientInfoRef}
-            isOpen={showPatientInfo}
-            patientName={patientName}
-            patientSex={patientSex}
-            patientAge={patientAge}
-            MRN={MRN}
-            thickness={thickness}
-            spacing={spacing}
-            scanner={scanner}
-          />
-        </div>
-      )}
+      {showPatientInfoIcon ? <div className="flex h-8 mt-2 mr-1" onClick={onPatientInfoClick}>
+        <PatientInfo
+          showPatientInfoRef={showPatientInfoRef}
+          isOpen={showPatientInfo}
+          patientName={patientName}
+          patientSex={patientSex}
+          patientAge={patientAge}
+          MRN={MRN}
+          thickness={thickness}
+          spacing={spacing}
+          scanner={scanner}
+        />
+      </div>: null}
     </div>
   );
 };
