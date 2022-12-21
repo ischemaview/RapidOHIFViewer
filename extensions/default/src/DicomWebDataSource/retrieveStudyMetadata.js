@@ -1,3 +1,4 @@
+import deepEqual from './utils/deepEqual.js';
 import RetrieveMetadata from './wado/retrieveMetadata.js';
 
 const moduleName = 'RetrieveStudyMetadata';
@@ -40,7 +41,15 @@ export function retrieveStudyMetadata(
 
   // Already waiting on result? Return cached promise
   if (StudyMetaDataPromises.has(StudyInstanceUID)) {
-    return StudyMetaDataPromises.get(StudyInstanceUID);
+    const filtersArray = StudyMetaDataPromises.get(StudyInstanceUID);
+
+    const foundFilter = filtersArray.find((item, index, obj) => {
+      return deepEqual(item.filters, filters);
+    });
+
+    if (foundFilter) {
+      return foundFilter.promise;
+    }
   }
 
   // Create a promise to handle the data retrieval
@@ -57,8 +66,18 @@ export function retrieveStudyMetadata(
     }, reject);
   });
 
+  let filtersArray;
+
   // Store the promise in cache
-  StudyMetaDataPromises.set(StudyInstanceUID, promise);
+  if (StudyMetaDataPromises.has(StudyInstanceUID)) {
+    filtersArray = StudyMetaDataPromises.get(StudyInstanceUID);
+  } else {
+    filtersArray = [];
+
+    StudyMetaDataPromises.set(filtersArray);
+  }
+
+  filtersArray.push({ promise, filters });
 
   return promise;
 }

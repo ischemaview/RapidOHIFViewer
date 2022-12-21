@@ -52,7 +52,7 @@ let _wadoDicomWebClient = null;
  * @param {string|bool} singlepart - indicates of the retrieves can fetch singlepart.  Options are bulkdata, video, image or boolean true
  */
 function createDicomWebApi(webConfig, UserAuthenticationService) {
-  const initClients = (config) => {
+  const initClients = config => {
     _dicomWebConfig = config;
 
     const qidoConfig = {
@@ -80,45 +80,67 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
     _wadoDicomWebClient = config.staticWado
       ? new StaticWadoClient(wadoConfig)
       : new api.DICOMwebClient(wadoConfig);
-
   };
 
   initClients(webConfig);
 
-  const pubSubService = Object.assign({
-    EVENTS: {
-      NEW_STUDY: 'event::DicomWebDatasource::NEW_STUDY'
+  const pubSubService = Object.assign(
+    {
+      EVENTS: {
+        NEW_STUDY: 'event::DicomWebDatasource::NEW_STUDY',
+      },
+      listeners: [],
     },
-    listeners: []
-  }, pubSubServiceInterface);
+    pubSubServiceInterface
+  );
 
   const implementation = {
-    updateConfig: (dicomWebConfig) => {
+    updateConfig: dicomWebConfig => {
       initClients(dicomWebConfig);
     },
-    onNewStudy: (callback) => {
+    onNewStudy: callback => {
       pubSubService.subscribe(pubSubService.EVENTS.NEW_STUDY, callback);
     },
-    setNewStudy: ({ studyInstanceUIDs/*, seriesInstanceUID: string*/ }) => {
-      pubSubService._broadcastEvent(pubSubService.EVENTS.NEW_STUDY, { studyInstanceUIDs });
+    setNewStudy: ({ studyInstanceUIDs /*, seriesInstanceUID: string*/ }) => {
+      pubSubService._broadcastEvent(pubSubService.EVENTS.NEW_STUDY, {
+        studyInstanceUIDs,
+      });
     },
     initialize: ({ params, query }) => {
       const { StudyInstanceUIDs: paramsStudyInstanceUIDs } = params;
+      const { SeriesInstanceUIDs: paramsSeriesInstanceUIDs } = params;
       const queryStudyInstanceUIDs = query.getAll('StudyInstanceUIDs');
+      const querySeriesInstanceUIDs = query.getAll('SeriesInstanceUIDs');
 
       const StudyInstanceUIDs =
-        queryStudyInstanceUIDs.length && queryStudyInstanceUIDs ||
+        (queryStudyInstanceUIDs.length && queryStudyInstanceUIDs) ||
         paramsStudyInstanceUIDs;
       const StudyInstanceUIDsAsArray =
         StudyInstanceUIDs && Array.isArray(StudyInstanceUIDs)
           ? StudyInstanceUIDs
           : [StudyInstanceUIDs];
-      return StudyInstanceUIDsAsArray;
+
+      const SeriesInstanceUIDs =
+        querySeriesInstanceUIDs || paramsSeriesInstanceUIDs;
+      const SeriesInstanceUIDsAsArray =
+        SeriesInstanceUIDs && Array.isArray(SeriesInstanceUIDs)
+          ? SeriesInstanceUIDs
+          : [SeriesInstanceUIDs];
+
+      let result = {
+        studyInstanceUIDs: StudyInstanceUIDsAsArray,
+        seriesInstanceUIDs: SeriesInstanceUIDsAsArray,
+        filters: null,
+        sortCriteria: null,
+        sortFunction: null,
+      };
+
+      return result;
     },
     query: {
       studies: {
         mapParams: mapParams.bind(),
-        search: async function (origParams) {
+        search: async function(origParams) {
           const headers = UserAuthenticationService.getAuthorizationHeader();
           if (headers) {
             _qidoDicomWebClient.headers = headers;
@@ -143,7 +165,7 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
       },
       series: {
         // mapParams: mapParams.bind(),
-        search: async function (studyInstanceUid) {
+        search: async function(studyInstanceUid) {
           const headers = UserAuthenticationService.getAuthorizationHeader();
           if (headers) {
             _qidoDicomWebClient.headers = headers;
