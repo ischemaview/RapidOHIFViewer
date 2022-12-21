@@ -244,8 +244,14 @@ export default function ModeRoute({
 
   useEffect(() => {
     if (dataSource.onNewStudy) {
-      dataSource.onNewStudy(({ studyInstanceUIDs }) => {
-        setStudyInstanceUIDs(studyInstanceUIDs);
+      dataSource.onNewStudy(({ studyInstanceUIDs, seriesInstanceUIDs }) => {
+        setStudyInstanceUIDs({
+          studyInstanceUIDs,
+          seriesInstanceUIDs,
+          filters,
+          sortCriteria,
+          sortFunction,
+        });
       });
     }
   }, [location]);

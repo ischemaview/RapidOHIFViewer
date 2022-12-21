@@ -101,9 +101,10 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
     onNewStudy: callback => {
       pubSubService.subscribe(pubSubService.EVENTS.NEW_STUDY, callback);
     },
-    setNewStudy: ({ studyInstanceUIDs /*, seriesInstanceUID: string*/ }) => {
+    setNewStudy: ({ studyInstanceUIDs, seriesInstanceUIDs }) => {
       pubSubService._broadcastEvent(pubSubService.EVENTS.NEW_STUDY, {
         studyInstanceUIDs,
+        seriesInstanceUIDs,
       });
     },
     initialize: ({ params, query }) => {
