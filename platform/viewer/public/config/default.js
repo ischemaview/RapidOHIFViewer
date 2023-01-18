@@ -7,7 +7,9 @@ window.config = {
   // maxNumberOfWebWorkers: 3,
   // below flag is for performance reasons, but it might not work for all servers
   omitQuotationForMultipartRequest: true,
-  showLoadingIndicator: false,
+  showLoadingIndicator: true,
+  maxCacheSize: 1024 * 1024 * 400,
+  //maxNumberOfWebWorkers: 2,
   maxNumRequests: {
     interaction: 100,
     thumbnail: 75,

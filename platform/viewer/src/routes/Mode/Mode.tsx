@@ -58,25 +58,31 @@ function defaultRouteInit(
 
     let retrievedSeries;
 
-    if (seriesInstanceUIDs.length) {
-      retrievedSeries = seriesInstanceUIDs.map(seriesInstanceUID => {
-        filters.seriesInstanceUID = seriesInstanceUID;
+    // if (seriesInstanceUIDs.length) {
+    //   retrievedSeries = seriesInstanceUIDs.map(seriesInstanceUID => {
+    //     filters.seriesInstanceUID = seriesInstanceUID;
 
-        return dataSource.retrieve.series.metadata({
-          StudyInstanceUID,
-          filters,
-          sortCriteria,
-          sortFunction,
-        });
-      });
-    } else {
-      retrievedSeries = dataSource.retrieve.series.metadata({
-        StudyInstanceUID,
-        filters,
-        sortCriteria,
-        sortFunction,
-      });
-    }
+    //     return dataSource.retrieve.series.metadata({
+    //       StudyInstanceUID,
+    //       filters,
+    //       sortCriteria,
+    //       sortFunction,
+    //     });
+    //   });
+    // } else {
+    //   retrievedSeries = dataSource.retrieve.series.metadata({
+    //     StudyInstanceUID,
+    //     filters,
+    //     sortCriteria,
+    //     sortFunction,
+    //   });
+    // }
+    retrievedSeries = dataSource.retrieve.series.metadata({
+      StudyInstanceUID,
+      filters,
+      sortCriteria,
+      sortFunction,
+    });
 
     return retrievedSeries;
   });
@@ -88,6 +94,32 @@ function defaultRouteInit(
   // to display anything if a required match fails), so we wait here until all metadata
   // is retrieved (which will synchronously trigger the display set creation)
   // until we run the hanging protocol matching service.
+
+  HangingProtocolService.addCustomAttribute(
+    'frameOfReferenceIsMatching', // attributeId
+    'frameOfReferenceIsMatching', // attributeName
+    metaData => {
+      const FrameOfReferenceUID =
+        metaData['FrameOfReferenceUID'] ??
+        ((metaData.images || metaData.others || [])[0] || {})[
+          'FrameOfReferenceUID'
+        ];
+      return FrameOfReferenceUID === seriesInstanceUIDs[0];
+    }
+  );
+
+  HangingProtocolService.addCustomAttribute(
+    'seriesInstanceUidIsMatching', // attributeId
+    'seriesInstanceUidIsMatching', // attributeName
+    metaData => {
+      const seriesInstanceUid =
+        metaData['SeriesInstanceUID'] ??
+        ((metaData.images || metaData.others || [])[0] || {})[
+          'SeriesInstanceUID'
+        ];
+      return seriesInstanceUid === seriesInstanceUIDs[0];
+    }
+  );
 
   Promise.allSettled(allRetrieves).then(() => {
     const displaySets = DisplaySetService.getActiveDisplaySets();
