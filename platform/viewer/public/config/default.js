@@ -8,7 +8,7 @@ window.config = {
   // below flag is for performance reasons, but it might not work for all servers
   omitQuotationForMultipartRequest: true,
   showLoadingIndicator: true,
-  maxCacheSize: 1024 * 1024 * 400,
+  maxCacheSize: 1024 * 1024 * 300,
   //maxNumberOfWebWorkers: 2,
   maxNumRequests: {
     interaction: 100,

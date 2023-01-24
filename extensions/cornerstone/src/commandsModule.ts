@@ -304,24 +304,6 @@ const commandsModule = ({ servicesManager }) => {
       viewport.resetCamera();
       viewport.render();
     },
-    hideOverlay: () => {
-      const { activeViewportIndex } = ViewportGridService.getState();
-
-      const viewportInfo = CornerstoneViewportService.getViewportInfoByIndex(
-        activeViewportIndex
-      );
-
-      const customViewportProps =
-        viewportInfo?.viewportOptions?.customViewportProps;
-
-      if (customViewportProps) {
-        if (customViewportProps.hideOverlays) {
-          customViewportProps.hideOverlays = false;
-        } else {
-          customViewportProps.hideOverlays = true;
-        }
-      }
-    },
     scaleViewport: ({ direction }) => {
       const enabledElement = _getActiveViewportEnabledElement();
       const scaleFactor = direction > 0 ? 0.9 : 1.1;
@@ -698,11 +680,6 @@ const commandsModule = ({ servicesManager }) => {
     },
     resetViewport: {
       commandFn: actions.resetViewport,
-      storeContexts: [],
-      options: {},
-    },
-    hideOverlay: {
-      commandFn: actions.hideOverlay,
       storeContexts: [],
       options: {},
     },
