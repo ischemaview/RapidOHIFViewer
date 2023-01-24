@@ -338,8 +338,16 @@ class CornerstoneViewportService implements IViewportService {
       return;
     }
 
-    const { index, preset } = initialImageOptions;
-    return this._getInitialImageIndex(imageIds.length, index, preset);
+    const { index, preset, prevImageFactor } = initialImageOptions;
+    if (prevImageFactor) {
+      return this._getInitialImageIndex(
+        imageIds.length,
+        Math.round(imageIds.length / prevImageFactor),
+        preset
+      );
+    } else {
+      return this._getInitialImageIndex(imageIds.length, index, preset);
+    }
   }
 
   _getInitialImageIndex(
