@@ -4,7 +4,7 @@
   "description": "rapid-dicom-viewer built and bundled into static assets",
   "main": "index.html",
   "files": [
-    "dist/**"
+    "/dist"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
