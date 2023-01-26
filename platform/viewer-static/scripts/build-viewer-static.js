@@ -2,6 +2,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const fsPromises = require('fs').promises;
 const path = require('path');
+const copyFolderRecursiveSync = require('./copy-folder-recursive-sync');
 
 function onExit(childProcess){
   return new Promise((resolve, reject) => {
@@ -18,31 +19,6 @@ function onExit(childProcess){
   });
 }
 
-function copyFolderSync(from, to) {
-  fs.mkdirSync(to, { recursive: true });
-  fs.readdirSync(from).forEach(element => {
-      if (fs.lstatSync(path.join(from, element)).isFile()) {
-          fs.copyFileSync(path.join(from, element), path.join(to, element));
-      } else {
-          copyFolderSync(path.join(from, element), path.join(to, element));
-      }
-  });
-}
-
-function getUpdatedPackageJson(packageJson, packageScope, packageVersion) {
-  const packageJsonClone = JSON.parse(JSON.stringify(packageJson));
-  const packageNameTransformed = packageJsonClone.name.replace(/^@/, '').replace(/\//g,'-');
-  // packageJsonClone.name = `${packageScope}/${packageNameTransformed}`;
-  packageJsonClone.version += '-' + packageVersion;
-  packageJsonClone.main = 'dist/umd/index.js';
-  packageJsonClone.module = 'dist/esm/index.js';
-  packageJsonClone.publishConfig = {
-    "registry": "https://nexus.infrastructure.rapid-sys.com/repository/npm-internal"
-  };
-
-  return packageJsonClone;
-}
-
 (async () => {
   const dirPathViewer = path.join('..', 'viewer');
   const dirPathViewerStatic = path.join('.');
@@ -54,7 +30,7 @@ function getUpdatedPackageJson(packageJson, packageScope, packageVersion) {
   await onExit(build);
 
   console.log('copying dist folder');
-  copyFolderSync(
+  copyFolderRecursiveSync(
     path.join(dirPathViewer, 'dist'),
     path.join(dirPathViewerStatic, 'dist'));
 
