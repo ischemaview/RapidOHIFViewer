@@ -1,12 +1,10 @@
 {
-  "name": "@ischemaview/ohif-viewer-static",
+  "name": "@ischemaview/rapid-dicom-viewer",
   "version": "1.0.0",
-  "description": "@ischemaview/ohif-viewer built and bundled into static assets",
+  "description": "rapid-dicom-viewer built and bundled into static assets",
   "main": "index.html",
   "files": [
-    "dist/**",
-    "scripts/copy-folder-recursive-sync.js",
-    "scripts/copy-folder-recursive-cli"
+    "dist/**"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

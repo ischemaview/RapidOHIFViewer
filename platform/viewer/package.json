@@ -1,5 +1,5 @@
 {
-  "name": "@ischemaview/ohif-viewer",
+  "name": "@ohif/viewer",
   "version": "5.0.0",
   "productVersion": "3.3.0",
   "description": "OHIF Viewer",
