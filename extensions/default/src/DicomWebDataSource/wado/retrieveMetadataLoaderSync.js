@@ -12,10 +12,11 @@ import RetrieveMetadataLoader from './retrieveMetadataLoader';
  */
 export default class RetrieveMetadataLoaderSync extends RetrieveMetadataLoader {
   getOptions() {
-    const { studyInstanceUID, filters } = this;
+    const { studyInstanceUID, filters, withCredentials } = this;
 
     const options = {
       studyInstanceUID,
+      withCredentials,
     };
 
     const { seriesInstanceUID } = filters;
