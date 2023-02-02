@@ -424,7 +424,7 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
       sortCriteria,
       sortFunction,
       madeInClient = false,
-      withCredentials = true
+      withCredentials = false
     ) => {
       const enableStudyLazyLoad = true;
       // Get Series
