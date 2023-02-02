@@ -32,6 +32,10 @@ function App({ config, defaultExtensions, defaultModes }) {
     const run = async () => {
       appInit(config, defaultExtensions, defaultModes)
         .then(setInit)
+        .then(function() {
+          const { ExternalInterfaceService } = servicesManager.services;
+          ExternalInterfaceService.sendViewerReady();
+        })
         .catch(console.error);
     };
 

@@ -9,7 +9,7 @@ window.config = {
   omitQuotationForMultipartRequest: true,
   showLoadingIndicator: true,
   maxCacheSize: 1024 * 1024 * 300,
-  //maxNumberOfWebWorkers: 2,
+  //maxNumberOfWebWorkers: 2,x`x`
   maxNumRequests: {
     interaction: 100,
     thumbnail: 75,
@@ -23,15 +23,12 @@ window.config = {
       sourceName: 'dicomweb',
       configuration: {
         name: 'aws',
-        // wadoUriRoot:
-        //   'https://d3vr5l0dy050o5.cloudfront.net/{siteUrl}',
-        // qidoRoot:
-        //   'https://d3vr5l0dy050o5.cloudfront.net/{siteUrl}',
-        // wadoRoot:
-        //   'https://d3vr5l0dy050o5.cloudfront.net/{siteUrl}',
-        wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
-        qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
-        wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
+        wadoUriRoot: '{siteUrl}',
+        qidoRoot: '{siteUrl}',
+        wadoRoot: '{siteUrl}',
+        // wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
+        // qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
+        // wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
         qidoSupportsIncludeField: false,
         supportsReject: false,
         imageRendering: 'wadors',
