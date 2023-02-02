@@ -278,6 +278,7 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
           sortCriteria,
           sortFunction,
           madeInClient = false,
+          withCredentials = !!webConfig.withCredentials
         } = {}) => {
           const headers = UserAuthenticationService.getAuthorizationHeader();
           if (headers) {
@@ -296,7 +297,8 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
               filters,
               sortCriteria,
               sortFunction,
-              madeInClient
+              madeInClient,
+              withCredentials
             );
           }
 
@@ -305,7 +307,8 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
             filters,
             sortCriteria,
             sortFunction,
-            madeInClient
+            madeInClient,
+            withCredentials
           );
         },
       },
@@ -347,7 +350,8 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
       filters,
       sortCriteria,
       sortFunction,
-      madeInClient
+      madeInClient,
+      withCredentials
     ) => {
       const enableStudyLazyLoad = false;
 
@@ -358,7 +362,8 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
         enableStudyLazyLoad,
         filters,
         sortCriteria,
-        sortFunction
+        sortFunction,
+        withCredentials
       );
 
       // first naturalize the data
@@ -418,7 +423,8 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
       filters,
       sortCriteria,
       sortFunction,
-      madeInClient = false
+      madeInClient = false,
+      withCredentials = false
     ) => {
       const enableStudyLazyLoad = true;
       // Get Series
@@ -431,7 +437,8 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
         enableStudyLazyLoad,
         filters,
         sortCriteria,
-        sortFunction
+        sortFunction,
+        withCredentials
       );
 
       /**
