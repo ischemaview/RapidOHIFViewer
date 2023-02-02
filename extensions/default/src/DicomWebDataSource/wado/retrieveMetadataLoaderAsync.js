@@ -46,17 +46,19 @@ export default class RetrieveMetadataLoaderAsync extends RetrieveMetadataLoader 
       studyInstanceUID,
       filters: { seriesInstanceUID } = {},
       client,
+      withCredentials
     } = this;
 
     if (seriesInstanceUID) {
       const options = {
         studyInstanceUID,
         queryParams: { SeriesInstanceUID: seriesInstanceUID },
+        withCredentials
       };
       preLoaders.push(client.searchForSeries.bind(client, options));
     }
     // Fallback preloader
-    preLoaders.push(client.searchForSeries.bind(client, { studyInstanceUID }));
+    preLoaders.push(client.searchForSeries.bind(client, { studyInstanceUID, withCredentials }));
 
     yield* preLoaders;
   }
