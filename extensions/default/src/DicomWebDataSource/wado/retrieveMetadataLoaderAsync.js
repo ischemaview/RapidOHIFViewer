@@ -12,7 +12,8 @@ import RetrieveMetadataLoader from './retrieveMetadataLoader';
 function makeSeriesAsyncLoader(
   client,
   studyInstanceUID,
-  seriesInstanceUIDList
+  seriesInstanceUIDList,
+  withCredentials
 ) {
   return Object.freeze({
     hasNext() {
@@ -23,6 +24,7 @@ function makeSeriesAsyncLoader(
       return client.retrieveSeriesMetadata({
         studyInstanceUID,
         seriesInstanceUID,
+        withCredentials
       });
     },
   });
@@ -77,14 +79,15 @@ export default class RetrieveMetadataLoaderAsync extends RetrieveMetadataLoader 
   }
 
   async load(preLoadData) {
-    const { client, studyInstanceUID } = this;
+    const { client, studyInstanceUID, withCredentials } = this;
 
     const seriesInstanceUIDs = preLoadData.map(s => s.SeriesInstanceUID);
 
     const seriesAsyncLoader = makeSeriesAsyncLoader(
       client,
       studyInstanceUID,
-      seriesInstanceUIDs
+      seriesInstanceUIDs,
+      withCredentials
     );
 
     const promises = [];

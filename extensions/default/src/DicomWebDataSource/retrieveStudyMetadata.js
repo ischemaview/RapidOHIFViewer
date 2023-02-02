@@ -22,7 +22,8 @@ export function retrieveStudyMetadata(
   enableStudyLazyLoad,
   filters,
   sortCriteria,
-  sortFunction
+  sortFunction,
+  withCredentials
 ) {
   // @TODO: Whenever a study metadata request has failed, its related promise will be rejected once and for all
   // and further requests for that metadata will always fail. On failure, we probably need to remove the
@@ -60,7 +61,8 @@ export function retrieveStudyMetadata(
       enableStudyLazyLoad,
       filters,
       sortCriteria,
-      sortFunction
+      sortFunction,
+      withCredentials
     ).then(function(data) {
       resolve(data);
     }, reject);
