@@ -23,15 +23,9 @@ window.config = {
       sourceName: 'dicomweb',
       configuration: {
         name: 'aws',
-        // wadoUriRoot:
-        //   'https://d3vr5l0dy050o5.cloudfront.net/{siteUrl}',
-        // qidoRoot:
-        //   'https://d3vr5l0dy050o5.cloudfront.net/{siteUrl}',
-        // wadoRoot:
-        //   'https://d3vr5l0dy050o5.cloudfront.net/{siteUrl}',
-        wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
-        qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
-        wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
+        wadoUriRoot: '{siteUrl}',
+        qidoRoot: '{siteUrl}',
+        wadoRoot: '{siteUrl}',
         qidoSupportsIncludeField: false,
         supportsReject: false,
         imageRendering: 'wadors',
@@ -41,6 +35,7 @@ window.config = {
         supportsWildcard: true,
         staticWado: true,
         singlepart: 'bulkdata,video,pdf',
+        withCredentials: true
       },
     },
     {
