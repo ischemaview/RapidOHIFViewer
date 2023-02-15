@@ -1,5 +1,9 @@
 import { ServicesManager } from '@ohif/core';
 import { cache as cs3DCache, Enums, volumeLoader } from '@cornerstonejs/core';
+import { utils } from '@ohif/core';
+import sortImageIdsAndGetSpacing from './sortImageIdsAndGetSpacing';
+import makeVolumeMetadata from './makeVolumeMetadata';
+import { vec3 } from 'gl-matrix';
 
 import getCornerstoneViewportType from '../../utils/getCornerstoneViewportType';
 import {
@@ -187,8 +191,34 @@ class CornerstoneCacheService {
           dataSource
         );
 
+        const MAX_VOLUME_SIZE = 400;
+        const volumeMetadata = makeVolumeMetadata(volumeImageIds);
+        const { ImageOrientationPatient: chi } = volumeMetadata;
+        const rowCosineVec = vec3.fromValues(chi[0], chi[1], chi[2]);
+        const colCosineVec = vec3.fromValues(chi[3], chi[4], chi[5]);
+        const scanAxisNormal = vec3.create();
+        vec3.cross(scanAxisNormal, rowCosineVec, colCosineVec);
+        const { sortedImageIds } = sortImageIdsAndGetSpacing(
+          volumeImageIds,
+          scanAxisNormal
+        );
+
+        const distributedCopy = (items, n) => {
+          const elements = [items[0]];
+          const totalItems = items.length - 2;
+          const interval = totalItems / (n - 2);
+          for (let i = 1; i < n - 1; i++) {
+            elements.push(items[Math.floor(i * interval)]);
+          }
+          elements.push(items[items.length - 1]);
+          return elements;
+        };
+
         volume = await volumeLoader.createAndCacheVolume(volumeId, {
-          imageIds: volumeImageIds,
+          imageIds:
+            volumeImageIds.length > MAX_VOLUME_SIZE
+              ? distributedCopy(sortedImageIds, MAX_VOLUME_SIZE)
+              : volumeImageIds,
         });
 
         this.volumeImageIds.set(
