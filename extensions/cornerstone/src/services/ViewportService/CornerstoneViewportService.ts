@@ -318,14 +318,52 @@ class CornerstoneViewportService implements IViewportService {
       properties.invert = voiInverted;
     }
 
+    //Applying Zoom, Pan & WL values from State management
+    const {
+      StateManagementService,
+      HangingProtocolService,
+    } = this.servicesManager.services;
+
+    const previousViewportState = this._getPreviousViewportState(
+      HangingProtocolService,
+      StateManagementService
+    );
+
+    if (previousViewportState) {
+      properties.voiRange = previousViewportState.prop.voiRange;
+      initialImageIndexToUse = this._getInitialImageIndex(
+        imageIds.length,
+        Math.round(imageIds.length / previousViewportState.imageFactor),
+        null
+      );
+    }
+
     viewport.setStack(imageIds, initialImageIndexToUse).then(() => {
       viewport.setProperties(properties);
+      if (previousViewportState) {
+        viewport.setCamera(previousViewportState.camera);
+      }
       this._broadcastEvent(EVENTS.VIEWPORT_STACK_SET, {
         viewport,
         imageIds,
         initialImageIndexToUse,
       });
     });
+  }
+
+  private _getPreviousViewportState(
+    HangingProtocolService: any,
+    StateManagementService: any
+  ) {
+    const currentHangingProtocol: string = HangingProtocolService.protocol.id;
+    if (currentHangingProtocol.toLowerCase().includes('axial')) {
+      return StateManagementService.getViewportState('axial');
+    } else if (currentHangingProtocol.toLowerCase().includes('coronal')) {
+      return StateManagementService.getViewportState('coronal');
+    } else if (currentHangingProtocol.toLowerCase().includes('sagittal')) {
+      return StateManagementService.getViewportState('sagittal');
+    }
+    return null;
   }
 
   private _getInitialImageIndexForStackViewport(
@@ -338,16 +376,8 @@ class CornerstoneViewportService implements IViewportService {
       return;
     }
 
-    const { index, preset, prevImageFactor } = initialImageOptions;
-    if (prevImageFactor) {
-      return this._getInitialImageIndex(
-        imageIds.length,
-        Math.round(imageIds.length / prevImageFactor),
-        preset
-      );
-    } else {
-      return this._getInitialImageIndex(imageIds.length, index, preset);
-    }
+    const { index, preset } = initialImageOptions;
+    return this._getInitialImageIndex(imageIds.length, index, preset);
   }
 
   _getInitialImageIndex(
