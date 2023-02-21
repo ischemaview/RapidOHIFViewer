@@ -33,6 +33,7 @@ function defaultRouteInit(
   const {
     DisplaySetService,
     HangingProtocolService,
+    ErrorHandlingService,
   } = servicesManager.services;
 
   const unsubscriptions = [];
@@ -121,7 +122,17 @@ function defaultRouteInit(
     }
   );
 
-  Promise.allSettled(allRetrieves).then(() => {
+  Promise.allSettled(allRetrieves).then(promiseStatus => {
+    promiseStatus.forEach(prStatus => {
+      // iterate over every promise and check status, if any promise is have error encounter then status will be rejected
+      if (prStatus.status === 'rejected') {
+        if (ErrorHandlingService) {
+          ErrorHandlingService.broadcastStudyLoadError();
+        }
+        return;
+      }
+    });
+
     const displaySets = DisplaySetService.getActiveDisplaySets();
 
     if (!displaySets || !displaySets.length) {
