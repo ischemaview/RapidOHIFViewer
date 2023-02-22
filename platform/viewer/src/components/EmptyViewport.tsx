@@ -9,13 +9,14 @@ function EmptyViewport(props) {
         props.className
       )}
     >
-      <div className="failed items-center">
-        <rapid-icon-button
-          icon="refresh-48"
-          className="reload-button large"
-        ></rapid-icon-button>
-
-        <span className="message">Restart Download</span>
+      <div className="failed items-center flex flex-col">
+        <div className="box-48-horizontal">
+          <rapid-icon-button
+            icon="refresh-48"
+            class="medium"
+          ></rapid-icon-button>
+        </div>
+        <span className="message">Reload</span>
         <span className="sub-message">Images failed to download</span>
       </div>
     </div>
