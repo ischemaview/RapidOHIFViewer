@@ -1146,6 +1146,36 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
   position: relative;
   width: 48px; }
 
+.loading-messagetext {
+  text-align: center;
+  margin: 20px; }
+
+.failed {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+  .failed .reload-button {
+    -ms-flex-item-align: center;
+        align-self: center; }
+
+.message {
+  text-align: center;
+  margin: 20px; }
+
+.sub-message {
+  text-align: center;
+  color: var(--rapid-color-gray-500); }
+
 .bg-black > :nth-child(1) svg {
   display: none; }
 
@@ -1359,7 +1389,7 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
 .sideToolbarIconMenu {
   background: var(--rapid-color-gray-900);
   width: 67px;
-  padding-top: 18px; }
+  padding-top: 5px; }
 
 .sideToolbarPresetMenu {
   background: var(--rapid-color-gray-900);
