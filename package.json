@@ -147,5 +147,8 @@
   },
   "resolutions": {
     "**/@babel/runtime": "^7.20.13"
+  },
+  "publishConfig": {
+    "registry": "https://nexus.infrastructure.rapid-sys.com/repository/npm-internal"
   }
 }
