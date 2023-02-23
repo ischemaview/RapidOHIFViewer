@@ -28,7 +28,7 @@ function defaultRouteInit(
     sortCriteria,
     sortFunction,
   },
-  hangingProtocol
+  hangingProtocolId
 ) {
   const {
     displaySetService,
@@ -95,7 +95,7 @@ function defaultRouteInit(
   // is retrieved (which will synchronously trigger the display set creation)
   // until we run the hanging protocol matching service.
 
-  HangingProtocolService.addCustomAttribute(
+  hangingProtocolService.addCustomAttribute(
     'frameOfReferenceIsMatching', // attributeId
     'frameOfReferenceIsMatching', // attributeName
     metaData => {
@@ -108,7 +108,7 @@ function defaultRouteInit(
     }
   );
 
-  HangingProtocolService.addCustomAttribute(
+  hangingProtocolService.addCustomAttribute(
     'seriesInstanceUidIsMatching', // attributeId
     'seriesInstanceUidIsMatching', // attributeName
     metaData => {
