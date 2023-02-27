@@ -300,8 +300,12 @@ export default function ModeRoute({
   }, [location]);
 
   useEffect(() => {
-    const { ExternalInterfaceService } = servicesManager.services;
+    const {
+      ExternalInterfaceService,
+      PerformanceEventTrackingService,
+    } = servicesManager.services;
     ExternalInterfaceService.sendViewerReady();
+    PerformanceEventTrackingService.startAxialFIDTime();
   }, []);
 
   useEffect(() => {
