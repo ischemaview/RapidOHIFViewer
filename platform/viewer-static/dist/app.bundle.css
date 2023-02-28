@@ -1146,6 +1146,9 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
   position: relative;
   width: 48px; }
 
+.bg-black > :nth-child(1) svg {
+  display: none; }
+
 /* up to here, important property to override loading icon in Viewer*/
 .verticalSeparator {
   display: inline-block;
@@ -1187,6 +1190,9 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
 
 .overlay-max-width {
   max-width: 10rem; }
+
+.overlay-pointer-auto {
+  pointer-events: auto; }
 
 .overlay-justify-right {
   text-align: right; }
