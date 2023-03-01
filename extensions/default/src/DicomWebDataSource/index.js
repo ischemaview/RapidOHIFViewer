@@ -278,7 +278,7 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
           sortCriteria,
           sortFunction,
           madeInClient = false,
-          withCredentials = !!webConfig.withCredentials
+          withCredentials = !!webConfig.withCredentials,
         } = {}) => {
           const headers = UserAuthenticationService.getAuthorizationHeader();
           if (headers) {
@@ -528,7 +528,7 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
           storeInstances(instances);
         })
       );
-      await Promise.all(seriesDeliveredPromises);
+      await Promise.allSettled(seriesDeliveredPromises);
       setSuccessFlag();
     },
     deleteStudyMetadataPromise,

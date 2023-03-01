@@ -399,6 +399,7 @@ function ViewerViewportGrid(props) {
               viewportOptions={viewportOptions}
               displaySetOptions={displaySetOptions}
               needsRerendering={displaySetsNeedsRerendering}
+              className="h-full w-full bg-black"
             />
           </div>
         </ViewportPane>
