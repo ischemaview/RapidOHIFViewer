@@ -27,7 +27,7 @@ function ViewerViewportGrid(props) {
     servicesManager,
     viewportComponents,
     dataSource,
-    modeViewportPaneStyles = {},
+    modeViewportPaneStyles = () => { },
   } = props;
   const [viewportGrid, viewportGridService] = useViewportGrid();
 
@@ -139,7 +139,7 @@ function ViewerViewportGrid(props) {
         const displaySetsNotInGrid = availableDisplaySets.filter(
           displaySet =>
             gridDisplaySetUIDs.indexOf(displaySet.displaySetInstanceUID) ===
-              -1 &&
+            -1 &&
             ['SEG', 'SR', 'RTSTRUCT'].indexOf(displaySet.Modality) === -1
         );
 
@@ -411,8 +411,7 @@ function ViewerViewportGrid(props) {
 
       const onInteractionHandler = event => {
         if (isActive) return;
-
-        if (event) {
+        if (event && event.type !== 'touchstart') {
           event.preventDefault();
           event.stopPropagation();
         }
@@ -435,15 +434,11 @@ function ViewerViewportGrid(props) {
             left: viewportX * 100 + 0.2 + '%',
             width: viewportWidth * 100 - 0.3 + '%',
             height: viewportHeight * 100 - 0.3 + '%',
-            ...modeViewportPaneStyles,
+            ...modeViewportPaneStyles({ numViewports }),
           }}
           isActive={isActive}
         >
-          <div
-            className={classNames('h-full w-full flex flex-col', {
-              'pointer-events-none': !isActive,
-            })}
-          >
+          <div className={classNames('h-full w-full flex flex-col')}>
             <ViewportComponent
               displaySets={displaySets}
               viewportIndex={viewportIndex}
