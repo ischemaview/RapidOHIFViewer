@@ -86,6 +86,7 @@ export default async function init({
       message:
         'Cross Origin Isolation is not enabled, volume rendering will be less performant',
       type: 'info',
+      duration: 1000,
     });
   }
 
