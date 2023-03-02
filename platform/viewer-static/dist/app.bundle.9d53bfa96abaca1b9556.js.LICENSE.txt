@@ -1,0 +1,1427 @@
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+/*!
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
+*/
+
+/*!
+  Copyright (c) 2015 Jed Watson.
+  Based on code that is Copyright 2013-2015, Facebook, Inc.
+  All rights reserved.
+*/
+
+/*!
+ * Adapted from jQuery UI core
+ *
+ * http://jqueryui.com
+ *
+ * Copyright 2014 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/category/ui-core/
+ */
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
+ */
+
+/*!
+ * validate.js 0.12.0
+ *
+ * (c) 2013-2017 Nicklas Ansman, 2013 Wrapp
+ * Validate.js may be freely distributed under the MIT license.
+ * For all details and documentation:
+ * http://validatejs.org/
+ */
+
+/*!
+Copyright (c) 2011, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.com/yui/license.html
+version: 2.9.0
+*/
+
+/*! (c) Stefan Thomas | https://github.com/bitcoinjs/bitcoinjs-lib
+ */
+
+/*! (c) Tom Wu | http://www-cs-students.stanford.edu/~tjw/jsbn/
+ */
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+
+/*! ../../icons */
+
+/*! ../../utils/element-state */
+
+/*! ../../utils/fix_webkit_bug216985 */
+
+/*! ../../utils/html-collection */
+
+/*! ../../utils/layout-types */
+
+/*! ../../utils/multipe-values */
+
+/*! ../rapid-form-field/rapid-form-field */
+
+/*! ../rapid-input-datetime-field/rapid-input-datetime-field */
+
+/*! ./16x16 */
+
+/*! ./24x24 */
+
+/*! ./48x48 */
+
+/*! ./72x72 */
+
+/*! ./about-16.svg */
+
+/*! ./about-24.svg */
+
+/*! ./ambulance-24.svg */
+
+/*! ./app-switcher-24.svg */
+
+/*! ./arrow-24.svg */
+
+/*! ./arrow-up-24.svg */
+
+/*! ./axial-24.svg */
+
+/*! ./back-24.svg */
+
+/*! ./back-48.svg */
+
+/*! ./bed-24.svg */
+
+/*! ./calendar-24.svg */
+
+/*! ./call-48.svg */
+
+/*! ./camera-24.svg */
+
+/*! ./camera-48.svg */
+
+/*! ./catheter-48.svg */
+
+/*! ./check-24.svg */
+
+/*! ./chevron-16.svg */
+
+/*! ./chevron-24.svg */
+
+/*! ./chevron-expand-24.svg */
+
+/*! ./chevron-left-48.svg */
+
+/*! ./chevron-right-48.svg */
+
+/*! ./clinical-info-24.svg */
+
+/*! ./clinical-trial-24.svg */
+
+/*! ./close-16.svg */
+
+/*! ./close-24.svg */
+
+/*! ./close-48.svg */
+
+/*! ./close-circle-24.svg */
+
+/*! ./comment-add-48.svg */
+
+/*! ./components */
+
+/*! ./controls-24.svg */
+
+/*! ./controls-48.svg */
+
+/*! ./coronal-24.svg */
+
+/*! ./create-24.svg */
+
+/*! ./create-48.svg */
+
+/*! ./data-16.svg */
+
+/*! ./data-24.svg */
+
+/*! ./desktop-24.svg */
+
+/*! ./desktop-48.svg */
+
+/*! ./done-16.svg */
+
+/*! ./download-24.svg */
+
+/*! ./expand-48.svg */
+
+/*! ./expanded-24.svg */
+
+/*! ./expanded-closed-24.svg */
+
+/*! ./eye-16.svg */
+
+/*! ./eye-24.svg */
+
+/*! ./face-id-72.svg */
+
+/*! ./feed-24.svg */
+
+/*! ./fingerprint-id-72.svg */
+
+/*! ./levels-24.svg */
+
+/*! ./logout-16.svg */
+
+/*! ./logout-24.svg */
+
+/*! ./medical-symbol-24.svg */
+
+/*! ./medical-symbol-48.svg */
+
+/*! ./menu-16.svg */
+
+/*! ./menu-24.svg */
+
+/*! ./menu-48.svg */
+
+/*! ./messages-24.svg */
+
+/*! ./messages-48.svg */
+
+/*! ./minus-48.svg */
+
+/*! ./mip-24.svg */
+
+/*! ./mips-48.svg */
+
+/*! ./neuro-24.svg */
+
+/*! ./no-result-48.svg */
+
+/*! ./notifications-16.svg */
+
+/*! ./notifications-24.svg */
+
+/*! ./notifications-off-24.svg */
+
+/*! ./notifications-off-48.svg */
+
+/*! ./notifications-on-24.svg */
+
+/*! ./notifications-on-48.svg */
+
+/*! ./orientation-24.svg */
+
+/*! ./orientation-chest-front-48.svg */
+
+/*! ./orientation-chest-side-48.svg */
+
+/*! ./orientation-chest-top-48.svg */
+
+/*! ./orientation-head-front-48.svg */
+
+/*! ./orientation-head-rotational-48.svg */
+
+/*! ./orientation-head-side-48.svg */
+
+/*! ./orientation-head-top-48.svg */
+
+/*! ./patient-24.svg */
+
+/*! ./patient-add-24.svg */
+
+/*! ./patient-add-48.svg */
+
+/*! ./patient-cards-24.svg */
+
+/*! ./patient-timer-48.svg */
+
+/*! ./pause-16.svg */
+
+/*! ./pause-48.svg */
+
+/*! ./play-48.svg */
+
+/*! ./plus-24.svg */
+
+/*! ./plus-48.svg */
+
+/*! ./profile-16.svg */
+
+/*! ./profile-24.svg */
+
+/*! ./pulmonary-24.svg */
+
+/*! ./quality-24.svg */
+
+/*! ./quality-48.svg */
+
+/*! ./rapid-button.html */
+
+/*! ./rapid-button.scss */
+
+/*! ./rapid-button/rapid-button */
+
+/*! ./rapid-checkbox-group.html */
+
+/*! ./rapid-checkbox-group.scss */
+
+/*! ./rapid-checkbox-group/rapid-checkbox-group */
+
+/*! ./rapid-checkbox.html */
+
+/*! ./rapid-checkbox.scss */
+
+/*! ./rapid-checkbox/rapid-checkbox */
+
+/*! ./rapid-form-field.html */
+
+/*! ./rapid-form-field.scss */
+
+/*! ./rapid-form-field/rapid-form-field */
+
+/*! ./rapid-form-fieldset.html */
+
+/*! ./rapid-form-fieldset.scss */
+
+/*! ./rapid-form-fieldset/rapid-form-fieldset */
+
+/*! ./rapid-icon-button.html */
+
+/*! ./rapid-icon-button.scss */
+
+/*! ./rapid-icon-button/rapid-icon-button */
+
+/*! ./rapid-icon.html */
+
+/*! ./rapid-icon.scss */
+
+/*! ./rapid-icon/rapid-icon */
+
+/*! ./rapid-input-checkbox.html */
+
+/*! ./rapid-input-checkbox.scss */
+
+/*! ./rapid-input-checkbox/rapid-input-checkbox */
+
+/*! ./rapid-input-datetime-field.html */
+
+/*! ./rapid-input-datetime-field.scss */
+
+/*! ./rapid-input-datetime-field/rapid-input-datetime-field */
+
+/*! ./rapid-input-number-field.html */
+
+/*! ./rapid-input-number-field.scss */
+
+/*! ./rapid-input-number-field/rapid-input-number-field */
+
+/*! ./rapid-input-password-field.html */
+
+/*! ./rapid-input-password-field.scss */
+
+/*! ./rapid-input-password-field/rapid-input-password-field */
+
+/*! ./rapid-input-phone-field.html */
+
+/*! ./rapid-input-phone-field.scss */
+
+/*! ./rapid-input-phone-field/rapid-input-phone-field */
+
+/*! ./rapid-input-select-multiple.html */
+
+/*! ./rapid-input-select-multiple.scss */
+
+/*! ./rapid-input-select-multiple/rapid-input-select-multiple */
+
+/*! ./rapid-input-select.html */
+
+/*! ./rapid-input-select.scss */
+
+/*! ./rapid-input-select/rapid-input-select */
+
+/*! ./rapid-input-text-field.html */
+
+/*! ./rapid-input-text-field.scss */
+
+/*! ./rapid-input-text-field/rapid-input-text-field */
+
+/*! ./rapid-input-username-field.html */
+
+/*! ./rapid-input-username-field.scss */
+
+/*! ./rapid-input-username-field/rapid-input-username-field */
+
+/*! ./rapid-progress.html */
+
+/*! ./rapid-progress.scss */
+
+/*! ./rapid-progress/rapid-progress */
+
+/*! ./refresh-48.svg */
+
+/*! ./refresh-double-48.svg */
+
+/*! ./report-48.svg */
+
+/*! ./reset-24.svg */
+
+/*! ./rounded-close-48.svg */
+
+/*! ./sagittal-24.svg */
+
+/*! ./scan-16.svg */
+
+/*! ./scan-24.svg */
+
+/*! ./scan-48.svg */
+
+/*! ./search-16.svg */
+
+/*! ./search-24.svg */
+
+/*! ./send-24.svg */
+
+/*! ./settings-48.svg */
+
+/*! ./share-24.svg */
+
+/*! ./share-48.svg */
+
+/*! ./site-16.svg */
+
+/*! ./site-24.svg */
+
+/*! ./sound-24.svg */
+
+/*! ./speech-bubble-empty-24.svg */
+
+/*! ./spinner-24.svg */
+
+/*! ./spinner-48.svg */
+
+/*! ./spinner-72.svg */
+
+/*! ./support-16.svg */
+
+/*! ./support-24.svg */
+
+/*! ./switch-16.svg */
+
+/*! ./switch-48.svg */
+
+/*! ./system-24.svg */
+
+/*! ./tick-round-72.svg */
+
+/*! ./tracking-24.svg */
+
+/*! ./tracking-48.svg */
+
+/*! ./transfer-16.svg */
+
+/*! ./transfer-24.svg */
+
+/*! ./transfer-48.svg */
+
+/*! ./usa-24.svg */
+
+/*! ./utils/browser-utils */
+
+/*! ./utils/layout-types */
+
+/*! ./walk-in-24.svg */
+
+/*! ./wwwl-48.svg */
+
+/*! ./zoom-in-48.svg */
+
+/*! ./zoom-out-48.svg */
+
+/*! CryptoJS v3.1.2 core-fix.js
+ * code.google.com/p/crypto-js
+ * (c) 2009-2013 by Jeff Mott. All rights reserved.
+ * code.google.com/p/crypto-js/wiki/License
+ * THIS IS FIX of 'core.js' to fix Hmac issue.
+ * https://code.google.com/p/crypto-js/issues/detail?id=84
+ * https://crypto-js.googlecode.com/svn-history/r667/branches/3.x/src/core.js
+ */
+
+/*! Mike Samuel (c) 2009 | code.google.com/p/json-sans-eval
+ */
+
+/*! cornerstone-math - 0.1.10 - 2022-06-09 | (c) 2017 Chris Hafey | https://github.com/cornerstonejs/cornerstoneMath */
+
+/*! dicom-parser - 1.8.12 - 2022-12-05 | (c) 2017 Chris Hafey | https://github.com/cornerstonejs/dicomParser */
+
+/*! exports provided: LAYOUT_TYPE_DESKTOP, LAYOUT_TYPE_TABLET, LAYOUT_TYPE_PHONE, getLayoutType, setLayoutType, init */
+
+/*! exports provided: PSEUDO_ACTIVE, PSEUDO_BLANK, PSEUDO_INVALID, PSEUDO_CHECKED, PSEUDO_DISABLED, PSEUDO_READONLY, hasElementState, addElementState, removeElementState, toggleElementState */
+
+/*! exports provided: RapidButtonElement */
+
+/*! exports provided: RapidButtonElement, RapidCheckboxElement, RapidCheckboxGroupElement, RapidFormFieldElement, RapidFormFieldsetElement, RapidIconElement, RapidIconButtonElement, RapidInputCheckboxElement, RapidInputDateTimeFieldElement, RapidInputNumberFieldElement, RapidInputPasswordFieldElement, RapidInputPhoneFieldElement, RapidInputSelectElement, RapidInputSelectMultipleElement, RapidInputTextFieldElement, RapidInputUsernameFieldElement, RapidProgressElement */
+
+/*! exports provided: RapidButtonElement, RapidFormFieldElement, RapidFormFieldsetElement, RapidIconElement, RapidIconButtonElement, RapidInputDateTimeFieldElement, RapidInputNumberFieldElement, RapidInputPasswordFieldElement, RapidInputPhoneFieldElement, RapidInputSelectElement, RapidInputSelectMultipleElement, RapidInputTextFieldElement, RapidInputUsernameFieldElement, RapidInputCheckboxElement, RapidCheckboxElement, RapidCheckboxGroupElement, RapidProgressElement */
+
+/*! exports provided: RapidCheckboxElement */
+
+/*! exports provided: RapidCheckboxGroupElement */
+
+/*! exports provided: RapidFormFieldElement */
+
+/*! exports provided: RapidFormFieldsetElement */
+
+/*! exports provided: RapidHTMLCollection */
+
+/*! exports provided: RapidIconButtonElement */
+
+/*! exports provided: RapidIconElement */
+
+/*! exports provided: RapidInputCheckboxElement */
+
+/*! exports provided: RapidInputDateTimeFieldElement */
+
+/*! exports provided: RapidInputNumberFieldElement */
+
+/*! exports provided: RapidInputPasswordFieldElement */
+
+/*! exports provided: RapidInputPhoneFieldElement */
+
+/*! exports provided: RapidInputSelectElement */
+
+/*! exports provided: RapidInputSelectMultipleElement */
+
+/*! exports provided: RapidInputTextFieldElement */
+
+/*! exports provided: RapidInputUsernameFieldElement */
+
+/*! exports provided: RapidProgressElement */
+
+/*! exports provided: cloneTemplate */
+
+/*! exports provided: default */
+
+/*! exports provided: icons */
+
+/*! exports provided: isSafari, isFirefox, isEdge, isChromiumEdge, isOpera, isChrome, isInternetExplorer */
+
+/*! exports provided: parseValues, serializeValues */
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/*! pako 2.0.4 https://github.com/nodeca/pako @license (MIT AND Zlib) */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
+/*!**********************!*\
+    !*** ./src/index.ts ***!
+    \**********************/
+
+/*!****************************!*\
+    !*** ./src/icons/index.ts ***!
+    \****************************/
+
+/*!*********************************!*\
+    !*** ./src/components/index.ts ***!
+    \*********************************/
+
+/*!**********************************!*\
+    !*** ./src/icons/16x16/index.ts ***!
+    \**********************************/
+
+/*!**********************************!*\
+    !*** ./src/icons/24x24/index.ts ***!
+    \**********************************/
+
+/*!**********************************!*\
+    !*** ./src/icons/48x48/index.ts ***!
+    \**********************************/
+
+/*!**********************************!*\
+    !*** ./src/icons/72x72/index.ts ***!
+    \**********************************/
+
+/*!***********************************!*\
+    !*** ./src/utils/layout-types.ts ***!
+    \***********************************/
+
+/*!************************************!*\
+    !*** ./src/icons/16x16/eye-16.svg ***!
+    \************************************/
+
+/*!************************************!*\
+    !*** ./src/icons/24x24/bed-24.svg ***!
+    \************************************/
+
+/*!************************************!*\
+    !*** ./src/icons/24x24/eye-24.svg ***!
+    \************************************/
+
+/*!************************************!*\
+    !*** ./src/icons/24x24/mip-24.svg ***!
+    \************************************/
+
+/*!************************************!*\
+    !*** ./src/icons/24x24/usa-24.svg ***!
+    \************************************/
+
+/*!************************************!*\
+    !*** ./src/utils/browser-utils.ts ***!
+    \************************************/
+
+/*!************************************!*\
+    !*** ./src/utils/element-state.ts ***!
+    \************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/16x16/data-16.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/16x16/done-16.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/16x16/menu-16.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/16x16/scan-16.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/16x16/site-16.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/24x24/back-24.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/24x24/data-24.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/24x24/feed-24.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/24x24/menu-24.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/24x24/plus-24.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/24x24/scan-24.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/24x24/send-24.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/24x24/site-24.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/48x48/back-48.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/48x48/call-48.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/48x48/menu-48.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/48x48/mips-48.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/48x48/play-48.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/48x48/plus-48.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/48x48/scan-48.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/icons/48x48/wwwl-48.svg ***!
+    \*************************************/
+
+/*!*************************************!*\
+    !*** ./src/utils/multipe-values.ts ***!
+    \*************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/16x16/about-16.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/16x16/close-16.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/16x16/pause-16.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/24x24/about-24.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/24x24/arrow-24.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/24x24/axial-24.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/24x24/check-24.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/24x24/close-24.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/24x24/neuro-24.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/24x24/reset-24.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/24x24/share-24.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/24x24/sound-24.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/48x48/close-48.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/48x48/minus-48.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/48x48/pause-48.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/icons/48x48/share-48.svg ***!
+    \**************************************/
+
+/*!**************************************!*\
+    !*** ./src/utils/html-collection.ts ***!
+    \**************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/16x16/logout-16.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/16x16/search-16.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/16x16/switch-16.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/24x24/camera-24.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/24x24/create-24.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/24x24/levels-24.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/24x24/logout-24.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/24x24/search-24.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/24x24/system-24.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/48x48/camera-48.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/48x48/create-48.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/48x48/expand-48.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/48x48/report-48.svg ***!
+    \***************************************/
+
+/*!***************************************!*\
+    !*** ./src/icons/48x48/switch-48.svg ***!
+    \***************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/16x16/chevron-16.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/16x16/profile-16.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/16x16/support-16.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/24x24/chevron-24.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/24x24/coronal-24.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/24x24/desktop-24.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/24x24/patient-24.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/24x24/profile-24.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/24x24/quality-24.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/24x24/spinner-24.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/24x24/support-24.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/24x24/walk-in-24.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/48x48/desktop-48.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/48x48/quality-48.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/48x48/refresh-48.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/48x48/spinner-48.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/48x48/zoom-in-48.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/72x72/face-id-72.svg ***!
+    \****************************************/
+
+/*!****************************************!*\
+    !*** ./src/icons/72x72/spinner-72.svg ***!
+    \****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/16x16/transfer-16.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/24x24/arrow-up-24.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/24x24/calendar-24.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/24x24/controls-24.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/24x24/download-24.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/24x24/expanded-24.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/24x24/messages-24.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/24x24/sagittal-24.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/24x24/tracking-24.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/24x24/transfer-24.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/48x48/catheter-48.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/48x48/controls-48.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/48x48/messages-48.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/48x48/settings-48.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/48x48/tracking-48.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/48x48/transfer-48.svg ***!
+    \*****************************************/
+
+/*!*****************************************!*\
+    !*** ./src/icons/48x48/zoom-out-48.svg ***!
+    \*****************************************/
+
+/*!******************************************!*\
+    !*** ./src/icons/24x24/ambulance-24.svg ***!
+    \******************************************/
+
+/*!******************************************!*\
+    !*** ./src/icons/24x24/pulmonary-24.svg ***!
+    \******************************************/
+
+/*!******************************************!*\
+    !*** ./src/icons/48x48/no-result-48.svg ***!
+    \******************************************/
+
+/*!*******************************************!*\
+    !*** ./src/icons/72x72/tick-round-72.svg ***!
+    \*******************************************/
+
+/*!*******************************************!*\
+    !*** ./src/utils/fix_webkit_bug216985.ts ***!
+    \*******************************************/
+
+/*!********************************************!*\
+    !*** ./src/icons/24x24/orientation-24.svg ***!
+    \********************************************/
+
+/*!********************************************!*\
+    !*** ./src/icons/24x24/patient-add-24.svg ***!
+    \********************************************/
+
+/*!********************************************!*\
+    !*** ./src/icons/48x48/comment-add-48.svg ***!
+    \********************************************/
+
+/*!********************************************!*\
+    !*** ./src/icons/48x48/patient-add-48.svg ***!
+    \********************************************/
+
+/*!*********************************************!*\
+    !*** ./src/icons/24x24/app-switcher-24.svg ***!
+    \*********************************************/
+
+/*!*********************************************!*\
+    !*** ./src/icons/24x24/close-circle-24.svg ***!
+    \*********************************************/
+
+/*!*********************************************!*\
+    !*** ./src/icons/48x48/chevron-left-48.svg ***!
+    \*********************************************/
+
+/*!**********************************************!*\
+    !*** ./src/icons/16x16/notifications-16.svg ***!
+    \**********************************************/
+
+/*!**********************************************!*\
+    !*** ./src/icons/24x24/clinical-info-24.svg ***!
+    \**********************************************/
+
+/*!**********************************************!*\
+    !*** ./src/icons/24x24/notifications-24.svg ***!
+    \**********************************************/
+
+/*!**********************************************!*\
+    !*** ./src/icons/24x24/patient-cards-24.svg ***!
+    \**********************************************/
+
+/*!**********************************************!*\
+    !*** ./src/icons/48x48/chevron-right-48.svg ***!
+    \**********************************************/
+
+/*!**********************************************!*\
+    !*** ./src/icons/48x48/patient-timer-48.svg ***!
+    \**********************************************/
+
+/*!**********************************************!*\
+    !*** ./src/icons/48x48/rounded-close-48.svg ***!
+    \**********************************************/
+
+/*!***********************************************!*\
+    !*** ./src/icons/24x24/chevron-expand-24.svg ***!
+    \***********************************************/
+
+/*!***********************************************!*\
+    !*** ./src/icons/24x24/clinical-trial-24.svg ***!
+    \***********************************************/
+
+/*!***********************************************!*\
+    !*** ./src/icons/24x24/medical-symbol-24.svg ***!
+    \***********************************************/
+
+/*!***********************************************!*\
+    !*** ./src/icons/48x48/medical-symbol-48.svg ***!
+    \***********************************************/
+
+/*!***********************************************!*\
+    !*** ./src/icons/48x48/refresh-double-48.svg ***!
+    \***********************************************/
+
+/*!***********************************************!*\
+    !*** ./src/icons/72x72/fingerprint-id-72.svg ***!
+    \***********************************************/
+
+/*!************************************************!*\
+    !*** ./src/icons/24x24/expanded-closed-24.svg ***!
+    \************************************************/
+
+/*!*************************************************!*\
+    !*** ./src/components/rapid-icon/rapid-icon.ts ***!
+    \*************************************************/
+
+/*!*************************************************!*\
+    !*** ./src/icons/24x24/notifications-on-24.svg ***!
+    \*************************************************/
+
+/*!*************************************************!*\
+    !*** ./src/icons/48x48/notifications-on-48.svg ***!
+    \*************************************************/
+
+/*!**************************************************!*\
+    !*** ./src/icons/24x24/notifications-off-24.svg ***!
+    \**************************************************/
+
+/*!**************************************************!*\
+    !*** ./src/icons/48x48/notifications-off-48.svg ***!
+    \**************************************************/
+
+/*!***************************************************!*\
+    !*** ./src/components/rapid-icon/rapid-icon.html ***!
+    \***************************************************/
+
+/*!***************************************************!*\
+    !*** ./src/components/rapid-icon/rapid-icon.scss ***!
+    \***************************************************/
+
+/*!****************************************************!*\
+    !*** ./src/icons/24x24/speech-bubble-empty-24.svg ***!
+    \****************************************************/
+
+/*!*****************************************************!*\
+    !*** ./src/components/rapid-button/rapid-button.ts ***!
+    \*****************************************************/
+
+/*!*****************************************************!*\
+    !*** ./src/icons/48x48/orientation-head-top-48.svg ***!
+    \*****************************************************/
+
+/*!******************************************************!*\
+    !*** ./src/icons/48x48/orientation-chest-top-48.svg ***!
+    \******************************************************/
+
+/*!******************************************************!*\
+    !*** ./src/icons/48x48/orientation-head-side-48.svg ***!
+    \******************************************************/
+
+/*!*******************************************************!*\
+    !*** ./src/components/rapid-button/rapid-button.html ***!
+    \*******************************************************/
+
+/*!*******************************************************!*\
+    !*** ./src/components/rapid-button/rapid-button.scss ***!
+    \*******************************************************/
+
+/*!*******************************************************!*\
+    !*** ./src/icons/48x48/orientation-chest-side-48.svg ***!
+    \*******************************************************/
+
+/*!*******************************************************!*\
+    !*** ./src/icons/48x48/orientation-head-front-48.svg ***!
+    \*******************************************************/
+
+/*!********************************************************!*\
+    !*** ./src/icons/48x48/orientation-chest-front-48.svg ***!
+    \********************************************************/
+
+/*!*********************************************************!*\
+    !*** ./src/components/rapid-checkbox/rapid-checkbox.ts ***!
+    \*********************************************************/
+
+/*!*********************************************************!*\
+    !*** ./src/components/rapid-progress/rapid-progress.ts ***!
+    \*********************************************************/
+
+/*!***********************************************************!*\
+    !*** ./src/components/rapid-checkbox/rapid-checkbox.html ***!
+    \***********************************************************/
+
+/*!***********************************************************!*\
+    !*** ./src/components/rapid-checkbox/rapid-checkbox.scss ***!
+    \***********************************************************/
+
+/*!***********************************************************!*\
+    !*** ./src/components/rapid-progress/rapid-progress.html ***!
+    \***********************************************************/
+
+/*!***********************************************************!*\
+    !*** ./src/components/rapid-progress/rapid-progress.scss ***!
+    \***********************************************************/
+
+/*!************************************************************!*\
+    !*** ./src/icons/48x48/orientation-head-rotational-48.svg ***!
+    \************************************************************/
+
+/*!*************************************************************!*\
+    !*** ./src/components/rapid-form-field/rapid-form-field.ts ***!
+    \*************************************************************/
+
+/*!***************************************************************!*\
+    !*** ./src/components/rapid-form-field/rapid-form-field.html ***!
+    \***************************************************************/
+
+/*!***************************************************************!*\
+    !*** ./src/components/rapid-form-field/rapid-form-field.scss ***!
+    \***************************************************************/
+
+/*!***************************************************************!*\
+    !*** ./src/components/rapid-icon-button/rapid-icon-button.ts ***!
+    \***************************************************************/
+
+/*!*****************************************************************!*\
+    !*** ./src/components/rapid-icon-button/rapid-icon-button.html ***!
+    \*****************************************************************/
+
+/*!*****************************************************************!*\
+    !*** ./src/components/rapid-icon-button/rapid-icon-button.scss ***!
+    \*****************************************************************/
+
+/*!*****************************************************************!*\
+    !*** ./src/components/rapid-input-select/rapid-input-select.ts ***!
+    \*****************************************************************/
+
+/*!*******************************************************************!*\
+    !*** ./src/components/rapid-form-fieldset/rapid-form-fieldset.ts ***!
+    \*******************************************************************/
+
+/*!*******************************************************************!*\
+    !*** ./src/components/rapid-input-select/rapid-input-select.html ***!
+    \*******************************************************************/
+
+/*!*******************************************************************!*\
+    !*** ./src/components/rapid-input-select/rapid-input-select.scss ***!
+    \*******************************************************************/
+
+/*!*********************************************************************!*\
+    !*** ./src/components/rapid-checkbox-group/rapid-checkbox-group.ts ***!
+    \*********************************************************************/
+
+/*!*********************************************************************!*\
+    !*** ./src/components/rapid-form-fieldset/rapid-form-fieldset.html ***!
+    \*********************************************************************/
+
+/*!*********************************************************************!*\
+    !*** ./src/components/rapid-form-fieldset/rapid-form-fieldset.scss ***!
+    \*********************************************************************/
+
+/*!*********************************************************************!*\
+    !*** ./src/components/rapid-input-checkbox/rapid-input-checkbox.ts ***!
+    \*********************************************************************/
+
+/*!***********************************************************************!*\
+    !*** ./src/components/rapid-checkbox-group/rapid-checkbox-group.html ***!
+    \***********************************************************************/
+
+/*!***********************************************************************!*\
+    !*** ./src/components/rapid-checkbox-group/rapid-checkbox-group.scss ***!
+    \***********************************************************************/
+
+/*!***********************************************************************!*\
+    !*** ./src/components/rapid-input-checkbox/rapid-input-checkbox.html ***!
+    \***********************************************************************/
+
+/*!***********************************************************************!*\
+    !*** ./src/components/rapid-input-checkbox/rapid-input-checkbox.scss ***!
+    \***********************************************************************/
+
+/*!*************************************************************************!*\
+    !*** ./src/components/rapid-input-text-field/rapid-input-text-field.ts ***!
+    \*************************************************************************/
+
+/*!***************************************************************************!*\
+    !*** ./src/components/rapid-input-phone-field/rapid-input-phone-field.ts ***!
+    \***************************************************************************/
+
+/*!***************************************************************************!*\
+    !*** ./src/components/rapid-input-text-field/rapid-input-text-field.html ***!
+    \***************************************************************************/
+
+/*!***************************************************************************!*\
+    !*** ./src/components/rapid-input-text-field/rapid-input-text-field.scss ***!
+    \***************************************************************************/
+
+/*!*****************************************************************************!*\
+    !*** ./src/components/rapid-input-number-field/rapid-input-number-field.ts ***!
+    \*****************************************************************************/
+
+/*!*****************************************************************************!*\
+    !*** ./src/components/rapid-input-phone-field/rapid-input-phone-field.html ***!
+    \*****************************************************************************/
+
+/*!*****************************************************************************!*\
+    !*** ./src/components/rapid-input-phone-field/rapid-input-phone-field.scss ***!
+    \*****************************************************************************/
+
+/*!*******************************************************************************!*\
+    !*** ./src/components/rapid-input-number-field/rapid-input-number-field.html ***!
+    \*******************************************************************************/
+
+/*!*******************************************************************************!*\
+    !*** ./src/components/rapid-input-number-field/rapid-input-number-field.scss ***!
+    \*******************************************************************************/
+
+/*!*********************************************************************************!*\
+    !*** ./src/components/rapid-input-datetime-field/rapid-input-datetime-field.ts ***!
+    \*********************************************************************************/
+
+/*!*********************************************************************************!*\
+    !*** ./src/components/rapid-input-password-field/rapid-input-password-field.ts ***!
+    \*********************************************************************************/
+
+/*!*********************************************************************************!*\
+    !*** ./src/components/rapid-input-username-field/rapid-input-username-field.ts ***!
+    \*********************************************************************************/
+
+/*!***********************************************************************************!*\
+    !*** ./src/components/rapid-input-datetime-field/rapid-input-datetime-field.html ***!
+    \***********************************************************************************/
+
+/*!***********************************************************************************!*\
+    !*** ./src/components/rapid-input-datetime-field/rapid-input-datetime-field.scss ***!
+    \***********************************************************************************/
+
+/*!***********************************************************************************!*\
+    !*** ./src/components/rapid-input-password-field/rapid-input-password-field.html ***!
+    \***********************************************************************************/
+
+/*!***********************************************************************************!*\
+    !*** ./src/components/rapid-input-password-field/rapid-input-password-field.scss ***!
+    \***********************************************************************************/
+
+/*!***********************************************************************************!*\
+    !*** ./src/components/rapid-input-select-multiple/rapid-input-select-multiple.ts ***!
+    \***********************************************************************************/
+
+/*!***********************************************************************************!*\
+    !*** ./src/components/rapid-input-username-field/rapid-input-username-field.html ***!
+    \***********************************************************************************/
+
+/*!***********************************************************************************!*\
+    !*** ./src/components/rapid-input-username-field/rapid-input-username-field.scss ***!
+    \***********************************************************************************/
+
+/*!*************************************************************************************!*\
+    !*** ./src/components/rapid-input-select-multiple/rapid-input-select-multiple.html ***!
+    \*************************************************************************************/
+
+/*!*************************************************************************************!*\
+    !*** ./src/components/rapid-input-select-multiple/rapid-input-select-multiple.scss ***!
+    \*************************************************************************************/
+
+/**
+ * @license
+ * Lodash <https://lodash.com/>
+ * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/**
+ * @remix-run/router v1.3.2
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+
+/**
+ * Fast, destructive implementation of Liang-Barsky line clipping algorithm.
+ * It clips a 2D segment by a rectangle.
+ * @author Alexander Milevski <info@w8r.name>
+ * @license MIT
+ */
+
+/**
+ * React Router DOM v6.8.1
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+
+/**
+ * React Router v6.8.1
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+
+/** @license React v0.20.2
+ * scheduler.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v16.13.1
+ * react-is.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.2
+ * react-dom.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.2
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.2
+ * react.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
