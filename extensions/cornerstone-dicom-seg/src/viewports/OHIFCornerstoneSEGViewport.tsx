@@ -297,6 +297,8 @@ function OHIFCornerstoneSEGViewport(props) {
     SeriesNumber,
   } = referencedDisplaySetRef.current.metadata;
 
+  const sliceThickness = parseInt(SliceThickness);
+
   const onPillClick = () => {
     promptHydrateSEG({
       servicesManager,
@@ -336,7 +338,7 @@ function OHIFCornerstoneSEGViewport(props) {
             patientSex: PatientSex || '',
             patientAge: PatientAge || '',
             MRN: PatientID || '',
-            thickness: SliceThickness ? `${SliceThickness.toFixed(2)}mm` : '',
+            thickness: SliceThickness ? `${sliceThickness.toFixed(2)}mm` : '',
             spacing:
               SpacingBetweenSlices !== undefined
                 ? `${SpacingBetweenSlices.toFixed(2)}mm`

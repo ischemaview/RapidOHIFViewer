@@ -23,9 +23,21 @@ window.config = {
       sourceName: 'dicomweb',
       configuration: {
         name: 'aws',
-        wadoUriRoot: '{siteUrl}',
-        qidoRoot: '{siteUrl}',
-        wadoRoot: '{siteUrl}',
+        // wadoUriRoot: '{siteUrl}',
+        // qidoRoot: '{siteUrl}',
+        // wadoRoot: '{siteUrl}',
+        wadoUriRoot: 'http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE/wado',
+        qidoRoot: 'http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE/rs',
+        wadoRoot: 'http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE/rs',
+        // wadoUriRoot:
+        //   'https://d1zt0lkqsoz8si.cloudfront.net/cgSegmentation/cnSegmentation/dicomweb',
+        // qidoRoot:
+        //   'https://d1zt0lkqsoz8si.cloudfront.net/cgSegmentation/cnSegmentation/dicomweb',
+        // wadoRoot:
+        //   'https://d1zt0lkqsoz8si.cloudfront.net/cgSegmentation/cnSegmentation/dicomweb',
+        // wadoUriRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/wado',
+        // qidoRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/rs',
+        // wadoRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/rs',
         // wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
         // qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
         // wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
@@ -38,7 +50,7 @@ window.config = {
         supportsWildcard: true,
         staticWado: true,
         singlepart: 'bulkdata,video,pdf',
-        withCredentials: true
+        withCredentials: false,
       },
     },
     {

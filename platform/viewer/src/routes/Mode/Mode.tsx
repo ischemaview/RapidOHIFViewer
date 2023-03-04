@@ -289,11 +289,6 @@ export default function ModeRoute({
   }, [location]);
 
   useEffect(() => {
-    const { ExternalInterfaceService } = servicesManager.services;
-    ExternalInterfaceService.sendViewerReady();
-  }, []);
-
-  useEffect(() => {
     const retrieveLayoutData = async () => {
       const layoutData = await route.layoutTemplate({
         location,

@@ -47,15 +47,15 @@
       "version": "3.0.0"
     },
     {
+      "packageName": "@ischemaview/dicom-pulmonary-rma",
+      "version": "0.0.3"
+    },
+    {
       "packageName": "@ischemaview/dicom-neuro-rma",
       "version": "0.0.2"
     },
     {
       "packageName": "@ischemaview/dicom-neuro-rwa",
-      "version": "0.0.3"
-    },
-    {
-      "packageName": "@ischemaview/dicom-pulmonary-rma",
       "version": "0.0.3"
     },
     {

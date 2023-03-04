@@ -278,7 +278,7 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
           sortCriteria,
           sortFunction,
           madeInClient = false,
-          withCredentials = !!webConfig.withCredentials
+          withCredentials = !!webConfig.withCredentials,
         } = {}) => {
           const headers = UserAuthenticationService.getAuthorizationHeader();
           if (headers) {
@@ -485,6 +485,9 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
 
         // Adding instanceMetadata to OHIF MetadataProvider
         naturalizedInstances.forEach((instance, index) => {
+          instance.wadoRoot = _dicomWebConfig.wadoRoot;
+          instance.wadoUri = _dicomWebConfig.wadoUri;
+
           const imageId = implementation.getImageIdsForInstance({
             instance,
           });

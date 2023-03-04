@@ -3,7 +3,7 @@ export default function getModalities(Modality, ModalitiesInStudy) {
     return {};
   }
 
-  const modalities = Modality || {
+  const modalities = (Modality && Modality.Value) || {
     vr: 'CS',
     Value: [],
   };
@@ -12,7 +12,7 @@ export default function getModalities(Modality, ModalitiesInStudy) {
     if (modalities.vr && modalities.vr === ModalitiesInStudy.vr) {
       for (let i = 0; i < ModalitiesInStudy.Value.length; i++) {
         const value = ModalitiesInStudy.Value[i];
-        if (modalities.Value.indexOf(value) === -1) {
+        if (modalities.Value && modalities.Value.indexOf(value) === -1) {
           modalities.Value.push(value);
         }
       }

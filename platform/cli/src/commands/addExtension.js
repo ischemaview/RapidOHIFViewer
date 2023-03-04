@@ -21,10 +21,6 @@ export default async function addExtension(packageName, version) {
         task: async () => await validateExtension(packageName, version),
       },
       {
-        title: `Installing npm package: ${versionedPackageName}`,
-        task: async () => await installNPMPackage(packageName, version),
-      },
-      {
         title: 'Adding ohif-extension to the configuration file',
         task: async ctx => {
           const yarnInfo = await getYarnInfo(packageName);

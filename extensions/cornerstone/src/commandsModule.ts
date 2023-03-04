@@ -363,6 +363,11 @@ const commandsModule = ({ servicesManager }) => {
     incrementActiveViewport: () => {
       const { activeViewportIndex, viewports } = ViewportGridService.getState();
       const nextViewportIndex = (activeViewportIndex + 1) % viewports.length;
+      // if both are same, ignore the event.
+      if (activeViewportIndex === nextViewportIndex) {
+        console.log('same viewport index, ingoring the event');
+        return;
+      }
       ViewportGridService.setActiveViewportIndex(nextViewportIndex);
     },
     decrementActiveViewport: () => {

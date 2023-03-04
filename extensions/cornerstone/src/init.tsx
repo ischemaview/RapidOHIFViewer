@@ -283,6 +283,7 @@ export default async function init({
   // };
 
   const newStackCallback = evt => {
+    // imageLoader.cancelLoadAll();
     const { element } = evt.detail;
     utilities.stackPrefetch.enable(element);
   };

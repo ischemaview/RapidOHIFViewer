@@ -63,7 +63,7 @@ const wadorsRetriever = (
   sopInstanceUID,
   headers = DICOMWeb.getAuthorizationHeader(),
   errorInterceptor = errorHandler.getHTTPErrorHandler(),
-  withCredentials = true
+  withCredentials = false
 ) => {
   const config = {
     url,
@@ -76,7 +76,7 @@ const wadorsRetriever = (
     studyInstanceUID,
     seriesInstanceUID,
     sopInstanceUID,
-    withCredentials
+    withCredentials,
   });
 };
 
