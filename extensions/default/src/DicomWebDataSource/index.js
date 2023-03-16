@@ -88,6 +88,7 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
     {
       EVENTS: {
         NEW_STUDY: 'event::DicomWebDatasource::NEW_STUDY',
+        RELOAD_STUDY: 'event::DicomWebDatasource::RELOAD_STUDY',
       },
       listeners: [],
     },
@@ -100,6 +101,15 @@ function createDicomWebApi(webConfig, UserAuthenticationService) {
     },
     onNewStudy: callback => {
       pubSubService.subscribe(pubSubService.EVENTS.NEW_STUDY, callback);
+    },
+    onReloadStudy: callback => {
+      pubSubService.subscribe(pubSubService.EVENTS.RELOAD_STUDY, callback);
+    },
+    reloadStudy: ({ studyInstanceUIDs, seriesInstanceUIDs }) => {
+      pubSubService._broadcastEvent(pubSubService.EVENTS.RELOAD_STUDY, {
+        studyInstanceUIDs,
+        seriesInstanceUIDs,
+      });
     },
     setNewStudy: ({ studyInstanceUIDs, seriesInstanceUIDs }) => {
       pubSubService._broadcastEvent(pubSubService.EVENTS.NEW_STUDY, {
