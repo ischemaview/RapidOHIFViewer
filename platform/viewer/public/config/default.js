@@ -10,6 +10,7 @@ window.config = {
   showLoadingIndicator: true,
   //maxCacheSize: 1024 * 1000 * 300,
   //maxNumberOfWebWorkers: 2,x`x`
+  nearByImagesNeedToCache: 1,
   maxNumRequests: {
     interaction: 100,
     thumbnail: 75,

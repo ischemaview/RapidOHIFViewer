@@ -126,11 +126,12 @@ export default async function init({
     interaction: appConfig?.maxNumRequests?.interaction || 100,
     thumbnail: appConfig?.maxNumRequests?.thumbnail || 75,
     prefetch: appConfig?.maxNumRequests?.prefetch || 10,
+    mip: appConfig?.maxNumRequests?.mip || 10,
   };
 
   initWADOImageLoader(UserAuthenticationService, appConfig);
 
-  /* Measurement Service */
+  /* Measurement Service */ 
   const measurementServiceSource = connectToolsToMeasurementService(
     MeasurementService,
     DisplaySetService,

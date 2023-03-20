@@ -301,10 +301,12 @@ export default function ModeRoute({
         const {
           StateManagementService,
           HangingProtocolService,
+          SlabThicknessService,
         } = servicesManager.services;
         if (StateManagementService && HangingProtocolService) {
           StateManagementService.clearViewportState();
           HangingProtocolService.reset();
+          SlabThicknessService.clearSlabThickness();
         }
         defaultRouteInit(
           {
