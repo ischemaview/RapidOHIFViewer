@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router';
 
 import PropTypes from 'prop-types';
 // TODO: DicomMetadataStore should be injected?
-import { DicomMetadataStore } from '@ohif/core';
+import { DicomMetadataStore, HangingProtocolService } from '@ohif/core';
 import { DragAndDropProvider, ImageViewerProvider } from '@ohif/ui';
 import { useQuery } from '@hooks';
 import ViewportGrid from '@components/ViewportGrid';
@@ -47,13 +47,23 @@ function defaultRouteInit(
         SeriesInstanceUID
       );
 
-      DisplaySetService.makeDisplaySets(seriesMetadata.instances, madeInClient);
+      const displaySet = DisplaySetService.getDisplaySetsForSeries(
+        SeriesInstanceUID
+      );
+
+      if (displaySet.length === 0) {
+        DisplaySetService.makeDisplaySets(
+          seriesMetadata.instances,
+          madeInClient
+        );
+      }
     }
   );
 
   unsubscriptions.push(instanceAddedUnsubscribe);
 
   let allRetrieves = studyInstanceUIDs.map(StudyInstanceUID => {
+    DicomMetadataStore.removeStudy({ StudyInstanceUID: StudyInstanceUID });
     seriesInstanceUIDs = seriesInstanceUIDs || [];
     filters = filters || {};
 
@@ -283,6 +293,35 @@ export default function ModeRoute({
     return () => {
       layoutTemplateData.current = null;
     };
+  }, [location]);
+
+  useEffect(() => {
+    if (dataSource.onReloadStudy) {
+      dataSource.onReloadStudy(({ studyInstanceUIDs, seriesInstanceUIDs }) => {
+        const {
+          StateManagementService,
+          HangingProtocolService,
+          SlabThicknessService,
+        } = servicesManager.services;
+        if (StateManagementService && HangingProtocolService) {
+          StateManagementService.clearViewportState();
+          HangingProtocolService.reset();
+          SlabThicknessService.clearSlabThickness();
+        }
+        defaultRouteInit(
+          {
+            servicesManager,
+            studyInstanceUIDs,
+            dataSource,
+            seriesInstanceUIDs,
+            filters,
+            sortCriteria,
+            sortFunction,
+          },
+          hangingProtocol
+        );
+      });
+    }
   }, [location]);
 
   useEffect(() => {

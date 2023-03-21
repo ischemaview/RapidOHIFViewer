@@ -10,7 +10,12 @@ function EmptyViewport(props) {
       )}
     >
       <div className="failed items-center flex flex-col">
-        <div className="box-48-horizontal">
+        <div
+          className="box-48-horizontal"
+          onClick={() => {
+            props.handleReload();
+          }}
+        >
           <rapid-icon-button
             icon="refresh-48"
             class="medium"
