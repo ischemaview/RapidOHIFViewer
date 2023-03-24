@@ -194,10 +194,7 @@ export class HotkeysManager {
       label,
       isEditable,
     };
-    this._bindHotkeys(commandName, commandOptions, keys);
-    log.info(
-      `[hotkeys] Binding ${commandName} with ${options} options to ${keys}`
-    );
+    //this._bindHotkeys(commandName, commandOptions, keys);
   }
 
   /**

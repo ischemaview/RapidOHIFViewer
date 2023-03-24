@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router';
 
 import PropTypes from 'prop-types';
 // TODO: DicomMetadataStore should be injected?
-import { DicomMetadataStore } from '@ohif/core';
+import { DicomMetadataStore, HangingProtocolService } from '@ohif/core';
 import { DragAndDropProvider, ImageViewerProvider } from '@ohif/ui';
 import { useQuery } from '@hooks';
 import ViewportGrid from '@components/ViewportGrid';
@@ -19,12 +19,21 @@ import Compose from './Compose';
  * @returns array of subscriptions to cancel
  */
 function defaultRouteInit(
-  { servicesManager, studyInstanceUIDs, dataSource, filters },
+  {
+    servicesManager,
+    studyInstanceUIDs,
+    dataSource,
+    seriesInstanceUIDs,
+    filters,
+    sortCriteria,
+    sortFunction,
+  },
   hangingProtocol
 ) {
   const {
     DisplaySetService,
     HangingProtocolService,
+    ErrorHandlingService,
   } = servicesManager.services;
 
   const unsubscriptions = [];
@@ -32,24 +41,64 @@ function defaultRouteInit(
     unsubscribe: instanceAddedUnsubscribe,
   } = DicomMetadataStore.subscribe(
     DicomMetadataStore.EVENTS.INSTANCES_ADDED,
-    function ({ StudyInstanceUID, SeriesInstanceUID, madeInClient = false }) {
+    function({ StudyInstanceUID, SeriesInstanceUID, madeInClient = false }) {
       const seriesMetadata = DicomMetadataStore.getSeries(
         StudyInstanceUID,
         SeriesInstanceUID
       );
 
-      DisplaySetService.makeDisplaySets(seriesMetadata.instances, madeInClient);
+      const displaySet = DisplaySetService.getDisplaySetsForSeries(
+        SeriesInstanceUID
+      );
+
+      if (displaySet.length === 0) {
+        DisplaySetService.makeDisplaySets(
+          seriesMetadata.instances,
+          madeInClient
+        );
+      }
     }
   );
 
   unsubscriptions.push(instanceAddedUnsubscribe);
 
-  const allRetrieves = studyInstanceUIDs.map(StudyInstanceUID =>
-    dataSource.retrieve.series.metadata({
+  let allRetrieves = studyInstanceUIDs.map(StudyInstanceUID => {
+    DicomMetadataStore.removeStudy({ StudyInstanceUID: StudyInstanceUID });
+    seriesInstanceUIDs = seriesInstanceUIDs || [];
+    filters = filters || {};
+
+    let retrievedSeries;
+
+    // if (seriesInstanceUIDs.length) {
+    //   retrievedSeries = seriesInstanceUIDs.map(seriesInstanceUID => {
+    //     filters.seriesInstanceUID = seriesInstanceUID;
+
+    //     return dataSource.retrieve.series.metadata({
+    //       StudyInstanceUID,
+    //       filters,
+    //       sortCriteria,
+    //       sortFunction,
+    //     });
+    //   });
+    // } else {
+    //   retrievedSeries = dataSource.retrieve.series.metadata({
+    //     StudyInstanceUID,
+    //     filters,
+    //     sortCriteria,
+    //     sortFunction,
+    //   });
+    // }
+    retrievedSeries = dataSource.retrieve.series.metadata({
       StudyInstanceUID,
       filters,
-    })
-  );
+      sortCriteria,
+      sortFunction,
+    });
+
+    return retrievedSeries;
+  });
+
+  allRetrieves = allRetrieves.flat();
 
   // The hanging protocol matching service is fairly expensive to run multiple
   // times, and doesn't allow partial matches to be made (it will simply fail
@@ -57,7 +106,43 @@ function defaultRouteInit(
   // is retrieved (which will synchronously trigger the display set creation)
   // until we run the hanging protocol matching service.
 
-  Promise.allSettled(allRetrieves).then(() => {
+  HangingProtocolService.addCustomAttribute(
+    'frameOfReferenceIsMatching', // attributeId
+    'frameOfReferenceIsMatching', // attributeName
+    metaData => {
+      const FrameOfReferenceUID =
+        metaData['FrameOfReferenceUID'] ??
+        ((metaData.images || metaData.others || [])[0] || {})[
+          'FrameOfReferenceUID'
+        ];
+      return FrameOfReferenceUID === seriesInstanceUIDs[0];
+    }
+  );
+
+  HangingProtocolService.addCustomAttribute(
+    'seriesInstanceUidIsMatching', // attributeId
+    'seriesInstanceUidIsMatching', // attributeName
+    metaData => {
+      const seriesInstanceUid =
+        metaData['SeriesInstanceUID'] ??
+        ((metaData.images || metaData.others || [])[0] || {})[
+          'SeriesInstanceUID'
+        ];
+      return seriesInstanceUid === seriesInstanceUIDs[0];
+    }
+  );
+
+  Promise.allSettled(allRetrieves).then(promiseStatus => {
+    promiseStatus.forEach(prStatus => {
+      // iterate over every promise and check status, if any promise is have error encounter then status will be rejected
+      if (prStatus.status === 'rejected') {
+        if (ErrorHandlingService) {
+          ErrorHandlingService.broadcastStudyLoadError();
+        }
+        return;
+      }
+    });
+
     const displaySets = DisplaySetService.getActiveDisplaySets();
 
     if (!displaySets || !displaySets.length) {
@@ -106,7 +191,16 @@ export default function ModeRoute({
   const query = useQuery();
   const params = useParams();
 
-  const [studyInstanceUIDs, setStudyInstanceUIDs] = useState();
+  const [
+    {
+      studyInstanceUIDs,
+      seriesInstanceUIDs,
+      filters,
+      sortCriteria,
+      sortFunction,
+    },
+    setStudyInstanceUIDs,
+  ] = useState({});
 
   const [refresh, setRefresh] = useState(false);
   const layoutTemplateData = useRef(false);
@@ -176,11 +270,23 @@ export default function ModeRoute({
   useEffect(() => {
     // Todo: this should not be here, data source should not care about params
     const initializeDataSource = async (params, query) => {
-      const studyInstanceUIDs = await dataSource.initialize({
+      const {
+        studyInstanceUIDs,
+        seriesInstanceUIDs,
+        filters,
+        sortCriteria,
+        sortFunction,
+      } = await dataSource.initialize({
         params,
         query,
       });
-      setStudyInstanceUIDs(studyInstanceUIDs);
+      setStudyInstanceUIDs({
+        studyInstanceUIDs,
+        seriesInstanceUIDs,
+        filters,
+        sortCriteria,
+        sortFunction,
+      });
     };
 
     initializeDataSource(params, query);
@@ -190,12 +296,56 @@ export default function ModeRoute({
   }, [location]);
 
   useEffect(() => {
-    if (dataSource.onNewStudy) {
-      dataSource.onNewStudy(({ studyInstanceUIDs }) => {
-        setStudyInstanceUIDs(studyInstanceUIDs);
-      })
+    if (dataSource.onReloadStudy) {
+      dataSource.onReloadStudy(({ studyInstanceUIDs, seriesInstanceUIDs }) => {
+        const {
+          StateManagementService,
+          HangingProtocolService,
+          SlabThicknessService,
+        } = servicesManager.services;
+        if (StateManagementService && HangingProtocolService) {
+          StateManagementService.clearViewportState();
+          HangingProtocolService.reset();
+          SlabThicknessService.clearSlabThickness();
+        }
+        defaultRouteInit(
+          {
+            servicesManager,
+            studyInstanceUIDs,
+            dataSource,
+            seriesInstanceUIDs,
+            filters,
+            sortCriteria,
+            sortFunction,
+          },
+          hangingProtocol
+        );
+      });
     }
   }, [location]);
+
+  useEffect(() => {
+    if (dataSource.onNewStudy) {
+      dataSource.onNewStudy(({ studyInstanceUIDs, seriesInstanceUIDs }) => {
+        setStudyInstanceUIDs({
+          studyInstanceUIDs,
+          seriesInstanceUIDs,
+          filters,
+          sortCriteria,
+          sortFunction,
+        });
+      });
+    }
+  }, [location]);
+
+  useEffect(() => {
+    const {
+      ExternalInterfaceService,
+      PerformanceEventTrackingService,
+    } = servicesManager.services;
+    ExternalInterfaceService.sendViewerReady();
+    PerformanceEventTrackingService.startAxialFIDTime();
+  }, []);
 
   useEffect(() => {
     const retrieveLayoutData = async () => {
@@ -276,19 +426,19 @@ export default function ModeRoute({
        *   seriesInstaceUID: 1.2.276.0.7230010.3.1.3.1791068887.5412.1620253993.114611
        * }
        */
-      const filters =
-        Array.from(query.keys()).reduce(
-          (acc: Record<string, string>, val: string) => {
-            if (val !== 'StudyInstanceUIDs') {
-              if (['seriesInstanceUID', 'SeriesInstanceUID'].includes(val)) {
-                return { ...acc, seriesInstanceUID: query.get(val) };
-              }
+      // const filters =
+      //   Array.from(query.keys()).reduce(
+      //     (acc: Record<string, string>, val: string) => {
+      //       if (val !== 'StudyInstanceUIDs') {
+      //         if (['seriesInstanceUID', 'SeriesInstanceUID'].includes(val)) {
+      //           return { ...acc, seriesInstanceUID: query.get(val) };
+      //         }
 
-              return { ...acc, [val]: query.get(val) };
-            }
-          },
-          {}
-        ) ?? {};
+      //         return { ...acc, [val]: query.get(val) };
+      //       }
+      //     },
+      //     {}
+      //   ) ?? {};
 
       if (route.init) {
         return await route.init(
@@ -296,9 +446,7 @@ export default function ModeRoute({
             servicesManager,
             extensionManager,
             hotkeysManager,
-            studyInstanceUIDs,
             dataSource,
-            filters,
           },
           hangingProtocol
         );
@@ -309,7 +457,10 @@ export default function ModeRoute({
           servicesManager,
           studyInstanceUIDs,
           dataSource,
+          seriesInstanceUIDs,
           filters,
+          sortCriteria,
+          sortFunction,
         },
         hangingProtocol
       );
@@ -352,7 +503,7 @@ export default function ModeRoute({
     <ImageViewerProvider
       // initialState={{ StudyInstanceUIDs: StudyInstanceUIDs }}
       StudyInstanceUIDs={studyInstanceUIDs}
-    // reducer={reducer}
+      // reducer={reducer}
     >
       <CombinedContextProvider>
         <DragAndDropProvider>

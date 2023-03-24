@@ -3279,6 +3279,41 @@
   resolved "https://registry.npmjs.org/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
   integrity sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==
 
+"@ischemaview/dicom-neuro-rma@^0.0.2":
+  version "0.0.2"
+  resolved "https://nexus.infrastructure.rapid-sys.com/repository/isv-npm/@ischemaview/dicom-neuro-rma/-/dicom-neuro-rma-0.0.2.tgz#fb096d8cd80668f3ca39828e6bd7192bce3585c7"
+  integrity sha512-KbCmkQ+gk3Qcf80nhMwcpptPm/O0/HFYfDzgwRPXL2uwi3G+5Cdc0MOqEULo8Zps3Y0SoFdIvmWdE3LRxqreyA==
+  dependencies:
+    "@babel/runtime" "7.7.6"
+
+"@ischemaview/dicom-neuro-rwa@^0.0.3":
+  version "0.0.3"
+  resolved "https://nexus.infrastructure.rapid-sys.com/repository/isv-npm/@ischemaview/dicom-neuro-rwa/-/dicom-neuro-rwa-0.0.3.tgz#0503c28c91e27428e8d7ce97b034671e0f2adfd0"
+  integrity sha512-FRJjtBGyVT0A74Bs6CJUIlvl+/rOL0095jghOT//AaJcmbGrAK2NeJcXbiuDiZ3n0qVBHfU778amKN6shUgL8Q==
+  dependencies:
+    "@babel/runtime" "7.7.6"
+
+"@ischemaview/dicom-pulmonary-rma@^0.0.3":
+  version "0.0.3"
+  resolved "https://nexus.infrastructure.rapid-sys.com/repository/isv-npm/@ischemaview/dicom-pulmonary-rma/-/dicom-pulmonary-rma-0.0.3.tgz#81ca4310ce299f19f62047ec9a559c9911d16041"
+  integrity sha512-MXbuRbD/xrTOaKsEvjRlbEo+AbWfpLl0GrkSyXg1036XQcJaXctFdya4pESBJDxbP4pM5BfaEOOzhYF29EZRnQ==
+  dependencies:
+    "@babel/runtime" "7.7.6"
+
+"@ischemaview/dicom-pulmonary-rwa@^0.0.3":
+  version "0.0.3"
+  resolved "https://nexus.infrastructure.rapid-sys.com/repository/isv-npm/@ischemaview/dicom-pulmonary-rwa/-/dicom-pulmonary-rwa-0.0.3.tgz#a81ef29118cca560bd3cd27709b3694ff983776c"
+  integrity sha512-aZg0tEsQkRHOJLZhd/8B1ghcbqu3OijVT4LV9GsryRK0fIn18uRPRGhSvf4Nf3fsfUSDAZh5ng8PLDd0tCN0jg==
+  dependencies:
+    "@babel/runtime" "7.7.6"
+
+"@ischemaview/dicom-rapidai-extension@^0.0.1":
+  version "0.0.1"
+  resolved "https://nexus.infrastructure.rapid-sys.com/repository/isv-npm/@ischemaview/dicom-rapidai-extension/-/dicom-rapidai-extension-0.0.1.tgz#6bc4d87d18bc5be79da0bdc9416017c9b16d53f8"
+  integrity sha512-LKG0Jn+lyAkx4TnyVyVHel8g+arj1CcW+Q2GMzFbJiGD8n7Jt7BZst+GNIagZtq/C9DN0JmeX0Ez4tBdKZMrBQ==
+  dependencies:
+    "@babel/runtime" "7.7.6"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -3537,10 +3572,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kitware/vtk.js@25.9.0":
-  version "25.9.0"
-  resolved "https://registry.npmjs.org/@kitware/vtk.js/-/vtk.js-25.9.0.tgz#ecf555c56f6e117b454131c43aba45311a515ecc"
-  integrity sha512-L4OQavJkSZjYYvW4GsEVkX7hqPKEbzEKwitq9GcjoAijrV0MINyxkChRbYEEYnTMcSW3i2jZ/jmiXaPfXuhPFQ==
+"@kitware/vtk.js@25.11.1":
+  version "25.11.1"
+  resolved "https://registry.npmjs.org/@kitware/vtk.js/-/vtk.js-25.11.1.tgz#323cff57ca5177a5472eac01a413c4f899e3c353"
+  integrity sha512-cWzP2YMfu8nbQGl5Ox63NH2hpuLQKmmW3NOMMAOhCu6Wq2ALIXO5wSl/+tMczSVLB07ZQFKKJ6tmPCTnSTMCYQ==
   dependencies:
     "@babel/runtime" "7.17.9"
     commander "9.2.0"
@@ -10561,10 +10596,10 @@ dicom-parser@^1.8.9:
   resolved "https://registry.yarnpkg.com/dicom-parser/-/dicom-parser-1.8.13.tgz#ce1122bf4363f21b09450e5a47e85ad323926daa"
   integrity sha512-8M53FPHS4zM3zvu5fdIWdatqrjpiG2+2M6RJ0IxwqLF4gvCYRsqUIusxYaOiNU0sWaptUpnXeZiXunP0LOIcQw==
 
-dicomweb-client@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/dicomweb-client/-/dicomweb-client-0.6.0.tgz#5e35ada52fe0155af1cc1f0e84f9c7f76477f92d"
-  integrity sha512-VAkBg4W6odIo2XsFxqjN/rptd7bQ8oHpRuKH5d46E9BUIPzRschazE8Dx1xg7/l3N3f1M70jB7yJ339arAXiDQ==
+dicomweb-client@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.npmjs.org/dicomweb-client/-/dicomweb-client-0.8.4.tgz#3da814cedb9415facb50bc5f43af8d961a991c74"
+  integrity sha512-/6oY3/Fg9JyAlbTWuJOYbVqici3+nlZt43+Z/Y47RNiqLc028JcxNlY28u4VQqksxfB59f1hhNbsqsHyDT4vhw==
 
 didyoumean@^1.2.2:
   version "1.2.2"

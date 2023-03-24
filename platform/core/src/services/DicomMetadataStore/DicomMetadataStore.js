@@ -254,6 +254,15 @@ const BaseImplementation = {
       _model.studies.push(newStudy);
     }
   },
+  removeStudy(study) {
+    const { StudyInstanceUID } = study;
+    _model.studies.splice(
+      _model.studies.findIndex(
+        study => study.StudyInstanceUID === StudyInstanceUID
+      ),
+      1
+    );
+  },
   getStudyInstanceUIDs: _getStudyInstanceUIDs,
   getStudy: _getStudy,
   getSeries: _getSeries,

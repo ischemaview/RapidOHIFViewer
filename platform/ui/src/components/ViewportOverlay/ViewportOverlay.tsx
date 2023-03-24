@@ -5,8 +5,8 @@ import './ViewportOverlay.css';
 
 const ViewportOverlay = props => {
   const topLeft = 'top-viewport left-viewport';
-  const topRight = 'top-viewport right-viewport-scrollbar';
-  const bottomRight = 'bottom-viewport right-viewport-scrollbar';
+  const topRight = 'top-viewport right-viewport';
+  const bottomRight = 'bottom-viewport right-viewport';
   const bottomLeft = 'bottom-viewport left-viewport';
   const overlay = 'absolute pointer-events-none';
 

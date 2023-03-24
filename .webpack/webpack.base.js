@@ -39,7 +39,8 @@ module.exports = (env, argv, { SRC_DIR, DIST_DIR }) => {
 
   const config = {
     mode: isProdBuild ? 'production' : 'development',
-    devtool: isProdBuild ? 'source-map' : 'eval-source-map',
+    //devtool: isProdBuild ? 'source-map' : 'eval-source-map',
+    devtool: isProdBuild ? false : 'eval-source-map',
     entry: {
       app: `${SRC_DIR}/index.js`,
     },

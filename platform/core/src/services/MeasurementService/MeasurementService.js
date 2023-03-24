@@ -300,11 +300,11 @@ class MeasurementService {
       this.mappings[source.uid] = [mapping];
     }
 
-    log.info(
-      `New measurement mapping added to source '${this._getSourceToString(
-        source
-      )}'.`
-    );
+    // log.info(
+    //   `New measurement mapping added to source '${this._getSourceToString(
+    //     source
+    //   )}'.`
+    // );
   }
 
   /**
