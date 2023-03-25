@@ -6,6 +6,7 @@ import {
   getRenderingEngine,
   utilities as csUtils,
   VolumeViewport,
+  BaseVolumeViewport,
   cache,
 } from '@cornerstonejs/core';
 
@@ -695,7 +696,7 @@ class CornerstoneViewportService implements IViewportService {
   }
 
   _setDisplaySets(
-    viewport: StackViewport | VolumeViewport,
+    viewport: StackViewport | VolumeViewport | VolumeViewport3D,
     viewportData: StackViewportData | VolumeViewportData,
     viewportInfo: ViewportInfo
   ): void {
@@ -705,7 +706,7 @@ class CornerstoneViewportService implements IViewportService {
         viewportData as StackViewportData,
         viewportInfo
       );
-    } else if (viewport instanceof VolumeViewport) {
+    } else if (viewport instanceof BaseVolumeViewport) {
       this._setVolumeViewport(
         viewport,
         viewportData as VolumeViewportData,

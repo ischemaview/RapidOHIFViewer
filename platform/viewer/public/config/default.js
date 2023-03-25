@@ -9,7 +9,7 @@ window.config = {
   },
   showStudyList: true,
   // some windows systems have issues with more than 3 web workers
-  maxNumberOfWebWorkers: 3,
+  maxNumberOfWebWorkers: 2,
   // below flag is for performance reasons, but it might not work for all servers
   omitQuotationForMultipartRequest: true,
   showWarningMessageForCrossOrigin: true,
@@ -30,12 +30,12 @@ window.config = {
       sourceName: 'dicomweb',
       configuration: {
         name: 'aws',
-        wadoUriRoot: '{siteUrl}',
-        qidoRoot: '{siteUrl}',
-        wadoRoot: '{siteUrl}',
-        // wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
-        // qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
-        // wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
+        // wadoUriRoot: '{siteUrl}',
+        // qidoRoot: '{siteUrl}',
+        // wadoRoot: '{siteUrl}',
+        wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
+        qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
+        wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
         qidoSupportsIncludeField: false,
         supportsReject: false,
         imageRendering: 'wadors',
@@ -45,7 +45,7 @@ window.config = {
         supportsWildcard: true,
         staticWado: true,
         singlepart: 'bulkdata,video,pdf',
-        withCredentials: true
+        withCredentials: false
       },
     },
     {

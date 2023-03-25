@@ -70,7 +70,8 @@ class CornerstoneCacheService {
       );
     }
 
-    if (cs3DViewportType === Enums.ViewportType.ORTHOGRAPHIC) {
+    if (cs3DViewportType === Enums.ViewportType.ORTHOGRAPHIC 
+      || cs3DViewportType === Enums.ViewportType.VOLUME_3D) {
       viewportData = await this._getVolumeViewportData(dataSource, displaySets);
     }
 

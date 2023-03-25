@@ -23,6 +23,7 @@ import {
   addTool,
   annotation,
   ReferenceLinesTool,
+  TrackballRotateTool,
 } from '@cornerstonejs/tools';
 
 export default function initCornerstoneTools(configuration = {}) {
@@ -48,6 +49,7 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(CrosshairsTool);
   addTool(SegmentationDisplayTool);
   addTool(ReferenceLinesTool);
+  addTool(TrackballRotateTool);
 
   // Modify annotation tools to use dashed lines on SR
   const annotationStyle = {
@@ -86,6 +88,7 @@ const toolNames = {
   Crosshairs: CrosshairsTool.toolName,
   SegmentationDisplay: SegmentationDisplayTool.toolName,
   ReferenceLines: ReferenceLinesTool.toolName,
+  TrackballRotateTool: TrackballRotateTool.toolName,
 };
 
 export { toolNames };
