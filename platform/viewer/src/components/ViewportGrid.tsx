@@ -368,6 +368,15 @@ function ViewerViewportGrid(props) {
     viewportGridService.setDisplaySetsForViewports(updatedViewports);
   };
 
+  const handleReload = () => {
+    const { ExternalInterfaceService } = servicesManager.services;
+    if (ExternalInterfaceService.reloadStudy) {
+      ExternalInterfaceService.reloadStudy();
+    } else {
+      console.log('No reload function registeted in external service');
+    }
+  };
+
   const getViewportPanes = useCallback(() => {
     const viewportPanes = [];
 
@@ -418,7 +427,6 @@ function ViewerViewportGrid(props) {
 
         viewportGridService.setActiveViewportIndex(viewportIndex);
       };
-
       // TEMP -> Double click disabled for now
       // onDoubleClick={() => onDoubleClick(viewportIndex)}
 
@@ -447,6 +455,8 @@ function ViewerViewportGrid(props) {
               viewportOptions={viewportOptions}
               displaySetOptions={displaySetOptions}
               needsRerendering={displaySetsNeedsRerendering}
+              className="h-full w-full bg-black"
+              handleReload={handleReload}
             />
           </div>
         </ViewportPane>
