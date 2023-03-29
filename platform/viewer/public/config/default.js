@@ -34,9 +34,9 @@ window.config = {
       sourceName: 'dicomweb',
       configuration: {
         name: 'aws',
-        wadoUriRoot: '{siteUrl}',
-        qidoRoot: '{siteUrl}',
-        wadoRoot: '{siteUrl}',
+        wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
+        qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
+        wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
         // wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
         // qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
         // wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/dicomweb',
@@ -49,7 +49,7 @@ window.config = {
         supportsWildcard: true,
         staticWado: true,
         singlepart: 'bulkdata,video,pdf',
-        withCredentials: true,
+        withCredentials: false,
       },
     },
     {
@@ -76,7 +76,7 @@ window.config = {
   },
   whiteLabeling: {
     /* Optional: Should return a React component to be rendered in the "Logo" section of the application's Top Navigation bar */
-    createLogoComponentFn: function(React) {
+    createLogoComponentFn: function (React) {
       return React.createElement(
         'a',
         {

@@ -6,6 +6,8 @@ import {
   getRenderingEngine,
   utilities as csUtils,
   VolumeViewport,
+  VolumeViewport3D,
+  BaseVolumeViewport,
   cache,
 } from '@cornerstonejs/core';
 
@@ -657,7 +659,7 @@ class CornerstoneViewportService implements IViewportService {
   }
 
   _setDisplaySets(
-    viewport: StackViewport | VolumeViewport,
+    viewport: StackViewport | VolumeViewport | VolumeViewport3D,
     viewportData: StackViewportData | VolumeViewportData,
     viewportInfo: ViewportInfo
   ): void {
@@ -667,7 +669,7 @@ class CornerstoneViewportService implements IViewportService {
         viewportData as StackViewportData,
         viewportInfo
       );
-    } else if (viewport instanceof VolumeViewport) {
+    } else if (viewport instanceof BaseVolumeViewport) {
       this._setVolumeViewport(
         viewport,
         viewportData as VolumeViewportData,
@@ -708,8 +710,8 @@ class CornerstoneViewportService implements IViewportService {
       const { dimensions } = imageVolume;
       const slabThickness = Math.sqrt(
         dimensions[0] * dimensions[0] +
-          dimensions[1] * dimensions[1] +
-          dimensions[2] * dimensions[2]
+        dimensions[1] * dimensions[1] +
+        dimensions[2] * dimensions[2]
       );
 
       return slabThickness;
