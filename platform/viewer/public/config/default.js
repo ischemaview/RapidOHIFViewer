@@ -10,7 +10,7 @@ window.config = {
   showStudyList: true,
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
-  maxFramesInVolume: 400,
+  maxFramesInVolume: 350,
   maxCacheSize: 1073741824,
 
   // below flag is for performance reasons, but it might not work for all servers
@@ -18,14 +18,12 @@ window.config = {
   showWarningMessageForCrossOrigin: true,
   showCPUFallbackMessage: true,
   showLoadingIndicator: true,
-  //maxCacheSize: 1024 * 1000 * 300,
   //maxNumberOfWebWorkers: 2,x`x`
   maxNumRequests: {
     interaction: 100,
     thumbnail: 75,
     prefetch: 10,
   },
-  defaultSlabSize: 300,
   // filterQueryParam: false,
   dataSources: [
     {
