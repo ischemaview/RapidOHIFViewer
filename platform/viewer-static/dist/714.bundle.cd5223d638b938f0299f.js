@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunk=globalThis.webpackChunk||[]).push([[714],{80714:(e,s,t)=>{t.r(s),t.d(s,{default:()=>i});const i={id:JSON.parse('{"u2":"@ohif/extension-test"}').u2,preRegistration(){console.debug("hello from test-extension init.js")}}}}]);
