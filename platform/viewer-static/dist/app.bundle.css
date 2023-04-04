@@ -1086,21 +1086,11 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
 
 .home25 {
   padding-bottom: 25px;
-  background: var(--rapid-color-gray-900); }
+  background: var(--rapid-color-gray-950); }
 
 .home34 {
   padding-bottom: 34px;
-  background: var(--rapid-color-gray-900); }
-
-.box-48-horizontal {
-  height: 48px;
-  width: 48px;
-  margin: 0px 4px 0px 4px; }
-
-.box-48-vertical {
-  height: 48px;
-  width: 48px;
-  margin: 6px 10px 6px 9px; }
+  background: var(--rapid-color-gray-950); }
 
 /* important property to override loading icon in Viewer*/
 .bg-primary-light {
@@ -1147,21 +1137,7 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
   position: relative;
   width: 48px; }
 
-/* .bg-black > :nth-child(1) svg {
-  display: none; } */
-
 /* up to here, important property to override loading icon in Viewer*/
-.verticalSeparator {
-  display: inline-block;
-  border-left: 3px solid var(--rapid-color-gray-850);
-  height: 36px; }
-
-.horizontalSeparator {
-  display: inline-block;
-  border-top: 3px solid var(--rapid-color-gray-850);
-  height: 3px;
-  width: 36px; }
-
 .caption-1 {
   font-family: var(--rapid-typography-caption-one-font-family);
   font-size: var(--rapid-typography-caption-one-font-size);
@@ -1175,6 +1151,13 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
   font-weight: var(--rapid-typography-caption-two-font-weight);
   letter-spacing: var(--rapid-typography-caption-two-letter-spacing);
   line-height: var(--rapid-typography-caption-two-line-height); }
+
+.caption-3 {
+  font-family: var(--rapid-typography-caption-two-font-family);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: var(--rapid-typography-caption-two-letter-spacing);
+  line-height: 11px; }
 
 .border-1 {
   border-width: 1px;
@@ -1209,34 +1192,6 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
       -ms-flex-pack: center;
           justify-content: center; }
 
-.flexColumnItemCenter {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column; }
-  .flexColumnItemCenter .item-top {
-    margin-top: 6px; }
-  .flexColumnItemCenter .item-bottom {
-    margin-top: auto; }
-
-.primary-state {
-  color: var(--rapid-theme-color-primary); }
-
-.secondary-state {
-  color: var(--rapid-theme-color-secondary); }
-
-.tertiary-state {
-  color: var(--rapid-theme-color-tertiary); }
-
 .label {
   line-height: initial;
   padding: 5px 10px; }
@@ -1244,8 +1199,103 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
 .mh-45 {
   min-height: 45px; }
 
+.sideToolbarIconMenu {
+  background: var(--rapid-color-gray-900);
+  width: 67px;
+  padding-top: 5px; }
+
+.sideToolbarPresetMenu {
+  background: var(--rapid-color-gray-900);
+  min-width: 189px; }
+  .sideToolbarPresetMenu .control {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    -ms-flex-negative: 1;
+        flex-shrink: 1;
+    overflow: auto;
+    position: relative;
+    height: inherit;
+    padding: 18px 5px 0px 6px; }
+    .sideToolbarPresetMenu .control .options {
+      position: absolute;
+      white-space: nowrap;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      min-width: 166px;
+      margin: 9px 6px 9px 6px; }
+      .sideToolbarPresetMenu .control .options .item {
+        height: 28px;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        margin: 3px 0px 3px 0px;
+        color: var(--rapid-theme-color-tertiary);
+        cursor: pointer; }
+        .sideToolbarPresetMenu .control .options .item .item:first-of-type > div:last-child {
+          -webkit-box-ordinal-group: 0;
+              -ms-flex-order: -1;
+                  order: -1; }
+        .sideToolbarPresetMenu .control .options .item .item-left {
+          padding-left: 6px; }
+        .sideToolbarPresetMenu .control .options .item .item-right {
+          padding-right: 6px; }
+        .sideToolbarPresetMenu .control .options .item.selected {
+          color: var(--rapid-theme-color);
+          background-color: var(--rapid-theme-background-color-hover);
+          border-radius: 3px; }
+    .sideToolbarPresetMenu .control::-webkit-scrollbar {
+      display: none; }
+
+.overlayBar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-top: 1px solid var(--rapid-theme-border-color);
+  padding: 10px 0; }
+
+.label {
+  line-height: initial;
+  color: var(--rapid-color-gray-500); }
+  .label .output {
+    color: var(--rapid-theme-color); }
+
+.label,
+.output {
+  mix-blend-mode: difference; }
+
+.label--mips {
+  min-width: 85px; }
+
+.icon24,
+.scroll-control,
+.output {
+  mix-blend-mode: difference; }
+
+.static-label {
+  padding: 5px 0px;
+  color: var(--rapid-theme-color); }
+
+.fb-16 {
+  -ms-flex-preferred-size: 160px;
+      flex-basis: 160px; }
+
+.label,
+.control .options .option {
+  mix-blend-mode: difference; }
+
 .bottomToolbar {
-  margin: 0px 8px 0px 8px;
+  padding: 0px 8px 0px 8px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1255,7 +1305,206 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
           flex-direction: row;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
-          justify-content: space-between; }
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 40px;
+  background-color: var(--rapid-color-gray-880);
+  border-radius: 9px 9px 0px 0px; }
+  .bottomToolbar .scroll-control {
+    margin: 0 10px;
+    -webkit-appearance: none;
+    height: 27px;
+    padding: 0;
+    width: 100%;
+    background-color: transparent;
+    --slider-track-background-image: none; }
+    .bottomToolbar .scroll-control:focus {
+      outline: none; }
+    .bottomToolbar .scroll-control::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      -webkit-box-sizing: content-box;
+              box-sizing: content-box;
+      border: 12px solid var(--rapid-color-white);
+      height: 3px;
+      width: 3px;
+      border-radius: 13.5px;
+      background-color: var(--rapid-color-white);
+      cursor: -webkit-grab;
+      cursor: grab;
+      margin-top: -12px; }
+    .bottomToolbar .scroll-control::-moz-range-thumb {
+      border: 12px solid var(--rapid-color-white);
+      height: 3px;
+      width: 3px;
+      border-radius: 13.5px;
+      background-color: var(--rapid-color-white);
+      cursor: grab;
+      margin-top: -12px; }
+    .bottomToolbar .scroll-control::-ms-thumb {
+      display: inline-block;
+      border: 12px solid var(--rapid-color-white);
+      height: 3px;
+      width: 3px;
+      border-radius: 13.5px;
+      background-color: var(--rapid-color-white);
+      cursor: grab; }
+    .bottomToolbar .scroll-control::-webkit-slider-runnable-track {
+      height: 3px;
+      border-color: transparent;
+      color: transparent;
+      background-color: var(--rapid-color-gray-850); }
+    .bottomToolbar .scroll-control::-moz-range-track {
+      height: 3px;
+      background-color: var(--rapid-color-gray-850); }
+    .bottomToolbar .scroll-control::-ms-track {
+      border-color: transparent;
+      color: transparent;
+      height: 3px;
+      background-color: var(--rapid-color-gray-850); }
+    .bottomToolbar .scroll-control::-ms-fill-lower {
+      background-color: var(--rapid-color-white); }
+    .bottomToolbar .scroll-control::-moz-range-progress {
+      background-color: var(--rapid-color-white); }
+    .bottomToolbar .scroll-control::-ms-tooltip {
+      display: none; }
+    .bottomToolbar .scroll-control::-webkit-slider-runnable-track {
+      background-image: var(--slider-track-background-image, none); }
+    .bottomToolbar .scroll-control::-moz-range-track {
+      background-image: var(--slider-track-background-image, none); }
+    .bottomToolbar .scroll-control::-ms-track {
+      background-image: var(--slider-track-background-image, none); }
+  .bottomToolbar .output {
+    -ms-flex-preferred-size: 70px;
+        flex-basis: 70px;
+    -ms-flex-item-align: center;
+        align-self: center;
+    margin-left: 0; }
+
+.bottomToolbarSlab {
+  padding: 0px 8px 0px 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 40px;
+  background-color: var(--rapid-color-gray-880);
+  border-radius: 9px 9px 0px 0px; }
+  .bottomToolbarSlab .static-label {
+    padding: 5px 0px;
+    color: var(--rapid-theme-color); }
+  .bottomToolbarSlab .fb-7 {
+    -ms-flex-preferred-size: 70px;
+        flex-basis: 70px; }
+  .bottomToolbarSlab .scroll-control {
+    margin: 0 10px;
+    -webkit-appearance: none;
+    height: 27px;
+    padding: 0;
+    width: 100%;
+    background-color: transparent;
+    --slider-track-background-image: none; }
+    .bottomToolbarSlab .scroll-control:focus {
+      outline: none; }
+    .bottomToolbarSlab .scroll-control::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      -webkit-box-sizing: content-box;
+              box-sizing: content-box;
+      border: 12px solid var(--rapid-color-white);
+      height: 3px;
+      width: 3px;
+      border-radius: 13.5px;
+      background-color: var(--rapid-color-white);
+      cursor: -webkit-grab;
+      cursor: grab;
+      margin-top: -12px; }
+    .bottomToolbarSlab .scroll-control::-moz-range-thumb {
+      border: 12px solid var(--rapid-color-white);
+      height: 3px;
+      width: 3px;
+      border-radius: 13.5px;
+      background-color: var(--rapid-color-white);
+      cursor: grab;
+      margin-top: -12px; }
+    .bottomToolbarSlab .scroll-control::-ms-thumb {
+      display: inline-block;
+      border: 12px solid var(--rapid-color-white);
+      height: 3px;
+      width: 3px;
+      border-radius: 13.5px;
+      background-color: var(--rapid-color-white);
+      cursor: grab; }
+    .bottomToolbarSlab .scroll-control::-webkit-slider-runnable-track {
+      height: 3px;
+      border-color: transparent;
+      color: transparent;
+      background-color: var(--rapid-color-gray-850); }
+    .bottomToolbarSlab .scroll-control::-moz-range-track {
+      height: 3px;
+      background-color: var(--rapid-color-gray-850); }
+    .bottomToolbarSlab .scroll-control::-ms-track {
+      border-color: transparent;
+      color: transparent;
+      height: 3px;
+      background-color: var(--rapid-color-gray-850); }
+    .bottomToolbarSlab .scroll-control::-ms-fill-lower {
+      background-color: var(--rapid-color-white); }
+    .bottomToolbarSlab .scroll-control::-moz-range-progress {
+      background-color: var(--rapid-color-white); }
+    .bottomToolbarSlab .scroll-control::-ms-tooltip {
+      display: none; }
+    .bottomToolbarSlab .scroll-control::-webkit-slider-runnable-track {
+      background-image: var(--slider-track-background-image, none); }
+    .bottomToolbarSlab .scroll-control::-moz-range-track {
+      background-image: var(--slider-track-background-image, none); }
+    .bottomToolbarSlab .scroll-control::-ms-track {
+      background-image: var(--slider-track-background-image, none); }
+  .bottomToolbarSlab .output {
+    -ms-flex-preferred-size: 70px;
+        flex-basis: 70px;
+    -ms-flex-item-align: center;
+        align-self: center;
+    margin-left: 0; }
+  .bottomToolbarSlab .button {
+    white-space: nowrap;
+    height: 22px;
+    width: 76px;
+    border-radius: 6px;
+    padding: 3px 8px 3px 8px;
+    background-color: var(--rapid-color-gray-750); }
+  .bottomToolbarSlab .ml8 {
+    margin-left: 8px; }
+  .bottomToolbarSlab .label,
+  .bottomToolbarSlab .control .options .option {
+    line-height: initial;
+    mix-blend-mode: difference;
+    white-space: nowrap; }
+
+.bottomToolbar {
+  padding: 0px 8px 0px 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 40px;
+  background-color: var(--rapid-color-gray-880);
+  border-radius: 9px 9px 0px 0px; }
   .bottomToolbar .control {
     margin: 0 5px;
     display: -webkit-box;
@@ -1357,191 +1606,84 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
     .bottomToolbar .scroll-control::-ms-track {
       background-image: var(--slider-track-background-image, none); }
 
-.sideToolbarIconMenu {
-  background: var(--rapid-color-gray-900);
-  width: 67px;
-  padding-top: 5px; }
-
-.sideToolbarPresetMenu {
-  background: var(--rapid-color-gray-900);
-  min-width: 189px; }
-  .sideToolbarPresetMenu .control {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    -ms-flex-negative: 1;
-        flex-shrink: 1;
-    overflow: auto;
-    position: relative;
-    height: inherit;
-    padding: 18px 5px 0px 6px; }
-    .sideToolbarPresetMenu .control .options {
-      position: absolute;
-      white-space: nowrap;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      min-width: 166px;
-      margin: 9px 6px 9px 6px; }
-      .sideToolbarPresetMenu .control .options .item {
-        height: 28px;
-        -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-                justify-content: space-between;
-        -webkit-box-align: center;
-            -ms-flex-align: center;
-                align-items: center;
-        margin: 3px 0px 3px 0px;
-        color: var(--rapid-theme-color-tertiary);
-        cursor: pointer; }
-        .sideToolbarPresetMenu .control .options .item .item:first-of-type > div:last-child {
-          -webkit-box-ordinal-group: 0;
-              -ms-flex-order: -1;
-                  order: -1; }
-        .sideToolbarPresetMenu .control .options .item .item-left {
-          padding-left: 6px; }
-        .sideToolbarPresetMenu .control .options .item .item-right {
-          padding-right: 6px; }
-        .sideToolbarPresetMenu .control .options .item.selected {
-          color: var(--rapid-theme-color);
-          background-color: var(--rapid-theme-background-color-hover);
-          border-radius: 3px; }
-    .sideToolbarPresetMenu .control::-webkit-scrollbar {
-      display: none; }
-
-.overlayBar {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  border-top: 1px solid var(--rapid-theme-border-color);
-  padding: 10px 0; }
-
-.label {
-  line-height: initial;
-  color: var(--rapid-color-gray-500); }
-  .label .output {
-    color: var(--rapid-theme-color); }
-
-.label,
-.output {
-  mix-blend-mode: difference; }
-
-.label--mips {
-  min-width: 85px; }
-
-.bottomToolbar {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 48px; }
-  .bottomToolbar .scroll-control {
-    margin: 0 10px;
-    -webkit-appearance: none;
-    height: 27px;
-    padding: 0;
-    width: 100%;
-    background-color: transparent;
-    --slider-track-background-image: none; }
-    .bottomToolbar .scroll-control:focus {
-      outline: none; }
-    .bottomToolbar .scroll-control::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      -webkit-box-sizing: content-box;
-              box-sizing: content-box;
-      border: 12px solid var(--rapid-color-white);
-      height: 3px;
-      width: 3px;
-      border-radius: 13.5px;
-      background-color: var(--rapid-color-white);
-      cursor: -webkit-grab;
-      cursor: grab;
-      margin-top: -12px; }
-    .bottomToolbar .scroll-control::-moz-range-thumb {
-      border: 12px solid var(--rapid-color-white);
-      height: 3px;
-      width: 3px;
-      border-radius: 13.5px;
-      background-color: var(--rapid-color-white);
-      cursor: grab;
-      margin-top: -12px; }
-    .bottomToolbar .scroll-control::-ms-thumb {
-      display: inline-block;
-      border: 12px solid var(--rapid-color-white);
-      height: 3px;
-      width: 3px;
-      border-radius: 13.5px;
-      background-color: var(--rapid-color-white);
-      cursor: grab; }
-    .bottomToolbar .scroll-control::-webkit-slider-runnable-track {
-      height: 3px;
-      border-color: transparent;
-      color: transparent;
-      background-color: var(--rapid-color-gray-850); }
-    .bottomToolbar .scroll-control::-moz-range-track {
-      height: 3px;
-      background-color: var(--rapid-color-gray-850); }
-    .bottomToolbar .scroll-control::-ms-track {
-      border-color: transparent;
-      color: transparent;
-      height: 3px;
-      background-color: var(--rapid-color-gray-850); }
-    .bottomToolbar .scroll-control::-ms-fill-lower {
-      background-color: var(--rapid-color-white); }
-    .bottomToolbar .scroll-control::-moz-range-progress {
-      background-color: var(--rapid-color-white); }
-    .bottomToolbar .scroll-control::-ms-tooltip {
-      display: none; }
-    .bottomToolbar .scroll-control::-webkit-slider-runnable-track {
-      background-image: var(--slider-track-background-image, none); }
-    .bottomToolbar .scroll-control::-moz-range-track {
-      background-image: var(--slider-track-background-image, none); }
-    .bottomToolbar .scroll-control::-ms-track {
-      background-image: var(--slider-track-background-image, none); }
-  .bottomToolbar .output {
-    -ms-flex-preferred-size: 70px;
-        flex-basis: 70px;
-    -ms-flex-item-align: center;
-        align-self: center;
-    margin-left: 0; }
-
-.icon24,
-.scroll-control,
-.output {
-  mix-blend-mode: difference; }
-
-.static-label {
-  padding: 5px 0px;
-  color: var(--rapid-theme-color); }
-
-.fb-16 {
-  -ms-flex-preferred-size: 160px;
-      flex-basis: 160px; }
-
-.label,
-.control .options .option {
-  mix-blend-mode: difference; }
-
 .bottomToolbarMobile {
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
-  background: var(--rapid-color-gray-900); }
+  background: var(--rapid-color-gray-950); }
+  .bottomToolbarMobile .bottomToolbarMobileIcon {
+    height: 56px;
+    padding: 4px; }
+    .bottomToolbarMobile .bottomToolbarMobileIcon .control {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-box-flex: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
+      -ms-flex-negative: 1;
+          flex-shrink: 1;
+      overflow: auto;
+      position: relative;
+      height: inherit; }
+      .bottomToolbarMobile .bottomToolbarMobileIcon .control .options {
+        position: absolute;
+        white-space: nowrap;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+                flex-direction: row; }
+      .bottomToolbarMobile .bottomToolbarMobileIcon .control::-webkit-scrollbar {
+        display: none; }
+    .bottomToolbarMobile .bottomToolbarMobileIcon .flexColumnItemCenter {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column; }
+      .bottomToolbarMobile .bottomToolbarMobileIcon .flexColumnItemCenter .item-top {
+        margin-top: 3px; }
+      .bottomToolbarMobile .bottomToolbarMobileIcon .flexColumnItemCenter .item-bottom {
+        margin-top: 3px; }
+    .bottomToolbarMobile .bottomToolbarMobileIcon .box-48-horizontal {
+      height: 48px;
+      width: 48px;
+      margin: 0px 1px 0px 1px; }
+    .bottomToolbarMobile .bottomToolbarMobileIcon .box-48-vertical {
+      height: 48px;
+      width: 48px;
+      margin: 6px 10px 6px 9px; }
+    .bottomToolbarMobile .bottomToolbarMobileIcon .flex-column .flex .verticalSeparator {
+      display: inline-block;
+      border-left: 3px solid var(--rapid-color-gray-850);
+      height: 36px; }
+    .bottomToolbarMobile .bottomToolbarMobileIcon .flex-column .flex .horizontalSeparator {
+      display: inline-block;
+      border-top: 3px solid var(--rapid-color-gray-850);
+      height: 3px;
+      width: 36px; }
+    .bottomToolbarMobile .bottomToolbarMobileIcon .primary-state {
+      color: var(--rapid-theme-color-primary);
+      background-color: var(--rapid-color-gray-750);
+      border-radius: 3px; }
+    .bottomToolbarMobile .bottomToolbarMobileIcon .secondary-state {
+      color: var(--rapid-theme-color-secondary); }
+    .bottomToolbarMobile .bottomToolbarMobileIcon .tertiary-state {
+      color: var(--rapid-theme-color-tertiary); }
 
 .bottomToolbarDesktop {
   -webkit-box-pack: space-evenly;
@@ -1549,7 +1691,7 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
           justify-content: space-evenly;
   width: 586px;
   height: 86px;
-  background: var(--rapid-color-gray-900); }
+  background: var(--rapid-color-gray-950); }
 
 .view-navigator-for-desktop {
   display: -webkit-box;
