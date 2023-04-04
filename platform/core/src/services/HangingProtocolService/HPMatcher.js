@@ -44,12 +44,12 @@ const match = (
         ];
     }
 
-    console.log(
-      'Test',
-      attribute,
-      readValues[attribute],
-      JSON.stringify(rule.constraint)
-    );
+    // console.log(
+    //   'Test',
+    //   attribute,
+    //   readValues[attribute],
+    //   JSON.stringify(rule.constraint)
+    // );
     // Format the constraint as required by Validate.js
     const testConstraint = {
       [attribute]: rule.constraint,
