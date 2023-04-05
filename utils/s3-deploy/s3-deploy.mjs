@@ -142,7 +142,6 @@ async function getBucketObjects(bucketName, prefix) {
       isTruncated = IsTruncated;
       command.input.ContinuationToken = NextContinuationToken;
     }
-    //console.log(contents);
 
   } catch (err) {
     log('Error encountered listing bucket objects', LogLevel.Error, err);
@@ -175,7 +174,6 @@ async function deployZip() {
   const {sep} = path;
   const pathPrefixRegex = new RegExp(`^(package${sep})?dist${sep}`);
   for (let file of files) {
-    // console.log(`${file.type}: ${file.path}`)
 
     if (file.type === 'directory' ||
         Object.keys(EXCLUDE_PATH_FLAGS).some(path => file.path.match(path))) {
@@ -191,7 +189,6 @@ async function deployZip() {
       ContentType: getContentType(file.path),
       Body: await fsPromise.readFile(extractedFilePath),
       CacheControl: file.path.endsWith('index.html') ? 'no-cache' : undefined
-      //Body: path.join(extractDirectory, file.path)
     });
 
     try {
@@ -221,7 +218,6 @@ function log(message, level, data) {
 }
 
 (async () => {
-
   if (DELETE_PREVIOUS) {
     try {
       log('Deleting previous deployment - start', LogLevel.Normal);
