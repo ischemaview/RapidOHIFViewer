@@ -183,25 +183,34 @@ async function deployZip() {
 
     const extractedFilePath = path.join(EXTRACT_DIRECTORY, file.path);
 
-    const command = new PutObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: path.join(S3_DIRECTORY, file.path.replace(pathPrefixRegex, '')),
-      ContentType: getContentType(file.path),
-      Body: await fsPromise.readFile(extractedFilePath),
-      CacheControl: file.path.endsWith('index.html') ? 'no-cache' : undefined
-    });
+
 
     try {
+      const command = new PutObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: path.join(S3_DIRECTORY, file.path.replace(pathPrefixRegex, '')),
+        ContentType: getContentType(file.path),
+        Body: await fsPromise.readFile(extractedFilePath),
+        CacheControl: file.path.endsWith('index.html') ? 'no-cache' : undefined
+      });
+
       log(`Uploading file: ${command.input.Key} - start`, LogLevel.Verbose);
       await client.send(command);
       log(`Uploading file: ${command.input.Key} - complete`, LogLevel.Verbose);
     } catch (e){
-      log(`Error encoutered attempting to upload: ${command.input.Key}`, LogLevel.Error, e);
+      log(`Error encountered attempting to upload: ${command.input.Key}`, LogLevel.Error, e);
     }
   }
 
   if (!KEEP_EXTRACTED) {
-    await fsPromise.rm(path.join(EXTRACT_DIRECTORY, files[0].path), { recursive: true });
+    try {
+      const deletePath = path.join(EXTRACT_DIRECTORY, files[0].path);
+      log(`Deleting extracted files: ${deletePath} - start`, LogLevel.Verbose);
+      await fsPromise.rm(deletePath, { recursive: true });
+      log(`Deleting extracted files: ${deletePath} - complete`, LogLevel.Verbose);
+    } catch (e) {
+      log(`Error encountered while deleting extracted files: ${deletePath} - start`, LogLevel.Error, e);
+    }
   }
 
 }
