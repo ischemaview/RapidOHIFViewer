@@ -1,12 +1,12 @@
 {
   "name": "@ischemaview/rapid-dicom-viewer-s3-deploy",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "s3 deploy utility script for cloud hosted rapid-dicom-viewer",
   "type": "module",
   "files": [
-    "s3-deploy.mjs"
+    "s3-deploy.js"
   ],
-  "main": "s3-deploy.mjs",
+  "main": "s3-deploy.js",
   "engines": {
     "node": ">=16.18.1"
   },

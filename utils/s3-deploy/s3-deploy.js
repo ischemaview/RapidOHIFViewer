@@ -45,7 +45,7 @@ const USAGE_CONFIG = [
   },
   {
     header: '{underline Usage}',
-    content: `  node s3-deploy.mjs <zip_file_path> [extract_to_path] \n    --region <aws_region_profile> --bucket <bucket_name> [OPTIONS]`,
+    content: `  node s3-deploy.js <zip_file_path> [extract_to_path] \n    --region <aws_region_profile> --bucket <bucket_name> [OPTIONS]`,
     raw: true
   },
   {
@@ -230,7 +230,7 @@ function log(message, level, data) {
   }
 }
 
-(async () => {
+(async function main() {
   if (DELETE_PREVIOUS) {
     try {
       log('Deleting previous deployment - start', LogLevel.Normal);
