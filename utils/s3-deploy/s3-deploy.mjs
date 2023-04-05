@@ -25,7 +25,13 @@ const COMMAND_LINE_ARG_OPTIONS = [
     description: '{bold {italic REQUIRED}} Path to zip file and an {italic OPTIONAL} extract to path',
     typeLabel: '<zip_file_path> [extract_to_path]'
   },
-  { name: 'subfolder', type: String, alias: 's', defaultValue: 'rapid-dicom-viewer', description: 'S3 bucket subfolder.\n{italic Default: rapid-dicom-viewer}'},
+  {
+    name: 'subfolder',
+    type: String,
+    alias: 's',
+    defaultValue: 'rapid-dicom-viewer',
+    description: 'S3 bucket subfolder path without leading or trailing slashes.\n{italic Default: rapid-dicom-viewer}'
+  },
   { name: 'nodelete', type: Boolean, alias: 'n', description: 'Do not delete existing files in the S3 subfolder' },
   { name: 'verbose', type: Boolean, alias: 'v', description: 'Verbose console logging'},
   { name: 'quiet', type: Boolean, alias: 'q', description: 'Minimal console logging'},
@@ -70,9 +76,10 @@ const LOG_LEVEL = VERBOSE ?
     LogLevel.QuietBypass | LogLevel.Error :
     LogLevel.QuietBypass | LogLevel.Normal | LogLevel.Error;
 
+const REGEX_LEADING_TRAILING_SEP = new RegExp(`(^${path.sep})|(${path.sep}$)`, 'g');
 const REGION_PROFILE = OPTIONS.region ?? 'isv-sandpit3';
 const BUCKET_NAME = OPTIONS.bucket;
-const S3_DIRECTORY = OPTIONS.subfolder;
+const S3_DIRECTORY = OPTIONS.subfolder?.replace(REGEX_LEADING_TRAILING_SEP, '');
 const ZIP_FILE_PATH = OPTIONS.paths?.[0];
 const EXTRACT_DIRECTORY = OPTIONS.paths?.[1] ?? path.dirname(ZIP_FILE_PATH ?? '.');
 const DELETE_PREVIOUS = !OPTIONS.nodelete;
@@ -132,12 +139,9 @@ async function getBucketObjects(bucketName, prefix) {
 
   try {
     let isTruncated = true;
-    let contents = "";
 
     while (isTruncated) {
       const { Contents, IsTruncated, NextContinuationToken } = await client.send(command);
-      const contentsList = Contents.map((c) => ` • ${c.Key}`).join("\n");
-      contents += contentsList + "\n";
       results = results.concat(Contents);
       isTruncated = IsTruncated;
       command.input.ContinuationToken = NextContinuationToken;
