@@ -11,13 +11,15 @@ window.config = {
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
   maxFramesInVolume: 400,
-  maxCacheSize: 1073741824,
+  slabSize: 300,
+  //maxCacheSize: 1024 * 1000 * 500,
 
   // below flag is for performance reasons, but it might not work for all servers
   omitQuotationForMultipartRequest: true,
   showWarningMessageForCrossOrigin: true,
   showCPUFallbackMessage: true,
   showLoadingIndicator: true,
+  //maxNumberOfWebWorkers: 2,x`x`
   maxNumRequests: {
     interaction: 100,
     thumbnail: 75,
@@ -33,14 +35,12 @@ window.config = {
       sourceName: 'dicomweb',
       configuration: {
         name: 'aws',
-        // old server
-        // wadoUriRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/wado',
-        // qidoRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/rs',
-        // wadoRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/rs',
-        // new server
-        wadoUriRoot: 'https://domvja9iplmyu.cloudfront.net/dicomweb',
-        qidoRoot: 'https://domvja9iplmyu.cloudfront.net/dicomweb',
-        wadoRoot: 'https://domvja9iplmyu.cloudfront.net/dicomweb',
+        wadoUriRoot: '{siteUrl}',
+        qidoRoot: '{siteUrl}',
+        wadoRoot: '{siteUrl}',
+        // wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        // qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        // wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
         qidoSupportsIncludeField: false,
         supportsReject: false,
         imageRendering: 'wadors',
@@ -50,6 +50,7 @@ window.config = {
         supportsWildcard: true,
         staticWado: true,
         singlepart: 'bulkdata,video,pdf',
+        withCredentials: true,
       },
     },
     {
@@ -74,25 +75,24 @@ window.config = {
     // Could use services manager here to bring up a dialog/modal if needed.
     console.warn('test, navigate to https://ohif.org/');
   },
-  // whiteLabeling: {
-  //   /* Optional: Should return a React component to be rendered in the "Logo" section of the application's Top Navigation bar */
-  //   createLogoComponentFn: function (React) {
-  //     return React.createElement(
-  //       'a',
-  //       {
-  //         target: '_self',
-  //         rel: 'noopener noreferrer',
-  //         className: 'text-purple-600 line-through',
-  //         href: '/',
-  //       },
-  //       React.createElement('img',
-  //         {
-  //           src: './customLogo.svg',
-  //           className: 'w-8 h-8',
-  //         }
-  //       ))
-  //   },
-  // },
+  whiteLabeling: {
+    /* Optional: Should return a React component to be rendered in the "Logo" section of the application's Top Navigation bar */
+    createLogoComponentFn: function(React) {
+      return React.createElement(
+        'a',
+        {
+          target: '_self',
+          rel: 'noopener noreferrer',
+          className: 'text-purple-600 line-through',
+          href: '/',
+        },
+        React.createElement('img', {
+          src: './logo.svg',
+          className: 'w-12',
+        })
+      );
+    },
+  },
   defaultDataSourceName: 'dicomweb',
   hotkeys: [
     {
