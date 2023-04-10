@@ -1,0 +1,27 @@
+{
+  "name": "@ischemaview/rapid-dicom-viewer-s3-deploy",
+  "version": "0.1.0",
+  "description": "s3 deploy utility script for cloud hosted rapid-dicom-viewer",
+  "type": "module",
+  "files": [
+    "s3-deploy.js"
+  ],
+  "main": "s3-deploy.js",
+  "engines": {
+    "node": ">=16.18.1"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "iSchemaView, Inc",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://nexus.infrastructure.rapid-sys.com/repository/npm-internal"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.306.0",
+    "@aws-sdk/credential-providers": "^3.306.0",
+    "command-line-args": "^5.2.1",
+    "command-line-usage": "^7.0.1",
+    "decompress": "^4.2.1"
+  }
+}
