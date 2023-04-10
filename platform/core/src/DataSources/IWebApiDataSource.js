@@ -24,6 +24,8 @@ function create({
   getImageIdsForStudy = null,
   onNewStudy = null,
   setNewStudy = null,
+  reloadStudy = null,
+  onReloadStudy = null,
   updateConfig = null,
 }) {
   const defaultQuery = {
@@ -72,7 +74,9 @@ function create({
     getImageIdsForInstance,
     getImageIdsForStudy,
     setNewStudy,
+    onReloadStudy,
     onNewStudy,
+    reloadStudy,
     updateConfig,
   };
 }
