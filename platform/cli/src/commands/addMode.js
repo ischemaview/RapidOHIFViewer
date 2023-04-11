@@ -22,10 +22,10 @@ export default async function addMode(packageName, version) {
         title: `Searching for mode: ${versionedPackageName}`,
         task: async () => await validateMode(packageName, version),
       },
-      {
-        title: `Installing npm package: ${versionedPackageName}`,
-        task: async () => await installNPMPackage(packageName, version),
-      },
+      // {
+      //   title: `Installing npm package: ${versionedPackageName}`,
+      //   task: async () => await installNPMPackage(packageName, version),
+      // },
       {
         title: 'Adding ohif-mode to the configuration file',
         task: async ctx => {

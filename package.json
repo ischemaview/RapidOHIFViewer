@@ -56,6 +56,11 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
+    "@ischemaview/dicom-neuro-rma": "^0.0.1",
+    "@ischemaview/dicom-neuro-rwa": "^0.0.1",
+    "@ischemaview/dicom-pulmonary-rma": "^0.0.1",
+    "@ischemaview/dicom-pulmonary-rwa": "^0.0.1",
+    "@ischemaview/dicom-rapidai-extension": "^0.0.1",
     "@kitware/vtk.js": "26.5.6",
     "core-js": "^3.2.1"
   },
@@ -92,8 +97,8 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-flowtype": "^7.0.0",
     "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-flowtype": "^7.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-node": "^11.1.0",

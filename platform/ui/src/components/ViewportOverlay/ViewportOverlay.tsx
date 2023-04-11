@@ -5,8 +5,8 @@ import './ViewportOverlay.css';
 
 const classes = {
   topLeft: 'top-viewport left-viewport',
-  topRight: 'top-viewport right-viewport-scrollbar',
-  bottomRight: 'bottom-viewport right-viewport-scrollbar',
+  topRight: 'top-viewport right-viewport',
+  bottomRight: 'bottom-viewport right-viewport',
   bottomLeft: 'bottom-viewport left-viewport',
 };
 

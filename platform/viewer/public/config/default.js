@@ -11,14 +11,15 @@ window.config = {
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
   maxFramesInVolume: 400,
-  slabSize: 300,
-  //maxCacheSize: 1024 * 1000 * 500,
+  //maxCacheSize: 1024 * 1000 * 300,
 
   // below flag is for performance reasons, but it might not work for all servers
   omitQuotationForMultipartRequest: true,
   showWarningMessageForCrossOrigin: true,
   showCPUFallbackMessage: true,
   showLoadingIndicator: true,
+  use16BitDataType: true,
+  useSharedArrayBuffer: 'AUTO',
   //maxNumberOfWebWorkers: 2,x`x`
   maxNumRequests: {
     interaction: 100,

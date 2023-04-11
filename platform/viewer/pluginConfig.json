@@ -33,8 +33,7 @@
       "version": "3.0.0"
     },
     {
-      "packageName": "@ischemaview/dicom-rapidai-extension",
-      "version": "0.0.1"
+      "packageName": "@ischemaview/dicom-rapidai-extension"
     }
   ],
   "modes": [
@@ -47,20 +46,16 @@
       "version": "3.0.0"
     },
     {
-      "packageName": "@ischemaview/dicom-neuro-rma",
-      "version": "0.0.2"
+      "packageName": "@ischemaview/dicom-neuro-rma"
     },
     {
-      "packageName": "@ischemaview/dicom-neuro-rwa",
-      "version": "0.0.3"
+      "packageName": "@ischemaview/dicom-pulmonary-rma"
     },
     {
-      "packageName": "@ischemaview/dicom-pulmonary-rma",
-      "version": "0.0.3"
+      "packageName": "@ischemaview/dicom-neuro-rwa"
     },
     {
-      "packageName": "@ischemaview/dicom-pulmonary-rwa",
-      "version": "0.0.3"
+      "packageName": "@ischemaview/dicom-pulmonary-rwa"
     }
   ],
   "modesFactory": [],
