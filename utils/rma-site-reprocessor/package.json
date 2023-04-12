@@ -1,0 +1,27 @@
+{
+  "name": "@ischemaview/rma-site-reprocessor",
+  "version": "0.1.0",
+  "description": "a utility for reprocessing patient data for a specific site/module",
+  "type": "module",
+  "files": [
+    "rma-site-reprocessor.js"
+  ],
+  "main": "rma-site-reprocessor.js",
+  "engines": {
+    "node": ">=16.18.1"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "iSchemaView, Inc",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://nexus.infrastructure.rapid-sys.com/repository/npm-internal"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.306.0",
+    "@aws-sdk/credential-providers": "^3.306.0",
+    "command-line-args": "^5.2.1",
+    "command-line-usage": "^7.0.1",
+    "decompress": "^4.2.1"
+  }
+}
