@@ -41,7 +41,18 @@ const Component = React.lazy(() => {
 
 const OHIFCornerstoneViewport = React.forwardRef((props, ref) => {
   return (
-    <React.Suspense fallback={<div>Loading...</div>}>
+    <React.Suspense fallback={
+      <div className="pointer-events-none bg-black opacity-50 absolute h-full w-full top-0 left-0">
+        <div className="flex flex-col transparent items-center justify-center w-full h-full">
+          <div className="loading">
+            <div className="infinite-loading-bar bg-primary-light"></div>
+          </div>
+          <div className="loading-messagetext">
+            <div className="caption-1-white">Loading Images</div>
+          </div>
+        </div>
+      </div>
+    }>
       <Component ref={ref} {...props} />
     </React.Suspense>
   );
