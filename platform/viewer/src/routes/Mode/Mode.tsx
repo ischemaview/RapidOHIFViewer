@@ -35,6 +35,7 @@ function defaultRouteInit(
     displaySetService,
     hangingProtocolService,
     ErrorHandlingService,
+    toolbarService,
   } = servicesManager.services;
 
   const unsubscriptions = [];
@@ -138,6 +139,30 @@ function defaultRouteInit(
       { studies, activeStudy, displaySets },
       hangingProtocolId
     );
+
+    if (
+      hangingProtocolId
+        .split('.')
+        .slice(-1)[0]
+        .split('-')[0] === 'mpr3'
+    ) {
+      setTimeout(() => {
+        toolbarService.recordInteraction({
+          groupId: 'ctToolGroup',
+          itemId: 'Crosshairs',
+          interactionType: 'tool',
+          commands: [
+            {
+              commandName: 'setToolActive',
+              commandOptions: {
+                toolName: 'Crosshairs',
+              },
+              context: 'CORNERSTONE',
+            },
+          ],
+        });
+      }, 100);
+    }
   });
 
   return unsubscriptions;
