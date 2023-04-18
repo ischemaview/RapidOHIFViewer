@@ -318,7 +318,8 @@ export default function ModeRoute({
       PerformanceEventTrackingService,
     } = servicesManager.services;
     ExternalInterfaceService.sendViewerReady();
-    //PerformanceEventTrackingService.startAxialFIDTime();
+    PerformanceEventTrackingService.startAxialFIDTime();
+    PerformanceEventTrackingService.startVolumeFSLTime();
   }, []);
 
   useEffect(() => {
