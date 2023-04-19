@@ -35,7 +35,7 @@ function defaultRouteInit(
     displaySetService,
     hangingProtocolService,
     ErrorHandlingService,
-    toolbarService,
+    SlabSelectorService,
   } = servicesManager.services;
 
   const unsubscriptions = [];
@@ -110,6 +110,19 @@ function defaultRouteInit(
     }
   );
 
+  hangingProtocolService.addCustomAttribute(
+    'frameOfReferenceIsMatching', // attributeId
+    'frameOfReferenceIsMatching', // attributeName
+    metaData => {
+      const FrameOfReferenceUID =
+        metaData['FrameOfReferenceUID'] ??
+        ((metaData.images || metaData.others || [])[0] || {})[
+          'FrameOfReferenceUID'
+        ];
+      return FrameOfReferenceUID === seriesInstanceUIDs[0];
+    }
+  );
+
   Promise.allSettled(allRetrieves).then(promiseStatus => {
     promiseStatus.forEach(prStatus => {
       // iterate over every promise and check status, if any promise is have error encounter then status will be rejected
@@ -132,6 +145,40 @@ function defaultRouteInit(
 
     // study being displayed, and is thus the "active" study.
     const activeStudy = studies[0];
+
+    //if interpolated series is present then override HP to load with interpolated one
+    const isInterpolatedSeriesExists = displaySets.find(ds => {
+      return (
+        ds.images &&
+        ds.images.length > 0 &&
+        ds.images[0].ImageType.includes('DERIVED\\SECONDARY\\INTERPOLATED')
+      );
+    });
+
+    const originalSeriesDisplaySet = displaySets.find(ds => {
+      return (
+        ds.images &&
+        ds.images.length > 0 &&
+        ds.images[0].SeriesInstanceUID === seriesInstanceUIDs[0]
+      );
+    });
+
+    if (isInterpolatedSeriesExists) {
+      hangingProtocolId = hangingProtocolId + '-interpolated';
+      if (SlabSelectorService) {
+        SlabSelectorService.setIsInterpolatedView(true);
+      }
+    }
+
+    if (originalSeriesDisplaySet && SlabSelectorService) {
+      SlabSelectorService.setNumberOfSlice(
+        originalSeriesDisplaySet.images.length
+      );
+
+      SlabSelectorService.setOriginalSeriesDisplaySetId(
+        originalSeriesDisplaySet.displaySetInstanceUID
+      );
+    }
 
     // run the hanging protocol matching on the displaySets with the predefined
     // hanging protocol in the mode configuration
@@ -317,9 +364,13 @@ export default function ModeRoute({
       ExternalInterfaceService,
       PerformanceEventTrackingService,
     } = servicesManager.services;
-    ExternalInterfaceService.sendViewerReady();
-    PerformanceEventTrackingService.startAxialFIDTime();
-    PerformanceEventTrackingService.startVolumeFSLTime();
+    if (ExternalInterfaceService) {
+      ExternalInterfaceService.sendViewerReady();
+    }
+    if (PerformanceEventTrackingService) {
+      PerformanceEventTrackingService.startAxialFIDTime();
+      PerformanceEventTrackingService.startVolumeFSLTime();
+    }
   }, []);
 
   useEffect(() => {

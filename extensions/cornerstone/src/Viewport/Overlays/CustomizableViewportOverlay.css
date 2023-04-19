@@ -6,12 +6,12 @@ line, it will be truncated with ellipsis in the end.
 .viewport-overlay {
   max-width: 40%;
 }
-.viewport-overlay span {
+/* .viewport-overlay span {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
+} */
 
 .viewport-overlay.left-viewport {
   text-align: left;
