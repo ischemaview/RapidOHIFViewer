@@ -29,6 +29,14 @@ const COMMAND_LINE_ARG_OPTIONS = [
   },
   { name: 'verbose', type: Boolean, alias: 'v', description: 'Verbose console logging'},
   { name: 'quiet', type: Boolean, alias: 'q', description: 'Minimal console logging'},
+  { name: 'listonly', type: Boolean, alias: 'l', description: 'Only list patients for a given site/module'},
+  {
+    name: 'triggerfile',
+    type: String,
+    alias: 't',
+    description: 'The name of the file to re-save to trigger processing.\nDefault is outputjson.json',
+    defaultValue: 'outputjson.json'
+  }
 ];
 
 const USAGE_CONFIG = [
@@ -74,6 +82,8 @@ const REGEX_LEADING_TRAILING_SEP = new RegExp(`(^${S3_PATH_SEPARATOR})|(${S3_PAT
 const REGION_PROFILE = OPTIONS.region ?? 'isv-sandpit3';
 const BUCKET_NAME = OPTIONS.bucket;
 const SITES = OPTIONS.sites ?? [];
+const LIST_ONLY = OPTIONS.listonly;
+const TRIGGER_FILE =  !LIST_ONLY && OPTIONS.triggerfile ? OPTIONS.triggerfile : 'outputjson.json';
 
 if (OPTIONS.help || !REGION_PROFILE || !BUCKET_NAME || !SITES.length) {
   log(USAGE, LogLevel.QuietBypass);
@@ -129,9 +139,11 @@ function log(message, level, data) {
     const siteModulePathNormalized = siteModulePath.replace(REGEX_LEADING_TRAILING_SEP, '') + S3_PATH_SEPARATOR;
     log(`retrieving patients for site module ${siteModulePathNormalized} - start`, LogLevel.Normal);
     const bObjects = await getBucketObjects(BUCKET_NAME, path.join('', siteModulePathNormalized));
+    let pIndex = 0;
     for (let bObject of bObjects) {
-      if (bObject.Key.endsWith('outputjson.json')) {
+      if (bObject.Key.endsWith(TRIGGER_FILE)) {
         const chunks = [];
+
         try {
           log(`Downloading file: ${bObject.Key} - start`, LogLevel.Verbose);
           const getObjectCommand = new GetObjectCommand({
@@ -145,6 +157,23 @@ function log(message, level, data) {
           }
 
           log(`Downloading file: ${bObject.Key} - complete`, LogLevel.Verbose);
+
+          if (LIST_ONLY) {
+            const buffer = Buffer.concat(chunks);
+            const jsonData = buffer.toString('utf-8');
+            const outputObj = JSON.parse(jsonData);
+
+            log(
+              `{`
+              + `\n  "Patient": "${outputObj.Patient.PatientName}",`
+              + `\n  "ID": "${outputObj.Patient.PatientID}",`
+              + `\n  "TaskID": "${outputObj.JobManagerTaskID}",`
+              + `\n  "StudyUID": "${outputObj.StudyInstanceUID}",`
+              + `\n  "SeriesUID": "${outputObj.SeriesInstanceUID}"`
+              + `\n},`, LogLevel.Normal);
+            continue;
+          }
+
         } catch (e) {
           log(`ERROR Downloading file: ${bObject.Key}`, LogLevel.Error, e);
         }
