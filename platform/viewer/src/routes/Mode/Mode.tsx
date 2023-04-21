@@ -147,7 +147,7 @@ function defaultRouteInit(
     const activeStudy = studies[0];
 
     //if interpolated series is present then override HP to load with interpolated one
-    const isInterpolatedSeriesExists = displaySets.find(ds => {
+    const isInterpolatedSeriesDisplaySet = displaySets.find(ds => {
       return (
         ds.images &&
         ds.images.length > 0 &&
@@ -163,11 +163,13 @@ function defaultRouteInit(
       );
     });
 
-    if (isInterpolatedSeriesExists) {
+    if (isInterpolatedSeriesDisplaySet && SlabSelectorService) {
       hangingProtocolId = hangingProtocolId + '-interpolated';
-      if (SlabSelectorService) {
-        SlabSelectorService.setIsInterpolatedView(true);
-      }
+
+      SlabSelectorService.setIsInterpolatedView(true);
+      SlabSelectorService.setInterpolatedSeriesDisplaySetId(
+        isInterpolatedSeriesDisplaySet.displaySetInstanceUID
+      );
     }
 
     if (originalSeriesDisplaySet && SlabSelectorService) {
@@ -318,30 +320,30 @@ export default function ModeRoute({
 
   useEffect(() => {
     if (dataSource.onReloadStudy) {
-//       dataSource.onReloadStudy(({ studyInstanceUIDs, seriesInstanceUIDs }) => {
-//         const {
-//           StateManagementService,
-//           HangingProtocolService,
-//           SlabThicknessService,
-//         } = servicesManager.services;
-//         if (StateManagementService && HangingProtocolService) {
-//           StateManagementService.clearViewportState();
-//           HangingProtocolService.reset();
-//           SlabThicknessService.clearSlabThickness();
-//         }
-//         defaultRouteInit(
-//           {
-//             servicesManager,
-//             studyInstanceUIDs,
-//             dataSource,
-//             seriesInstanceUIDs,
-//             filters,
-//             sortCriteria,
-//             sortFunction,
-//           },
-//           hangingProtocol
-//         );
-//       });
+      //       dataSource.onReloadStudy(({ studyInstanceUIDs, seriesInstanceUIDs }) => {
+      //         const {
+      //           StateManagementService,
+      //           HangingProtocolService,
+      //           SlabThicknessService,
+      //         } = servicesManager.services;
+      //         if (StateManagementService && HangingProtocolService) {
+      //           StateManagementService.clearViewportState();
+      //           HangingProtocolService.reset();
+      //           SlabThicknessService.clearSlabThickness();
+      //         }
+      //         defaultRouteInit(
+      //           {
+      //             servicesManager,
+      //             studyInstanceUIDs,
+      //             dataSource,
+      //             seriesInstanceUIDs,
+      //             filters,
+      //             sortCriteria,
+      //             sortFunction,
+      //           },
+      //           hangingProtocol
+      //         );
+      //       });
     }
   }, [location]);
 
