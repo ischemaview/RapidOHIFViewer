@@ -89,10 +89,11 @@ git push origin --set-upstream <upstream_branch_name>
 ````bash
 # relative to repo root directory
 cd platform/viewer-static
-npm version <major|minor|patch|prerelease>
+npm version <major|minor|patch|prerelease> --workspaces false
+git commit -m "viewer-static@<version>"
 git tag viewer-static@<version>
-git commit
 git push
+git push origin viewer-static@<version>
 ````
 
 6. Publish `@ischemaview/rapid-dicom-viewer` to Nexus repository
