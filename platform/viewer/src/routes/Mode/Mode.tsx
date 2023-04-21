@@ -147,7 +147,7 @@ function defaultRouteInit(
     const activeStudy = studies[0];
 
     //if interpolated series is present then override HP to load with interpolated one
-    const isInterpolatedSeriesDisplaySet = displaySets.find(ds => {
+    const interpolatedSeriesDisplaySet = displaySets.find(ds => {
       return (
         ds.images &&
         ds.images.length > 0 &&
@@ -163,12 +163,12 @@ function defaultRouteInit(
       );
     });
 
-    if (isInterpolatedSeriesDisplaySet && SlabSelectorService) {
+    if (interpolatedSeriesDisplaySet && SlabSelectorService) {
       hangingProtocolId = hangingProtocolId + '-interpolated';
 
       SlabSelectorService.setIsInterpolatedView(true);
       SlabSelectorService.setInterpolatedSeriesDisplaySetId(
-        isInterpolatedSeriesDisplaySet.displaySetInstanceUID
+        interpolatedSeriesDisplaySet.displaySetInstanceUID
       );
     }
 
