@@ -4,7 +4,7 @@ If any text to be displayed on the overlay is too long to hold on a single
 line, it will be truncated with ellipsis in the end.
 */
 .viewport-overlay {
-  max-width: 40%;
+  max-width: 47%;
 }
 /* .viewport-overlay span {
   max-width: 100%;

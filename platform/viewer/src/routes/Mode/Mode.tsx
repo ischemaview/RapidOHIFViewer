@@ -29,6 +29,7 @@ function defaultRouteInit(
     sortCriteria,
     sortFunction,
   },
+  deviceType,
   hangingProtocolId
 ) {
   const {
@@ -152,14 +153,25 @@ function defaultRouteInit(
         ? '@ischemaview/dicom-rapidai-extension.hangingProtocolModule.mpr3-vertical'
         : '@ischemaview/dicom-rapidai-extension.hangingProtocolModule.mpr3-horizontal';
 
-    //if interpolated series is present then override HP to load with interpolated one
-    const interpolatedSeriesDisplaySet = displaySets.find(ds => {
-      return (
-        ds.images &&
-        ds.images.length > 0 &&
-        ds.images[0].ImageType.includes('DERIVED\\SECONDARY\\INTERPOLATED')
-      );
-    });
+    if (deviceType !== 'DESKTOP') {
+      //if interpolated series is present then override HP to load with interpolated one
+      const interpolatedSeriesDisplaySet = displaySets.find(ds => {
+        return (
+          ds.images &&
+          ds.images.length > 0 &&
+          ds.images[0].ImageType.includes('DERIVED\\SECONDARY\\INTERPOLATED')
+        );
+      });
+
+      if (interpolatedSeriesDisplaySet && SlabSelectorService) {
+        hangingProtocolId = hangingProtocolId + '-interpolated';
+
+        SlabSelectorService.setIsInterpolatedView(true);
+        SlabSelectorService.setInterpolatedSeriesDisplaySetId(
+          interpolatedSeriesDisplaySet.displaySetInstanceUID
+        );
+      }
+    }
 
     const originalSeriesDisplaySet = displaySets.find(ds => {
       return (
@@ -168,16 +180,6 @@ function defaultRouteInit(
         ds.images[0].SeriesInstanceUID === seriesInstanceUIDs[0]
       );
     });
-
-    if (interpolatedSeriesDisplaySet && SlabSelectorService) {
-      hangingProtocolId = hangingProtocolId + '-interpolated';
-
-      SlabSelectorService.setIsInterpolatedView(true);
-      SlabSelectorService.setInterpolatedSeriesDisplaySetId(
-        interpolatedSeriesDisplaySet.displaySetInstanceUID
-      );
-    }
-
     if (originalSeriesDisplaySet && SlabSelectorService) {
       SlabSelectorService.setNumberOfSlice(
         originalSeriesDisplaySet.images.length
@@ -511,6 +513,7 @@ export default function ModeRoute({
           sortCriteria,
           sortFunction,
         },
+        mode?.routes[0]?.layoutTemplate().props.deviceType,
         hangingProtocolIdToUse
       );
     };
