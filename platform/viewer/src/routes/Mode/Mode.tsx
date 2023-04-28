@@ -164,9 +164,9 @@ function defaultRouteInit(
       });
 
       if (interpolatedSeriesDisplaySet && SlabSelectorService) {
-        hangingProtocolId = hangingProtocolId + '-interpolated';
+        //hangingProtocolId = hangingProtocolId + '-interpolated';
 
-        SlabSelectorService.setIsInterpolatedView(true);
+        //SlabSelectorService.setIsInterpolatedView(true);
         SlabSelectorService.setInterpolatedSeriesDisplaySetId(
           interpolatedSeriesDisplaySet.displaySetInstanceUID
         );
