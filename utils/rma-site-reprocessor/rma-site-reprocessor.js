@@ -134,7 +134,6 @@ function log(message, level, data) {
 }
 
 (async function main() {
-  const file = await fsPromise.readFile('/Users/aaronadrid/Downloads/outputjson.json');
   for (let siteModulePath of SITES) {
     const siteModulePathNormalized = siteModulePath.replace(REGEX_LEADING_TRAILING_SEP, '') + S3_PATH_SEPARATOR;
     log(`retrieving patients for site module ${siteModulePathNormalized} - start`, LogLevel.Normal);
