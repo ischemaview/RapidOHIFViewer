@@ -148,11 +148,6 @@ function defaultRouteInit(
     // study being displayed, and is thus the "active" study.
     const activeStudy = studies[0];
 
-    hangingProtocolId =
-      OrientationService.getOrientation() === 'portrait'
-        ? '@ischemaview/dicom-rapidai-extension.hangingProtocolModule.mpr3-vertical'
-        : '@ischemaview/dicom-rapidai-extension.hangingProtocolModule.mpr3-horizontal';
-
     if (deviceType !== 'DESKTOP') {
       //if interpolated series is present then override HP to load with interpolated one
       const interpolatedSeriesDisplaySet = displaySets.find(ds => {
