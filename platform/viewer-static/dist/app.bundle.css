@@ -1325,26 +1325,26 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
       -webkit-box-sizing: content-box;
               box-sizing: content-box;
       border: 12px solid var(--rapid-color-white);
-      height: 3px;
       width: 3px;
+      margin-top: -12px;
+      height: 3px;
       border-radius: 13.5px;
       background-color: var(--rapid-color-white);
       cursor: -webkit-grab;
-      cursor: grab;
-      margin-top: -12px; }
+      cursor: grab; }
     .bottomToolbar .scroll-control::-moz-range-thumb {
       border: 12px solid var(--rapid-color-white);
-      height: 3px;
       width: 3px;
+      margin-top: -12px;
+      height: 3px;
       border-radius: 13.5px;
       background-color: var(--rapid-color-white);
-      cursor: grab;
-      margin-top: -12px; }
+      cursor: grab; }
     .bottomToolbar .scroll-control::-ms-thumb {
-      display: inline-block;
       border: 12px solid var(--rapid-color-white);
-      height: 3px;
       width: 3px;
+      display: inline-block;
+      height: 3px;
       border-radius: 13.5px;
       background-color: var(--rapid-color-white);
       cursor: grab; }
@@ -1401,9 +1401,8 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
   .bottomToolbarSlab .static-label {
     padding: 5px 0px;
     color: var(--rapid-theme-color); }
-  .bottomToolbarSlab .fb-9 {
-    -ms-flex-preferred-size: 90px;
-        flex-basis: 90px; }
+  .bottomToolbarSlab .mw-55 {
+    min-width: 55px; }
   .bottomToolbarSlab .scroll-control {
     margin: 0 10px;
     -webkit-appearance: none;
@@ -1418,24 +1417,24 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
       -webkit-appearance: none;
       -webkit-box-sizing: content-box;
               box-sizing: content-box;
-      height: 12px;
       width: var(--thumb-width);
+      margin-top: -5px;
+      height: 12px;
       border-radius: 18px;
       background-color: var(--rapid-color-white);
       cursor: -webkit-grab;
-      cursor: grab;
-      margin-top: -4px; }
+      cursor: grab; }
     .bottomToolbarSlab .scroll-control::-moz-range-thumb {
-      height: 12x;
       width: var(--thumb-width);
+      margin-top: -5px;
+      height: 12px;
       border-radius: 18px;
       background-color: var(--rapid-color-white);
-      cursor: grab;
-      margin-top: -4px; }
+      cursor: grab; }
     .bottomToolbarSlab .scroll-control::-ms-thumb {
+      width: var(--thumb-width);
       display: inline-block;
       height: 12px;
-      width: var(--thumb-width);
       border-radius: 18px;
       background-color: var(--rapid-color-white);
       cursor: grab; }
@@ -1552,26 +1551,26 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
       -webkit-box-sizing: content-box;
               box-sizing: content-box;
       border: 12px solid var(--rapid-color-white);
-      height: 3px;
       width: 3px;
+      margin-top: -12px;
+      height: 3px;
       border-radius: 13.5px;
       background-color: var(--rapid-color-white);
       cursor: -webkit-grab;
-      cursor: grab;
-      margin-top: -12px; }
+      cursor: grab; }
     .bottomToolbar .scroll-control::-moz-range-thumb {
       border: 12px solid var(--rapid-color-white);
-      height: 3px;
       width: 3px;
+      margin-top: -12px;
+      height: 3px;
       border-radius: 13.5px;
       background-color: var(--rapid-color-white);
-      cursor: grab;
-      margin-top: -12px; }
+      cursor: grab; }
     .bottomToolbar .scroll-control::-ms-thumb {
-      display: inline-block;
       border: 12px solid var(--rapid-color-white);
-      height: 3px;
       width: 3px;
+      display: inline-block;
+      height: 3px;
       border-radius: 13.5px;
       background-color: var(--rapid-color-white);
       cursor: grab; }
