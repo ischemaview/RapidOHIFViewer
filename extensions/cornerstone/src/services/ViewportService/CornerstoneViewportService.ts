@@ -523,11 +523,13 @@ class CornerstoneViewportService
       });
     }
 
-    volumeToLoad.forEach(volume => {
-      if (!volume.loadStatus.loaded && !volume.loadStatus.loading) {
-        volume.load();
-      }
-    });
+    if (!hangingProtocolService.hasCustomImageLoadStrategy()) {
+      volumeToLoad.forEach(volume => {
+        if (!volume.loadStatus.loaded && !volume.loadStatus.loading) {
+          volume.load();
+        }
+      });
+    }
 
     // This returns the async continuation only
     return this.setVolumesForViewport(
