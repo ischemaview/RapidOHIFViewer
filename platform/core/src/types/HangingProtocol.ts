@@ -57,6 +57,8 @@ export type SetProtocolOptions = {
    * HP service to a previous state.
    */
   restoreProtocol?: boolean;
+
+  rerunLoader?: boolean;
 };
 
 export type HangingProtocolMatchDetails = {
