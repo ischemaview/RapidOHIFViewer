@@ -686,6 +686,12 @@ class CornerstoneViewportService extends PubSubService
         }
       });
 
+      this._broadcastEvent(this.EVENTS.VIEWPORT_DATA_CHANGED, {
+        viewportData,
+        viewportIndex,
+        viewportId,
+      });
+
       return;
     }
 

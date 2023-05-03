@@ -38,6 +38,7 @@ function defaultRouteInit(
     ErrorHandlingService,
     SlabSelectorService,
     OrientationService,
+    ExternalInterfaceService,
   } = servicesManager.services;
 
   const unsubscriptions = [];
@@ -148,16 +149,32 @@ function defaultRouteInit(
     // study being displayed, and is thus the "active" study.
     const activeStudy = studies[0];
 
+    const interpolatedSeriesDisplaySet = displaySets.find(ds => {
+      return (
+        ds.images &&
+        ds.images.length > 0 &&
+        ds.images[0].ImageType.includes('DERIVED\\SECONDARY\\INTERPOLATED')
+      );
+    });
+
+    const originalSeriesDisplaySet = displaySets.find(ds => {
+      return (
+        ds.images &&
+        ds.images.length > 0 &&
+        ds.images[0].SeriesInstanceUID === seriesInstanceUIDs[0]
+      );
+    });
+
+    const sagittalSeriesDisplaySet = displaySets.find(ds => {
+      return (
+        ds.images &&
+        ds.images.length > 0 &&
+        ds.images[0].ImageType.includes('DERIVED\\SECONDARY\\SAGITTAL\\SLAB')
+      );
+    });
+
     if (deviceType !== 'DESKTOP') {
       //if interpolated series is present then override HP to load with interpolated one
-      const interpolatedSeriesDisplaySet = displaySets.find(ds => {
-        return (
-          ds.images &&
-          ds.images.length > 0 &&
-          ds.images[0].ImageType.includes('DERIVED\\SECONDARY\\INTERPOLATED')
-        );
-      });
-
       if (interpolatedSeriesDisplaySet && SlabSelectorService) {
         hangingProtocolId = hangingProtocolId + '-interpolated';
 
@@ -168,13 +185,6 @@ function defaultRouteInit(
       }
     }
 
-    const originalSeriesDisplaySet = displaySets.find(ds => {
-      return (
-        ds.images &&
-        ds.images.length > 0 &&
-        ds.images[0].SeriesInstanceUID === seriesInstanceUIDs[0]
-      );
-    });
     if (originalSeriesDisplaySet && SlabSelectorService) {
       SlabSelectorService.setNumberOfSlice(
         originalSeriesDisplaySet.images.length
@@ -185,6 +195,28 @@ function defaultRouteInit(
       );
     }
 
+    const seriesInstanceUIDsNeedsToCache: Array<string> = [];
+
+    //Send request caching Original Series
+    if (interpolatedSeriesDisplaySet && deviceType !== 'DESKTOP') {
+      seriesInstanceUIDsNeedsToCache.push(
+        interpolatedSeriesDisplaySet.SeriesInstanceUID
+      );
+    }
+
+    //Send request caching Sagittal Series
+    if (sagittalSeriesDisplaySet && deviceType !== 'DESKTOP') {
+      seriesInstanceUIDsNeedsToCache.push(
+        sagittalSeriesDisplaySet.SeriesInstanceUID
+      );
+    }
+
+    if (seriesInstanceUIDsNeedsToCache.length > 0 && ExternalInterfaceService) {
+      ExternalInterfaceService.sendSeriesCache({
+        studyInstanceUID: activeStudy.StudyInstanceUID,
+        seriesInstanceUIDs: seriesInstanceUIDsNeedsToCache,
+      });
+    }
     // run the hanging protocol matching on the displaySets with the predefined
     // hanging protocol in the mode configuration
     hangingProtocolService.run(

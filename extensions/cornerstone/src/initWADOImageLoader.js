@@ -80,6 +80,138 @@ export default function initWADOImageLoader(
       errorHandler.getHTTPErrorHandler(error);
     },
     withCredentials: true,
+    cache: {
+      getScope: function(url) {
+        /**
+         * getScope takes in a url and returns a string representing a cache
+         * scope. For instance, dicom series uid is a scope. This allows the
+         * cacheAPI to remove related dicoms with one command.
+         */
+        const isDicomWeb = url.split('series/');
+
+        if (isDicomWeb.length === 1) {
+          return 'default-cornerstone-WADO-cache';
+        }
+        const scope = `${isDicomWeb[0]}series/${isDicomWeb[1].split('/')[0]}`;
+
+        return scope;
+      },
+      writeCacheProxy: function(xhr) {
+        // open cache based on url scoping this allows efficient cache deletion
+        // using: window.caches.delete(scope);
+        if (!window.caches) {
+          return;
+        }
+
+        const scope = this.getScope(xhr.responseURL);
+        const cacheLogic = (cache, scope, xhr) => {
+          const getXHRJSONHeaders = xhr => {
+            // Mock headers of response object
+            const headers = xhr.getAllResponseHeaders().split('\r\n');
+
+            headers.pop(); // remove empty ""
+
+            return headers.reduce((prev, h) => {
+              const [key, value] = h.split(':');
+
+              prev[key] = value.trim();
+
+              return prev;
+            }, {});
+          };
+
+          const res = new Response(xhr.response, {
+            headers: getXHRJSONHeaders(xhr),
+          });
+
+          const req = new Request(xhr.responseURL, {
+            headers: {
+              'dicom-last-put-date': new Date().toUTCString(),
+              'dicom-last-viewed-date': new Date().toUTCString(),
+              'dicom-content-length':
+                xhr.response instanceof ArrayBuffer
+                  ? `${xhr.response.byteLength}`
+                  : 'undefined',
+            },
+          });
+          const triggerQuotaError = () => {
+            const error = new DOMError('QuotaExceededError');
+
+            cornerstone.triggerEvent(
+              cornerstone.events,
+              'CORNERSTONE_CACHE_QUOTA_EXCEEDED_ERROR',
+              {
+                error,
+                xhr,
+                scope,
+                cache,
+                retry: () => cacheLogic(cache, scope, xhr),
+              }
+            );
+
+            return error;
+          };
+
+          return cache.put(req, res).catch(error => {
+            if (error.name === 'QuotaExceededError') {
+              triggerQuotaError();
+            } else {
+              console.error(error);
+            }
+          });
+        };
+
+        window.caches.open(scope).then(cache => {
+          cacheLogic(cache, scope, xhr);
+        });
+      },
+      readCacheProxy: async function(xhr, url, resolve) {
+        // open cache based on url scoping this allows efficient cache deletion
+        // using: window.caches.delete(scope);
+        const scope = this.getScope(url);
+
+        if (!window.caches) {
+          return false;
+        }
+
+        try {
+          const cache = await window.caches.open(scope);
+          const res = await cache.match(url, {
+            ignoreVary: true,
+            ignoreMethod: true,
+            ignoreSearch: true,
+          });
+
+          if (!res) {
+            return false;
+          }
+
+          const resClone = res.clone();
+
+          xhr.getResponseHeader = name => res.headers.get(name);
+          const arrayBuffer = res.arrayBuffer();
+          const contentLength = arrayBuffer.byteLength;
+
+          resolve(arrayBuffer);
+
+          const req = new Request(url, {
+            headers: {
+              'dicom-last-put-date': new Date().toUTCString(),
+              'dicom-last-viewed-date': new Date().toUTCString(),
+              'dicom-content-length': `${contentLength}`,
+            },
+          });
+
+          cache.put(req, resClone);
+
+          return true;
+        } catch (e) {
+          console.error(e);
+
+          return false;
+        }
+      },
+    },
   });
 
   initWebWorkers(appConfig);
