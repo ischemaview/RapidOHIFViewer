@@ -9,6 +9,7 @@ import { useQuery, useSearchParams } from '@hooks';
 import ViewportGrid from '@components/ViewportGrid';
 import Compose from './Compose';
 import getStudies from './studiesList';
+import { cache as cs3DCache } from '@cornerstonejs/core';
 
 /**
  * Initialize the route.
@@ -35,26 +36,34 @@ function defaultRouteInit(
   const {
     displaySetService,
     hangingProtocolService,
-    ErrorHandlingService,
+    ErrorManagementService,
     SlabSelectorService,
     OrientationService,
     ExternalInterfaceService,
   } = servicesManager.services;
 
   const unsubscriptions = [];
-  const {
-    unsubscribe: instanceAddedUnsubscribe,
-  } = DicomMetadataStore.subscribe(
-    DicomMetadataStore.EVENTS.INSTANCES_ADDED,
-    function({ StudyInstanceUID, SeriesInstanceUID, madeInClient = false }) {
-      const seriesMetadata = DicomMetadataStore.getSeries(
-        StudyInstanceUID,
-        SeriesInstanceUID
-      );
+  const { unsubscribe: instanceAddedUnsubscribe } =
+    DicomMetadataStore.subscribe(
+      DicomMetadataStore.EVENTS.INSTANCES_ADDED,
+      function ({ StudyInstanceUID, SeriesInstanceUID, madeInClient = false }) {
+        const seriesMetadata = DicomMetadataStore.getSeries(
+          StudyInstanceUID,
+          SeriesInstanceUID
+        );
 
-      displaySetService.makeDisplaySets(seriesMetadata.instances, madeInClient);
-    }
-  );
+        const displaySet = displaySetService.getDisplaySetsForSeries(
+          SeriesInstanceUID
+        );
+  
+        if (displaySet.length === 0) {
+          displaySetService.makeDisplaySets(
+            seriesMetadata.instances,
+            madeInClient
+          );
+        }
+      }
+    );
 
   unsubscriptions.push(instanceAddedUnsubscribe);
 
@@ -130,8 +139,8 @@ function defaultRouteInit(
     promiseStatus.forEach(prStatus => {
       // iterate over every promise and check status, if any promise is have error encounter then status will be rejected
       if (prStatus.status === 'rejected') {
-        if (ErrorHandlingService) {
-          ErrorHandlingService.broadcastStudyLoadError();
+        if (ErrorManagementService) {
+          ErrorManagementService.broadcastStudyLoadError();
         }
         return;
       }
@@ -264,10 +273,9 @@ export default function ModeRoute({
     locationRef.current = location;
   }
 
-  const {
-    displaySetService,
-    hangingProtocolService,
-  } = (servicesManager as ServicesManager).services;
+  const { displaySetService, hangingProtocolService } = (
+    servicesManager as ServicesManager
+  ).services;
 
   const {
     extensions,
@@ -355,30 +363,68 @@ export default function ModeRoute({
 
   useEffect(() => {
     if (dataSource.onReloadStudy) {
-      //       dataSource.onReloadStudy(({ studyInstanceUIDs, seriesInstanceUIDs }) => {
-      //         const {
-      //           StateManagementService,
-      //           HangingProtocolService,
-      //           SlabThicknessService,
-      //         } = servicesManager.services;
-      //         if (StateManagementService && HangingProtocolService) {
-      //           StateManagementService.clearViewportState();
-      //           HangingProtocolService.reset();
-      //           SlabThicknessService.clearSlabThickness();
-      //         }
-      //         defaultRouteInit(
-      //           {
-      //             servicesManager,
-      //             studyInstanceUIDs,
-      //             dataSource,
-      //             seriesInstanceUIDs,
-      //             filters,
-      //             sortCriteria,
-      //             sortFunction,
-      //           },
-      //           hangingProtocol
-      //         );
-      //       });
+      dataSource.onReloadStudy(({ studyInstanceUIDs, seriesInstanceUIDs }) => {
+        const { HangingProtocolService, SlabSelectorService , DisplaySetService , CornerstoneViewportService , toolbarService ,ErrorManagementService} =
+          servicesManager.services;
+          ErrorManagementService .resetImageList()
+          toolbarService.recordInteraction({
+            groupId: 'ctToolGroup',
+            itemId: 'StackScroll',
+            interactionType: 'tool',
+            commands: [
+              {
+                commandName: 'setToolActive',
+                commandOptions: {
+                  toolName: 'StackScroll',
+                },
+                context: 'CORNERSTONE',
+              },
+            ],
+          });
+
+          let viewportIds = CornerstoneViewportService.getViewportIds();
+          viewportIds.forEach((vpId) => {
+            let viewportInfo = CornerstoneViewportService.getViewportInfo(vpId);
+            if (
+              viewportInfo &&
+              viewportInfo.getViewportData().viewportType === 'orthographic'
+            ) {
+              CornerstoneViewportService.disableElement(viewportInfo.viewportIndex);
+            }
+          });
+
+          let originalDisplaySetUid = SlabSelectorService.getOriginalSeriesDisplaySetId();
+          const volumeIdOriginal = `cornerstoneStreamingImageVolume:${originalDisplaySetUid}`;
+  
+          const volumeOriginal = cs3DCache.getVolume(volumeIdOriginal);
+          if (volumeOriginal) {
+            cs3DCache.removeVolumeLoadObject(volumeIdOriginal);
+          }
+  
+          let interpolatedDisplaySetUid = SlabSelectorService.getInterpolatedSeriesDisplaySetId();
+          const volumeId = `cornerstoneStreamingImageVolume:${interpolatedDisplaySetUid}`;
+          const volume = cs3DCache.getVolume(volumeId);
+          if (volume) {
+            cs3DCache.removeVolumeLoadObject(volumeId);
+          }
+
+        if (HangingProtocolService) {
+          HangingProtocolService.reset();
+        }
+        defaultRouteInit(
+          {
+            servicesManager,
+            studyInstanceUIDs,
+            dataSource,
+            seriesInstanceUIDs,
+            filters,
+            sortCriteria,
+            sortFunction,
+          },
+          mode?.routes[0]?.layoutTemplate().props.deviceType,
+          hangingProtocol
+        );
+      });      
     }
   }, [location]);
 
@@ -397,10 +443,8 @@ export default function ModeRoute({
   }, [location]);
 
   useEffect(() => {
-    const {
-      ExternalInterfaceService,
-      PerformanceEventTrackingService,
-    } = servicesManager.services;
+    const { ExternalInterfaceService, PerformanceEventTrackingService } =
+      servicesManager.services;
     if (ExternalInterfaceService) {
       ExternalInterfaceService.sendViewerReady();
     }
@@ -463,6 +507,7 @@ export default function ModeRoute({
 
     // Add SOPClassHandlers to a new SOPClassManager.
     displaySetService.init(extensionManager, sopClassHandlers);
+
 
     extensionManager.onModeEnter({
       servicesManager,
