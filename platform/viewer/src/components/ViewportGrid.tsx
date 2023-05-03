@@ -5,6 +5,7 @@ import { ViewportGrid, ViewportPane, useViewportGrid } from '@ohif/ui';
 import { utils } from '@ohif/core';
 import EmptyViewport from './EmptyViewport';
 import classNames from 'classnames';
+import { commandsManager } from '../App';
 
 const { isEqualWithin } = utils;
 
@@ -308,6 +309,17 @@ function ViewerViewportGrid(props) {
     const viewportPanes = [];
 
     const numViewportPanes = viewportGridService.getNumViewportPanes();
+    let readyViewports = 0;
+    const checkReady = () => {
+      readyViewports = readyViewports + 1;
+      if (readyViewports === numViewportPanes) {
+        const layoutLoaded = hangingProtocolService?.protocol?.callbacks?.onLayoutViewportDataContainersLoaded;
+        if (layoutLoaded) {
+          commandsManager.run(layoutLoaded)
+        }
+      }
+    }
+
     for (let i = 0; i < numViewportPanes; i++) {
       const viewportIndex = i;
       const isActive = activeViewportIndex === viewportIndex;
@@ -389,6 +401,7 @@ function ViewerViewportGrid(props) {
               viewportOptions={viewportOptions}
               displaySetOptions={displaySetOptions}
               needsRerendering={displaySetsNeedsRerendering}
+              onViewportDataLoad={checkReady}
               className="h-full w-full bg-black"
               handleReload={handleReload}
             />

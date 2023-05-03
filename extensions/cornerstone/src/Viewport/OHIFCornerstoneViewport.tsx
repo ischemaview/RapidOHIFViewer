@@ -111,6 +111,7 @@ const OHIFCornerstoneViewport = React.memo(React.forwardRef((props, ref) => {
     servicesManager,
     onElementEnabled,
     onElementDisabled,
+    onViewportDataLoad,
     // Note: you SHOULD NOT use the initialImageIdOrIndex for manipulation
     // of the imageData in the OHIFCornerstoneViewport. This prop is used
     // to set the initial state of the viewport's first image to render
@@ -422,7 +423,11 @@ const OHIFCornerstoneViewport = React.memo(React.forwardRef((props, ref) => {
         viewportOptions,
         displaySetOptions,
         presentations
-      );
+      ).then((val) => {
+        if (onViewportDataLoad) {
+          onViewportDataLoad(val)
+        }
+      });
     };
 
     loadViewportData();
@@ -691,6 +696,7 @@ OHIFCornerstoneViewport.propTypes = {
   displaySetOptions: PropTypes.arrayOf(PropTypes.any),
   servicesManager: PropTypes.object.isRequired,
   onElementEnabled: PropTypes.func,
+  onViewportDataLoad: PropTypes.func,
   // Note: you SHOULD NOT use the initialImageIdOrIndex for manipulation
   // of the imageData in the OHIFCornerstoneViewport. This prop is used
   // to set the initial state of the viewport's first image to render

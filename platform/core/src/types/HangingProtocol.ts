@@ -70,8 +70,8 @@ export type ConstraintValue =
   | boolean
   | []
   | {
-    value: string | number | boolean | [];
-  };
+      value: string | number | boolean | [];
+    };
 
 export type Constraint = {
   // This value exactly
@@ -242,6 +242,13 @@ export type ProtocolNotifications = {
   // The numRows and numCols is included in the command params, so it is possible
   // to apply a specific hanging protocol
   onLayoutChange?: Command[];
+
+  // Once all image data containers are loaded, this command runs.
+  // While the data container exists, the actual internal data may not be
+  // hydrated. This is because stack and volume viewports will load progressively.
+  // TODO: Another protocol notification which may need to load is when all data is actually
+  // loaded. This may be related to imageLoader code.
+  onLayoutViewportDataContainersLoaded?: Command[];
 };
 
 /**
