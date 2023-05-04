@@ -448,9 +448,8 @@ export default function ModeRoute({
     if (ExternalInterfaceService) {
       ExternalInterfaceService.sendViewerReady();
     }
-    if (PerformanceEventTrackingService) {
-      PerformanceEventTrackingService.startAxialFIDTime();
-      PerformanceEventTrackingService.startVolumeFSLTime();
+    if(PerformanceEventTrackingService) {
+      PerformanceEventTrackingService.startApplicationLoadTime();
     }
   }, []);
 

@@ -481,6 +481,10 @@ function commandsModule({ servicesManager, commandsManager }) {
         const { viewport } = enabledElement;
         if (!(viewport instanceof VolumeViewport)) return;
         const defaultOrientation = viewport.defaultOptions.orientation;
+        commandsManager.runCommand('setWindowLevel', {
+          window: 700,
+          level: 100,
+        });
         viewport.setOrientation(defaultOrientation);
         viewport.setSlabThickness(0.05);
         viewport.render();
