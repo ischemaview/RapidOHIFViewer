@@ -486,6 +486,7 @@ function commandsModule({ servicesManager, commandsManager }) {
           level: 100,
         });
         viewport.setOrientation(defaultOrientation);
+        viewport.resetProperties();
         viewport.setSlabThickness(0.05);
         viewport.render();
       });
