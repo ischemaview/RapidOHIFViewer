@@ -182,7 +182,7 @@ export default async function init({
     servicesManager
   );
 
-  initCineService(cineService);
+  //initCineService(cineService);
 
   // When a custom image load is performed, update the relevant viewports
   hangingProtocolService.subscribe(
@@ -219,16 +219,16 @@ export default async function init({
     }
   );
 
-  initContextMenu({
-    cornerstoneViewportService,
-    customizationService,
-    commandsManager,
-  });
+  // initContextMenu({
+  //   cornerstoneViewportService,
+  //   customizationService,
+  //   commandsManager,
+  // });
 
-  initDoubleClick({
-    customizationService,
-    commandsManager,
-  });
+  // initDoubleClick({
+  //   customizationService,
+  //   commandsManager,
+  // });
 
   const newStackCallback = evt => {
     const { element } = evt.detail;
