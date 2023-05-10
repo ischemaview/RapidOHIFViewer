@@ -164,7 +164,7 @@ function log(message, level, data) {
 
             log(
               `{`
-              + `\n  "Patient": "${outputObj.Patient.PatientName}",`
+              + `\n  "Patient": "${outputObj.Patient.PatientName || ( outputObj.Patient.PatientAge + ',' +outputObj.Patient.PatientSex)}",`
               + `\n  "ID": "${outputObj.Patient.PatientID}",`
               + `\n  "TaskID": "${outputObj.JobManagerTaskID}",`
               + `\n  "StudyUID": "${outputObj.StudyInstanceUID}",`
