@@ -37,6 +37,8 @@ const EVENTS = {
     'event::cornerstoneViewportService:viewportDataChanged',
   VIEWPORT_STACK_SET: 'event::cornerstone::viewportservice:viewportstackset',
   VIEWPORT_VOLUME_SET: 'event::cornerstone::viewportservice:viewportvolumeset',
+  VIEWPORT_DATA_UPDATED:
+    'event::cornerstone::viewportservice:viewportdataupdated',
 };
 
 /**
@@ -687,10 +689,13 @@ class CornerstoneViewportService
           }
 
           this._broadcastEvent(this.EVENTS.VIEWPORT_DATA_CHANGED, {
-                  viewportData,
-                  viewportIndex,
-                  viewportId,
-                });
+            viewportData,
+            viewportIndex,
+            viewportId,
+          });
+          this._broadcastEvent(this.EVENTS.VIEWPORT_DATA_UPDATED, {
+            viewportIndex,
+          });
         }
       );
     }
