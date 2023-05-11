@@ -80,6 +80,8 @@ export default function initWADOImageLoader(
       errorHandler.getHTTPErrorHandler(error);
     },
     withCredentials: true,
+    readCache: false,
+    writeCache: false, // only write for prefetch
     cache: {
       getScope: function(url) {
         /**
@@ -99,8 +101,26 @@ export default function initWADOImageLoader(
       writeCacheProxy: function(xhr) {
         // open cache based on url scoping this allows efficient cache deletion
         // using: window.caches.delete(scope);
+        const { ExternalInterfaceService } = window.services;
         if (!window.caches) {
+          //console.log("Window.cache not available")
+          if (ExternalInterfaceService) {
+            ExternalInterfaceService.sendLogEvents(
+              4,
+              'Window.cache not available',
+              {}
+            );
+          }
           return;
+        }
+
+        //console.log("Window.cache available")
+        if (ExternalInterfaceService) {
+          ExternalInterfaceService.sendLogEvents(
+            4,
+            'Window.cache available',
+            {}
+          );
         }
 
         const scope = this.getScope(xhr.responseURL);
@@ -169,9 +189,26 @@ export default function initWADOImageLoader(
         // open cache based on url scoping this allows efficient cache deletion
         // using: window.caches.delete(scope);
         const scope = this.getScope(url);
-
+        const { ExternalInterfaceService } = window.services;
         if (!window.caches) {
+          //console.log("Window.cache not available")
+          if (ExternalInterfaceService) {
+            ExternalInterfaceService.sendLogEvents(
+              4,
+              'Window.cache not available',
+              {}
+            );
+          }
           return false;
+        }
+        //console.log("Window.cache  available")
+
+        if (ExternalInterfaceService) {
+          ExternalInterfaceService.sendLogEvents(
+            4,
+            'Window.cache available',
+            {}
+          );
         }
 
         try {
