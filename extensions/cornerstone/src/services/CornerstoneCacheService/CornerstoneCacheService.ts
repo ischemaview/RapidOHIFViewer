@@ -213,6 +213,10 @@ class CornerstoneCacheService {
       let volume = cs3DCache.getVolume(volumeId);
 
       if (!volumeImageIds || !volume) {
+        const services:any = this.servicesManager.services; 
+        const { PerformanceEventTrackingService } = services;
+        PerformanceEventTrackingService.endLoadingTime();
+
         volumeImageIds = this._getCornerstoneVolumeImageIds(
           displaySet,
           dataSource
