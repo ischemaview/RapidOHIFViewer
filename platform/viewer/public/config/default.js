@@ -15,7 +15,7 @@ window.config = {
 
   // below flag is for performance reasons, but it might not work for all servers
   omitQuotationForMultipartRequest: true,
-  showWarningMessageForCrossOrigin: true,
+  showWarningMessageForCrossOrigin: false,
   showCPUFallbackMessage: true,
   showLoadingIndicator: true,
   use16BitDataType: true,
@@ -36,12 +36,12 @@ window.config = {
       sourceName: 'dicomweb',
       configuration: {
         name: 'aws',
-        wadoUriRoot: '{siteUrl}',
-        qidoRoot: '{siteUrl}',
-        wadoRoot: '{siteUrl}',
-        // wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
-        // qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
-        // wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        // wadoUriRoot: '{siteUrl}',
+        // qidoRoot: '{siteUrl}',
+        // wadoRoot: '{siteUrl}',
+        wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
         qidoSupportsIncludeField: false,
         supportsReject: false,
         imageRendering: 'wadors',

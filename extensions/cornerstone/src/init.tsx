@@ -62,10 +62,10 @@ export default async function init({
   }
 
   // For debugging large datasets
-  const MAX_CACHE_SIZE_1GB = 1073741824;
+  const MAX_CACHE_SIZE_2GB = 2147483648;
   const maxCacheSize = appConfig.maxCacheSize;
   cornerstone.cache.setMaxCacheSize(
-    maxCacheSize ? maxCacheSize : MAX_CACHE_SIZE_1GB
+    maxCacheSize ? maxCacheSize : MAX_CACHE_SIZE_2GB
   );
 
   initCornerstoneTools();
