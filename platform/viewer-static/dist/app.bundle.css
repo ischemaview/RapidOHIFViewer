@@ -1097,6 +1097,10 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
   --tw-bg-opacity: 1;
   background-color: transparent; }
 
+.break-word {
+  word-break: break-all;
+  white-space: wrap; }
+
 .infinite-loading-bar {
   width: 48px;
   height: 48px;
