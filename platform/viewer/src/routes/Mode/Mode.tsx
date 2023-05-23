@@ -209,7 +209,7 @@ function defaultRouteInit(
     //Send request caching Original Series
     if (interpolatedSeriesDisplaySet && deviceType !== 'DESKTOP') {
       seriesInstanceUIDsNeedsToCache.push(
-        interpolatedSeriesDisplaySet.SeriesInstanceUID
+        originalSeriesDisplaySet.SeriesInstanceUID
       );
     }
 
@@ -221,7 +221,7 @@ function defaultRouteInit(
     }
 
     if (seriesInstanceUIDsNeedsToCache.length > 0 && ExternalInterfaceService) {
-      ExternalInterfaceService.sendSeriesCache({
+      ExternalInterfaceService.setSeriesCache({
         studyInstanceUID: activeStudy.StudyInstanceUID,
         seriesInstanceUIDs: seriesInstanceUIDsNeedsToCache,
       });

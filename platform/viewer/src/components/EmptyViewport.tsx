@@ -16,10 +16,7 @@ function EmptyViewport(props) {
             props.handleReload();
           }}
         >
-          <rapid-icon-button
-            icon="refresh-48"
-            class="medium"
-          ></rapid-icon-button>
+          <rapid-icon name="refresh-48" class="large" />
         </div>
         <span className="message">Reload</span>
         <span className="sub-message">Images failed to download</span>
