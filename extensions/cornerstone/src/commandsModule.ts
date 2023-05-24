@@ -496,6 +496,23 @@ function commandsModule({ servicesManager, commandsManager }) {
       if (crosshairsToolInstance) {
         crosshairsToolInstance.resetAnnotations();
       }
+      const currentActiveTool = toolbarService.getActiveTools();
+      if (currentActiveTool && currentActiveTool[0] === 'Mip') {
+        toolbarService.recordInteraction({
+          groupId: 'ctToolGroup',
+          itemId: 'StackScroll',
+          interactionType: 'tool',
+          commands: [
+            {
+              commandName: 'setToolActive',
+              commandOptions: {
+                toolName: 'StackScroll',
+              },
+              context: 'CORNERSTONE',
+            },
+          ],
+        });
+      }
     },
     scaleViewport: ({ direction }) => {
       const enabledElement = _getActiveViewportEnabledElement();
