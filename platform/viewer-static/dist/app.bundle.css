@@ -1141,6 +1141,17 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
   position: relative;
   width: 48px; }
 
+.loading-center {
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  padding: 5px;
+  background-color: #80808000; }
+
+.text-center {
+  text-align: center; }
+
 /* up to here, important property to override loading icon in Viewer*/
 .caption-1 {
   font-family: var(--rapid-typography-caption-one-font-family);
