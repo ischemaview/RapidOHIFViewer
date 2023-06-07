@@ -7,8 +7,8 @@ function buildInstanceFrameWadoRsUri(instance, config, frame) {
   const baseWadoRsUri = buildInstanceWadoRsUri(instance, config);
 
   frame = frame || 1;
-
-  return `${baseWadoRsUri}/frames/${frame}`;
+  const { bufferLength } = instance;
+  return `${baseWadoRsUri}/frames/${frame}/${bufferLength}`;
 }
 
 // function getWADORSImageUrl(instance, frame) {

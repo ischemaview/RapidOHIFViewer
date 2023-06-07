@@ -182,17 +182,17 @@ function defaultRouteInit(
       );
     });
 
-    if (deviceType !== 'DESKTOP') {
-      //if interpolated series is present then override HP to load with interpolated one
-      if (interpolatedSeriesDisplaySet && SlabSelectorService) {
-        hangingProtocolId = hangingProtocolId + '-interpolated';
+    // if (deviceType !== 'DESKTOP') {
+    //   //if interpolated series is present then override HP to load with interpolated one
+    //   if (interpolatedSeriesDisplaySet && SlabSelectorService) {
+    //     hangingProtocolId = hangingProtocolId + '-interpolated';
 
-        SlabSelectorService.setIsInterpolatedView(true);
-        SlabSelectorService.setInterpolatedSeriesDisplaySetId(
-          interpolatedSeriesDisplaySet.displaySetInstanceUID
-        );
-      }
-    }
+    //     SlabSelectorService.setIsInterpolatedView(true);
+    //     SlabSelectorService.setInterpolatedSeriesDisplaySetId(
+    //       interpolatedSeriesDisplaySet.displaySetInstanceUID
+    //     );
+    //   }
+    // }
 
     if (originalSeriesDisplaySet && SlabSelectorService) {
       SlabSelectorService.setNumberOfSlice(

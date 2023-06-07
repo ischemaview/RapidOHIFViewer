@@ -10,7 +10,7 @@ window.config = {
   showStudyList: true,
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
-  maxFramesInVolume: 400,
+  maxFramesInVolume: 4000,
   //maxCacheSize: 1024 * 1000 * 300,
 
   // below flag is for performance reasons, but it might not work for all servers
@@ -36,12 +36,12 @@ window.config = {
       sourceName: 'dicomweb',
       configuration: {
         name: 'aws',
-        wadoUriRoot: '{siteUrl}',
-        qidoRoot: '{siteUrl}',
-        wadoRoot: '{siteUrl}',
-        // wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
-        // qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
-        // wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        // wadoUriRoot: '{siteUrl}',
+        // qidoRoot: '{siteUrl}',
+        // wadoRoot: '{siteUrl}',
+        wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
         qidoSupportsIncludeField: false,
         supportsReject: false,
         imageRendering: 'wadors',

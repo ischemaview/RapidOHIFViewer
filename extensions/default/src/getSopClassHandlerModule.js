@@ -110,6 +110,9 @@ function getDisplaySetsFromSeries(instances) {
 
     let displaySet;
 
+    instance.bufferLength = 524288;
+    instance.imageId = instance.imageId + "|524288";
+
     if (isMultiFrame(instance)) {
       displaySet = makeDisplaySet([instance]);
 
