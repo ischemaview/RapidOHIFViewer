@@ -174,6 +174,10 @@ const commandsModule = ({
         // Stores in the state the reuseID to displaySetUID mapping
         // Pass in viewportId for the active viewport.  This item will get set as
         // the activeViewportId
+
+        // The onLayoutChange callback is used for things like
+        // Maintaining WW/WL when Changing Hanging Protocol.
+        commandsManager.run(hangingProtocolService.getActiveProtocol().protocol.callbacks?.onLayoutChange);
         const state = viewportGridService.getState();
         const hpInfo = hangingProtocolService.getState();
         const {
