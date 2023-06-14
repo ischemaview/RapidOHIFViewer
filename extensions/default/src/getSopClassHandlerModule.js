@@ -102,6 +102,8 @@ function getDisplaySetsFromSeries(instances) {
   // into their own specific display sets. Place the rest of each
   // series into another display set.
   const stackableInstances = [];
+  let counter = 0;
+  let constCounter = 524465;
   instances.forEach(instance => {
     // All imaging modalities must have a valid value for sopClassUid (x00080016) or rows (x00280010)
     if (!isImage(instance.SOPClassUID) && !instance.Rows) {
@@ -110,8 +112,10 @@ function getDisplaySetsFromSeries(instances) {
 
     let displaySet;
 
-    instance.bufferLength = 524288;
-    instance.imageId = instance.imageId + "|524288";
+    instance.bufferLength = counter + '-' + (counter + constCounter);
+    //instance.imageId = instance.imageId;
+
+    counter = counter + constCounter + 1;
 
     if (isMultiFrame(instance)) {
       displaySet = makeDisplaySet([instance]);
