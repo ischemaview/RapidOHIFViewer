@@ -13,6 +13,7 @@ export interface Presentation extends Types.StackViewportProperties {
   properties: Types.StackViewportProperties | Types.VolumeViewportProperties;
   zoom?: number;
   pan?: [number, number];
+  slabThickness?:number;
 }
 
 export type Presentations = {
