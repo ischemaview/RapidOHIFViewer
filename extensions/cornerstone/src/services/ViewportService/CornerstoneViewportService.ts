@@ -182,8 +182,9 @@ class CornerstoneViewportService
     if (properties) viewport.setProperties(properties);
     const camera = presentations?.positionPresentation?.camera;
     if (camera) viewport.setCamera(camera);
-    if(presentations?.positionPresentation?.slabThickness && presentations.positionPresentation.viewportType === 'volume') {
-      const slabThickness = presentations?.positionPresentation?.slabThickness;
+
+    const slabThickness = presentations?.positionPresentation?.slabThickness;
+    if(slabThickness) {
       if (slabThickness <= MINIMUM_SLAB_THICKNESS) {
         viewport.setBlendMode(0); //, actorUIDs, immediate);
         viewport.setSlabThickness(MINIMUM_SLAB_THICKNESS); //, actorUIDs);
@@ -219,9 +220,10 @@ class CornerstoneViewportService
       camera,
     };
 
-    if(viewportType === 'orthographic') {
-     const slabThickness:number= csViewport.getSlabThickness()? csViewport.getSlabThickness():MINIMUM_SLAB_THICKNESS;
-     presentation.slabThickness = slabThickness;
+    if (viewportType === 'orthographic') {
+      presentation.slabThickness = csViewport.getSlabThickness()
+        ? csViewport.getSlabThickness()
+        : MINIMUM_SLAB_THICKNESS;
     }
 
     return presentation;
