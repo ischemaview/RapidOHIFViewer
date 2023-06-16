@@ -39,6 +39,7 @@ const EVENTS = {
   VIEWPORT_VOLUME_SET: 'event::cornerstone::viewportservice:viewportvolumeset',
 };
 
+const MINIMUM_SLAB_THICKNESS = 5e-2;
 /**
  * Handles cornerstone viewport logic including enabling, disabling, and
  * updating the viewport.
@@ -52,7 +53,7 @@ class CornerstoneViewportService
   viewportsById: Map<string, ViewportInfo> = new Map();
   viewportGridResizeObserver: ResizeObserver | null;
   viewportsDisplaySets: Map<string, string[]> = new Map();
-
+  
   // Some configs
   enableResizeDetector: true;
   resizeRefreshRateMs: 200;
@@ -181,6 +182,17 @@ class CornerstoneViewportService
     if (properties) viewport.setProperties(properties);
     const camera = presentations?.positionPresentation?.camera;
     if (camera) viewport.setCamera(camera);
+
+    const slabThickness = presentations?.positionPresentation?.slabThickness;
+    if(slabThickness) {
+      if (slabThickness <= MINIMUM_SLAB_THICKNESS) {
+        viewport.setBlendMode(0); //, actorUIDs, immediate);
+        viewport.setSlabThickness(MINIMUM_SLAB_THICKNESS); //, actorUIDs);
+      } else {
+        viewport.setBlendMode(1); //, actorUIDs, immediate);
+        viewport.setSlabThickness(slabThickness); //, actorUIDs);
+      }
+    }
   }
 
   public getPresentation(viewportIndex: number): Presentation {
@@ -198,7 +210,8 @@ class CornerstoneViewportService
     }
     const initialImageIndex = csViewport.getCurrentImageIdIndex();
     const camera = csViewport.getCamera();
-    return {
+
+    const presentation:Presentation = {
       presentationIds,
       viewportType:
         !viewportType || viewportType === 'stack' ? 'stack' : 'volume',
@@ -206,6 +219,14 @@ class CornerstoneViewportService
       initialImageIndex,
       camera,
     };
+
+    if (viewportType === 'orthographic') {
+      presentation.slabThickness = csViewport.getSlabThickness()
+        ? csViewport.getSlabThickness()
+        : MINIMUM_SLAB_THICKNESS;
+    }
+
+    return presentation;
   }
 
   /**
