@@ -36,7 +36,7 @@
     "@docusaurus/theme-live-codeblock": "2.0.1",
     "@docusaurus/plugin-google-gtag": "2.0.1",
     "@mdx-js/react": "^1.6.21",
-    "@svgr/webpack": "^5.5.0",
+    "@svgr/webpack": "^8.0.1",
     "classnames": "^2.3.2",
     "clsx": "^1.1.1",
     "file-loader": "^6.2.0",
