@@ -162,6 +162,7 @@ function defaultRouteInit(
       return (
         ds.images &&
         ds.images.length > 0 &&
+        ds.images[0].ImageType &&
         ds.images[0].ImageType.includes('DERIVED\\SECONDARY\\INTERPOLATED')
       );
     });
@@ -178,6 +179,7 @@ function defaultRouteInit(
       return (
         ds.images &&
         ds.images.length > 0 &&
+        ds.images[0].ImageType &&
         ds.images[0].ImageType.includes('DERIVED\\SECONDARY\\SAGITTAL\\SLAB')
       );
     });
