@@ -32,7 +32,7 @@ function commandsModule({ servicesManager, commandsManager }) {
     uiNotificationService,
     customizationService,
     measurementService,
-    hangingProtocolService,
+    stateSyncService
   } = (servicesManager as ServicesManager).services;
 
   const { measurementServiceSource } = this;
@@ -473,6 +473,10 @@ function commandsModule({ servicesManager, commandsManager }) {
     resetToolGroupVolumeViewports: ({ toolGroupId }) => {
       const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
       const viewportsInfo = toolGroup.viewportsInfo;
+      const { SlabThicknessService } = servicesManager.services;
+      const activeIcon = stateSyncService.getState().rapidIconState.activeTool;
+      const slabThickness = activeIcon === 'Mip' ? 10 : 0.05;
+      SlabThicknessService.setSlabThickness(slabThickness);
       viewportsInfo.forEach(({ viewportId, renderingEngineId }) => {
         const enabledElement = getEnabledElementByIds(
           viewportId,
@@ -481,13 +485,12 @@ function commandsModule({ servicesManager, commandsManager }) {
         const { viewport } = enabledElement;
         if (!(viewport instanceof VolumeViewport)) return;
         const defaultOrientation = viewport.defaultOptions.orientation;
+        viewport.setOrientation(defaultOrientation);
+        viewport.setSlabThickness(slabThickness);
         commandsManager.runCommand('setWindowLevel', {
           window: 700,
           level: 100,
         });
-        viewport.setOrientation(defaultOrientation);
-        viewport.setSlabThickness(0.05);
-        viewport.render();
       });
       const toolsInGroup = Object.values(toolGroup._toolInstances);
       const crosshairsToolInstance = toolsInGroup.find(
@@ -495,23 +498,6 @@ function commandsModule({ servicesManager, commandsManager }) {
       );
       if (crosshairsToolInstance) {
         crosshairsToolInstance.resetAnnotations();
-      }
-      const currentActiveTool = toolbarService.getActiveTools();
-      if (currentActiveTool && currentActiveTool[0] === 'Mip') {
-        toolbarService.recordInteraction({
-          groupId: 'ctToolGroup',
-          itemId: 'StackScroll',
-          interactionType: 'tool',
-          commands: [
-            {
-              commandName: 'setToolActive',
-              commandOptions: {
-                toolName: 'StackScroll',
-              },
-              context: 'CORNERSTONE',
-            },
-          ],
-        });
       }
     },
     scaleViewport: ({ direction }) => {

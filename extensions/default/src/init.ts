@@ -52,6 +52,10 @@ export default function init({ servicesManager, configuration = {} }): void {
   // changes numRows and numCols, the viewports can be remembers and then replaced
   // afterwards.
   stateSyncService.register('viewportsByPosition', { clearOnModeExit: true });
+
+  // Stores the entire Icon/Crosshairs State to Maintain the 
+  // to maintain when changing orientation or hanging protocol.
+  stateSyncService.register('rapidIconState', {clearOnModeExit: true,});
 }
 
 const handlePETImageMetadata = ({ SeriesInstanceUID, StudyInstanceUID }) => {
