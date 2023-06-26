@@ -56,6 +56,12 @@
     },
     {
       "packageName": "@ischemaview/dicom-pulmonary-rwa"
+    },
+    {
+      "packageName": "@ischemaview/dicom-anr-rma"
+    },
+    {
+      "packageName": "@ischemaview/dicom-anr-rwa"
     }
   ],
   "modesFactory": [],
