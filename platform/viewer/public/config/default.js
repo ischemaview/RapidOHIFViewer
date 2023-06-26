@@ -28,6 +28,12 @@ window.config = {
     // above, the number of requests can be go a lot higher.
     prefetch: 25,
   },
+  /* config for WW/WWL Tool sensitivity.
+   * to decreases sensitivity -> decreases defaultMultiplier ans increases defaultImageDynamicRange,
+   *  to increase sensitivity -> increase defaultMultiplier ans decreases defaultImageDynamicRange,
+   **/
+  defaultMultiplier: 0.5,
+  defaultImageDynamicRange: 4096,
   // filterQueryParam: false,
   dataSources: [
     {
