@@ -195,9 +195,15 @@ function defaultRouteInit(
     }
 
     if (originalSeriesDisplaySet && SlabSelectorService) {
-      SlabSelectorService.setNumberOfSlice(
-        originalSeriesDisplaySet.images.length
-      );
+      if (originalSeriesDisplaySet.isMultiFrame) {
+        SlabSelectorService.setNumberOfSlice(
+          originalSeriesDisplaySet.numImageFrames
+        );
+      } else {
+        SlabSelectorService.setNumberOfSlice(
+          originalSeriesDisplaySet.images.length
+        );
+      }
 
       SlabSelectorService.setOriginalSeriesDisplaySetId(
         originalSeriesDisplaySet.displaySetInstanceUID

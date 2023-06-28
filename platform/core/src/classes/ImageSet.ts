@@ -46,7 +46,11 @@ class ImageSet {
      * displaySetService.setDisplaySetMetadataInvalidated(displaySetUID)
      */
     const imagesMapper = this.getAttribute('imagesMapper');
-    if (imagesMapper && imagesMapper instanceof Function) {
+    if (
+      !this.getAttribute('isMultiFrame') &&
+      imagesMapper &&
+      imagesMapper instanceof Function
+    ) {
       return imagesMapper(this.rawImages);
     }
     return this.rawImages;
