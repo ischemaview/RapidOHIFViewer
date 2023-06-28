@@ -1,7 +1,9 @@
 import { PubSubService } from '../_shared/pubSubServiceInterface';
 import { ExtensionManager } from '../../extensions';
 
-const EVENTS = {};
+const EVENTS = {
+  STATE_CHANGED:'event:stateSyncService:stateChanged',
+};
 
 type Obj = Record<string, unknown>;
 
@@ -71,6 +73,7 @@ export default class StateSyncService extends PubSubService {
       }
     });
     this.state = { ...this.state, ...states };
+    this._broadcastEvent(EVENTS.STATE_CHANGED,{});
     return states;
   }
 
