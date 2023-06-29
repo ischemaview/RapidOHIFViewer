@@ -29,11 +29,11 @@ window.config = {
     prefetch: 25,
   },
   /* config for WW/WWL Tool sensitivity.
-   * to decreases sensitivity -> decreases defaultMultiplier ans increases defaultImageDynamicRange,
-   *  to increase sensitivity -> increase defaultMultiplier ans decreases defaultImageDynamicRange,
+   * to decreases sensitivity -> decreases defaultWindowLevelMultiplier ans increases defaultWindowRange,
+   * to increase sensitivity -> increase defaultWindowLevelMultiplier ans decreases defaultWindowRange,
    **/
-  defaultMultiplier: 0.5,
-  defaultImageDynamicRange: 4096,
+  defaultWindowLevelMultiplier: 0.5,
+  defaultWindowRange: 4096,
   // filterQueryParam: false,
   dataSources: [
     {
