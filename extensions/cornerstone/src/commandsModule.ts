@@ -473,7 +473,10 @@ function commandsModule({ servicesManager, commandsManager }) {
     resetToolGroupVolumeViewports: ({ toolGroupId }) => {
       const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
       const viewportsInfo = toolGroup.viewportsInfo;
-      const { SlabThicknessService } = servicesManager.services;
+      const {
+        SlabThicknessService,
+        HangingProtocolService,
+      } = servicesManager.services;
       const activeIcon = stateSyncService.getState().rapidIconState.activeTool;
       const slabThickness = activeIcon === 'Mip' ? 10 : 0.05;
       SlabThicknessService.setSlabThickness(slabThickness);
@@ -487,10 +490,19 @@ function commandsModule({ servicesManager, commandsManager }) {
         const defaultOrientation = viewport.defaultOptions.orientation;
         viewport.setOrientation(defaultOrientation);
         viewport.setSlabThickness(slabThickness);
-        commandsManager.runCommand('setWindowLevel', {
-          window: 700,
-          level: 100,
-        });
+        const defaultWindowLevel =
+          HangingProtocolService.protocol.stages[0].viewports[0].displaySets[0]
+            .options.voi;
+        if (
+          defaultWindowLevel &&
+          defaultWindowLevel.windowWidth &&
+          defaultWindowLevel.windowCenter
+        ) {
+          commandsManager.runCommand('setWindowLevel', {
+            window: defaultWindowLevel.windowWidth,
+            level: defaultWindowLevel.windowCenter,
+          });
+        }
       });
       const toolsInGroup = Object.values(toolGroup._toolInstances);
       const crosshairsToolInstance = toolsInGroup.find(
