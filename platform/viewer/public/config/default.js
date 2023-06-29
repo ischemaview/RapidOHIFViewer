@@ -28,6 +28,12 @@ window.config = {
     // above, the number of requests can be go a lot higher.
     prefetch: 25,
   },
+  /* config for WW/WWL Tool sensitivity.
+   * to decreases sensitivity -> decreases defaultWindowLevelMultiplier ans increases defaultWindowRange,
+   * to increase sensitivity -> increase defaultWindowLevelMultiplier ans decreases defaultWindowRange,
+   **/
+  defaultWindowLevelMultiplier: 0.5,
+  defaultWindowRange: 4096,
   // filterQueryParam: false,
   dataSources: [
     {

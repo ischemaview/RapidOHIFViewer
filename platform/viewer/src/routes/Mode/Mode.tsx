@@ -527,10 +527,13 @@ export default function ModeRoute({
     // to perform custom hanging protocol actions
     hangingProtocolService.setActiveProtocolIds(hangingProtocolIdToUse);
 
+    const appConfig = extensionManager._appConfig;
+    
     mode?.onModeEnter({
       servicesManager,
       extensionManager,
       commandsManager,
+      appConfig
     });
 
     const setupRouteInit = async () => {
