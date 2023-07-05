@@ -43,27 +43,28 @@ function defaultRouteInit(
   } = servicesManager.services;
 
   const unsubscriptions = [];
-  const { unsubscribe: instanceAddedUnsubscribe } =
-    DicomMetadataStore.subscribe(
-      DicomMetadataStore.EVENTS.INSTANCES_ADDED,
-      function ({ StudyInstanceUID, SeriesInstanceUID, madeInClient = false }) {
-        const seriesMetadata = DicomMetadataStore.getSeries(
-          StudyInstanceUID,
-          SeriesInstanceUID
-        );
+  const {
+    unsubscribe: instanceAddedUnsubscribe,
+  } = DicomMetadataStore.subscribe(
+    DicomMetadataStore.EVENTS.INSTANCES_ADDED,
+    function({ StudyInstanceUID, SeriesInstanceUID, madeInClient = false }) {
+      const seriesMetadata = DicomMetadataStore.getSeries(
+        StudyInstanceUID,
+        SeriesInstanceUID
+      );
 
-        const displaySet = displaySetService.getDisplaySetsForSeries(
-          SeriesInstanceUID
+      const displaySet = displaySetService.getDisplaySetsForSeries(
+        SeriesInstanceUID
+      );
+
+      if (displaySet.length === 0) {
+        displaySetService.makeDisplaySets(
+          seriesMetadata.instances,
+          madeInClient
         );
-  
-        if (displaySet.length === 0) {
-          displaySetService.makeDisplaySets(
-            seriesMetadata.instances,
-            madeInClient
-          );
-        }
       }
-    );
+    }
+  );
 
   unsubscriptions.push(instanceAddedUnsubscribe);
 
@@ -273,9 +274,11 @@ export default function ModeRoute({
     locationRef.current = location;
   }
 
-  const { displaySetService, hangingProtocolService } = (
-    servicesManager as ServicesManager
-  ).services;
+  const {
+    displaySetService,
+    hangingProtocolService,
+    ExternalInterfaceService,
+  } = (servicesManager as ServicesManager).services;
 
   const {
     extensions,
@@ -364,49 +367,57 @@ export default function ModeRoute({
   useEffect(() => {
     if (dataSource.onReloadStudy) {
       dataSource.onReloadStudy(({ studyInstanceUIDs, seriesInstanceUIDs }) => {
-        const { HangingProtocolService, SlabSelectorService , DisplaySetService , CornerstoneViewportService , toolbarService ,ErrorManagementService} =
-          servicesManager.services;
-          ErrorManagementService .resetImageList()
-          toolbarService.recordInteraction({
-            groupId: 'ctToolGroup',
-            itemId: 'StackScroll',
-            interactionType: 'tool',
-            commands: [
-              {
-                commandName: 'setToolActive',
-                commandOptions: {
-                  toolName: 'StackScroll',
-                },
-                context: 'CORNERSTONE',
+        const {
+          HangingProtocolService,
+          SlabSelectorService,
+          DisplaySetService,
+          CornerstoneViewportService,
+          toolbarService,
+          ErrorManagementService,
+        } = servicesManager.services;
+        ErrorManagementService.resetImageList();
+        toolbarService.recordInteraction({
+          groupId: 'ctToolGroup',
+          itemId: 'StackScroll',
+          interactionType: 'tool',
+          commands: [
+            {
+              commandName: 'setToolActive',
+              commandOptions: {
+                toolName: 'StackScroll',
               },
-            ],
-          });
+              context: 'CORNERSTONE',
+            },
+          ],
+        });
 
-          let viewportIds = CornerstoneViewportService.getViewportIds();
-          viewportIds.forEach((vpId) => {
-            let viewportInfo = CornerstoneViewportService.getViewportInfo(vpId);
-            if (
-              viewportInfo &&
-              viewportInfo.getViewportData().viewportType === 'orthographic'
-            ) {
-              CornerstoneViewportService.disableElement(viewportInfo.viewportIndex);
-            }
-          });
+        let viewportIds = CornerstoneViewportService.getViewportIds();
+        viewportIds.forEach(vpId => {
+          let viewportInfo = CornerstoneViewportService.getViewportInfo(vpId);
+          if (
+            viewportInfo &&
+            viewportInfo.getViewportData().viewportType === 'orthographic'
+          ) {
+            CornerstoneViewportService.disableElement(
+              viewportInfo.viewportIndex
+            );
+          }
+        });
 
-          let originalDisplaySetUid = SlabSelectorService.getOriginalSeriesDisplaySetId();
-          const volumeIdOriginal = `cornerstoneStreamingImageVolume:${originalDisplaySetUid}`;
-  
-          const volumeOriginal = cs3DCache.getVolume(volumeIdOriginal);
-          if (volumeOriginal) {
-            cs3DCache.removeVolumeLoadObject(volumeIdOriginal);
-          }
-  
-          let interpolatedDisplaySetUid = SlabSelectorService.getInterpolatedSeriesDisplaySetId();
-          const volumeId = `cornerstoneStreamingImageVolume:${interpolatedDisplaySetUid}`;
-          const volume = cs3DCache.getVolume(volumeId);
-          if (volume) {
-            cs3DCache.removeVolumeLoadObject(volumeId);
-          }
+        let originalDisplaySetUid = SlabSelectorService.getOriginalSeriesDisplaySetId();
+        const volumeIdOriginal = `cornerstoneStreamingImageVolume:${originalDisplaySetUid}`;
+
+        const volumeOriginal = cs3DCache.getVolume(volumeIdOriginal);
+        if (volumeOriginal) {
+          cs3DCache.removeVolumeLoadObject(volumeIdOriginal);
+        }
+
+        let interpolatedDisplaySetUid = SlabSelectorService.getInterpolatedSeriesDisplaySetId();
+        const volumeId = `cornerstoneStreamingImageVolume:${interpolatedDisplaySetUid}`;
+        const volume = cs3DCache.getVolume(volumeId);
+        if (volume) {
+          cs3DCache.removeVolumeLoadObject(volumeId);
+        }
 
         if (HangingProtocolService) {
           HangingProtocolService.reset();
@@ -424,7 +435,7 @@ export default function ModeRoute({
           mode?.routes[0]?.layoutTemplate().props.deviceType,
           hangingProtocol
         );
-      });      
+      });
     }
   }, [location]);
 
@@ -443,12 +454,14 @@ export default function ModeRoute({
   }, [location]);
 
   useEffect(() => {
-    const { ExternalInterfaceService, PerformanceEventTrackingService } =
-      servicesManager.services;
+    const {
+      ExternalInterfaceService,
+      PerformanceEventTrackingService,
+    } = servicesManager.services;
     if (ExternalInterfaceService) {
       ExternalInterfaceService.sendViewerReady();
     }
-    if(PerformanceEventTrackingService) {
+    if (PerformanceEventTrackingService) {
       PerformanceEventTrackingService.startApplicationLoadTime();
     }
   }, []);
@@ -507,7 +520,6 @@ export default function ModeRoute({
     // Add SOPClassHandlers to a new SOPClassManager.
     displaySetService.init(extensionManager, sopClassHandlers);
 
-
     extensionManager.onModeEnter({
       servicesManager,
       extensionManager,
@@ -528,12 +540,49 @@ export default function ModeRoute({
     hangingProtocolService.setActiveProtocolIds(hangingProtocolIdToUse);
 
     const appConfig = extensionManager._appConfig;
-    
+    let defaultWindowLevel =
+      appConfig.defaultWLSelection[ExternalInterfaceService.getModule()];
+    if (!defaultWindowLevel) {
+      // This is fallback on DV side, incase RMA does not pass valid module
+      if (mode?.id.toLowerCase().includes('neuro')) {
+        defaultWindowLevel = {
+          name: 'INTRACRANIAL',
+          window: 600,
+          level: 180,
+        };
+      } else if (mode?.id.toLowerCase().includes('pulmonary')) {
+        defaultWindowLevel = {
+          name: 'EMBOLISM',
+          window: 700,
+          level: 100,
+        };
+      } else if (mode?.id.toLowerCase().includes('anr')) {
+        defaultWindowLevel = {
+          name: 'INTRACRANIAL',
+          window: 600,
+          level: 180,
+        };
+      }
+    }
+
+    hangingProtocolService.protocols.forEach(protocol => {
+      if (protocol.id.includes('mpr')) {
+        protocol.stages[0].viewports.forEach(viewport => {
+          viewport.displaySets.forEach(displaySet => {
+            displaySet.options.voi = {
+              windowWidth: defaultWindowLevel.window,
+              windowCenter: defaultWindowLevel.level,
+            };
+          });
+        });
+      }
+    });
+
     mode?.onModeEnter({
       servicesManager,
       extensionManager,
       commandsManager,
-      appConfig
+      appConfig,
     });
 
     const setupRouteInit = async () => {

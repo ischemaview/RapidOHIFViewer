@@ -28,10 +28,37 @@ window.config = {
     // above, the number of requests can be go a lot higher.
     prefetch: 25,
   },
+  defaultWLSelection: {
+    LVO: {
+      name: 'BRAIN',
+      window: 80,
+      level: 40,
+    },
+    NCCT: {
+      name: 'INTRACRANIAL',
+      window: 600,
+      level: 180,
+    },
+    RVLV: {
+      name: 'EMBOLISM',
+      window: 700,
+      level: 100,
+    },
+    PE: {
+      name: 'EMBOLISM',
+      window: 700,
+      level: 100,
+    },
+    ANR: {
+      name: 'INTRACRANIAL',
+      window: 600,
+      level: 180,
+    },
+  },
   /* config for WW/WWL Tool sensitivity.
    * to decreases sensitivity -> decreases defaultWindowLevelMultiplier ans increases defaultWindowRange,
    * to increase sensitivity -> increase defaultWindowLevelMultiplier ans decreases defaultWindowRange,
-   **/
+  **/
   defaultWindowLevelMultiplier: 0.5,
   defaultWindowRange: 4096,
   // filterQueryParam: false,
