@@ -194,6 +194,19 @@ function defaultRouteInit(
       }
     }
 
+    if (interpolatedSeriesDisplaySet && SlabSelectorService) {
+      try {
+        const numberOfSlice = interpolatedSeriesDisplaySet.images[0].ImageType.split(
+          '\\'
+        )[3];
+        if (numberOfSlice) {
+          SlabSelectorService.setNumberOfSlice(numberOfSlice);
+        }
+      } catch (e) {
+        console.log('Error while reading ImageType from Interpolated series');
+      }
+    }
+
     if (originalSeriesDisplaySet && SlabSelectorService) {
       SlabSelectorService.setNumberOfSlice(
         originalSeriesDisplaySet.images.length
@@ -207,7 +220,11 @@ function defaultRouteInit(
     const seriesInstanceUIDsNeedsToCache: Array<string> = [];
 
     //Send request caching Original Series
-    if (interpolatedSeriesDisplaySet && deviceType !== 'DESKTOP') {
+    if (
+      originalSeriesDisplaySet &&
+      interpolatedSeriesDisplaySet &&
+      deviceType !== 'DESKTOP'
+    ) {
       seriesInstanceUIDsNeedsToCache.push(
         originalSeriesDisplaySet.SeriesInstanceUID
       );
