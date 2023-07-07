@@ -332,6 +332,7 @@ export default function ModeRoute({
   const {
     displaySetService,
     hangingProtocolService,
+    stateSyncService,
     ExternalInterfaceService,
   } = (servicesManager as ServicesManager).services;
 
@@ -633,6 +634,10 @@ export default function ModeRoute({
         });
       }
     });
+
+    const rapidIconState = stateSyncService.getState().rapidIconState;
+    rapidIconState.isDefaultUser = false;
+    stateSyncService.store({rapidIconState});
 
     mode?.onModeEnter({
       servicesManager,
