@@ -474,12 +474,14 @@ function commandsModule({ servicesManager, commandsManager }) {
       const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
       const viewportsInfo = toolGroup.viewportsInfo;
       const {
-        SlabThicknessService,
         HangingProtocolService,
+        SlabThicknessService,
       } = servicesManager.services;
       const activeIcon = stateSyncService.getState().rapidIconState.activeTool;
       const slabThickness = activeIcon === 'Mip' ? 10 : 0.05;
-      SlabThicknessService.setSlabThickness(slabThickness);
+      if (activeIcon === 'Mip') {
+        SlabThicknessService.setSlabThickness(10);
+      }
       viewportsInfo.forEach(({ viewportId, renderingEngineId }) => {
         const enabledElement = getEnabledElementByIds(
           viewportId,
