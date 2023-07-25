@@ -41,6 +41,7 @@ function defaultRouteInit(
     SlabSelectorService,
     OrientationService,
     ExternalInterfaceService,
+    ImageShareService,
     cornerstoneCacheService,
   } = servicesManager.services;
 
@@ -284,10 +285,11 @@ function defaultRouteInit(
     }
     // run the hanging protocol matching on the displaySets with the predefined
     // hanging protocol in the mode configuration
-    hangingProtocolService.run(
+    hangingProtocolService.setProperties(
       { studies, activeStudy, displaySets },
       hangingProtocolId
     );
+    ImageShareService.runHangingProtocol(hangingProtocolId);
   });
 
   return unsubscriptions;

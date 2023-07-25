@@ -333,6 +333,25 @@ export default class HangingProtocolService extends PubSubService {
    *        the studies to display in viewports.
    * @param protocol is a specific protocol to apply.
    */
+
+  public setProperties({studies, displaySets, activeStudy}, protocolId){
+    this.studies = [...(studies || this.studies)];
+    this.displaySets = displaySets;
+    this.setActiveStudyUID((activeStudy || studies[0])?.StudyInstanceUID);
+
+    this.protocolEngine = new ProtocolEngine(
+      this.getProtocols(),
+      this.customAttributeRetrievalCallbacks
+    );
+  }
+
+  public runHangingProtocol(protocolId, rerunLoader = false) {
+    if (protocolId && typeof protocolId === 'string') {
+      const protocol = this.getProtocolById(protocolId);
+      this._setProtocol(protocol, { rerunLoader });
+    }
+  }
+
   public run(
     { studies, displaySets, activeStudy, rerunLoader = false },
     protocolId
