@@ -409,9 +409,22 @@ const OHIFCornerstoneViewport = React.memo(React.forwardRef((props, ref) => {
         positionPresentationStore,
       } = stateSyncService.getState();
       const { presentationIds } = viewportOptions;
+
+      let positionPresentationObject = positionPresentationStore[presentationIds?.positionPresentationId];
+      if(!positionPresentationObject){
+        // First time when coronal and sagittal viewport render then copy slabthickness from axial
+        let axialPositionPresentationId = presentationIds.positionPresentationId.replace('coronal', 'axial').replace('sagittal', 'axial');
+        let axialPositionPresentation = positionPresentationStore[axialPositionPresentationId];
+        if(axialPositionPresentation && axialPositionPresentation.slabThickness){
+          positionPresentationObject = {
+            slabThickness : axialPositionPresentation.slabThickness
+          }
+        }
+      }
+      
+
       const presentations = {
-        positionPresentation:
-          positionPresentationStore[presentationIds?.positionPresentationId],
+        positionPresentation: positionPresentationObject,
         lutPresentation:
           lutPresentationStore[presentationIds?.lutPresentationId],
       };
