@@ -513,6 +513,9 @@ function commandsModule({ servicesManager, commandsManager }) {
       if (crosshairsToolInstance) {
         crosshairsToolInstance.resetAnnotations();
       }
+      const rapidIconState = stateSyncService.getState().rapidIconState;
+      rapidIconState.zoomValueChange = {};
+      stateSyncService.store({ rapidIconState });
     },
     scaleViewport: ({ direction }) => {
       const enabledElement = _getActiveViewportEnabledElement();
