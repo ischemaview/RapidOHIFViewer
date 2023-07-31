@@ -478,10 +478,32 @@ function commandsModule({ servicesManager, commandsManager }) {
         SlabThicknessService,
       } = servicesManager.services;
       const activeIcon = stateSyncService.getState().rapidIconState.activeTool;
+
+      // Reset Slab Value.
       const slabThickness = activeIcon === 'Mip' ? 10 : 0.05;
       if (activeIcon === 'Mip') {
         SlabThicknessService.setSlabThickness(10);
       }
+      const storeState = stateSyncService.getState();
+      if (storeState) {
+        Object.entries(storeState.lutPresentationStore).forEach(
+          ([key, value]) => {
+            if (value.viewportType === 'volume') {
+              value.slabThickness = slabThickness;
+            }
+          }
+        );
+
+        Object.entries(storeState.positionPresentationStore).forEach(
+          ([key, value]) => {
+            if (value.viewportType === 'volume') {
+              value.slabThickness = slabThickness;
+            }
+          }
+        );
+        stateSyncService.store(storeState);
+      }
+
       viewportsInfo.forEach(({ viewportId, renderingEngineId }) => {
         const enabledElement = getEnabledElementByIds(
           viewportId,
@@ -490,8 +512,10 @@ function commandsModule({ servicesManager, commandsManager }) {
         const { viewport } = enabledElement;
         if (!(viewport instanceof VolumeViewport)) return;
         const defaultOrientation = viewport.defaultOptions.orientation;
+        // Reset Viewport Position.
         viewport.setOrientation(defaultOrientation);
         viewport.setSlabThickness(slabThickness);
+        // Reset WW/WL.
         const defaultWindowLevel =
           HangingProtocolService.protocol.stages[0].viewports[0].displaySets[0]
             .options.voi;
@@ -513,6 +537,9 @@ function commandsModule({ servicesManager, commandsManager }) {
       if (crosshairsToolInstance) {
         crosshairsToolInstance.resetAnnotations();
       }
+      const rapidIconState = stateSyncService.getState().rapidIconState;
+      rapidIconState.zoomValueChange = {};
+      stateSyncService.store({ rapidIconState });
     },
     scaleViewport: ({ direction }) => {
       const enabledElement = _getActiveViewportEnabledElement();
