@@ -515,8 +515,20 @@ function createDicomWebApi(webConfig, userAuthenticationService) {
       displaySet.images.forEach(instance => {
         const NumberOfFrames = instance.NumberOfFrames;
 
+        let startIndex = 1;
+        let endIndex = NumberOfFrames;
+
+        const multiFrameImagesMapper = displaySet.getAttribute('multiFrameImagesMapper');
+        if (
+          multiFrameImagesMapper &&
+          multiFrameImagesMapper instanceof Function
+        ) {
+          startIndex = multiFrameImagesMapper().startIndex;
+          endIndex = multiFrameImagesMapper().endIndex;
+        }
+
         if (NumberOfFrames > 1) {
-          for (let frame = 1; frame <= NumberOfFrames; frame++) {
+          for (let frame = startIndex; frame <= endIndex; frame++) {
             const imageId = this.getImageIdsForInstance({
               instance,
               frame,
