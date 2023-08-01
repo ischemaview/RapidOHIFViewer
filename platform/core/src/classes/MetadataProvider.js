@@ -383,7 +383,11 @@ class MetadataProvider {
       case WADO_IMAGE_LOADER_TAGS.GENERAL_IMAGE_MODULE:
         metadata = {
           sopInstanceUid: instance.SOPInstanceUID,
-          instanceNumber: toNumber(instance.InstanceNumber),
+          instanceNumber: toNumber(
+            instance.frameNumber
+              ? instance.frameNumber
+              : instance.InstanceNumber
+          ),
           lossyImageCompression: instance.LossyImageCompression,
           lossyImageCompressionRatio: instance.LossyImageCompressionRatio,
           lossyImageCompressionMethod: instance.LossyImageCompressionMethod,
