@@ -58,9 +58,9 @@ window.config = {
   /* config for WW/WWL Tool sensitivity.
    * to decreases sensitivity -> decreases defaultWindowLevelMultiplier ans increases defaultWindowRange,
    * to increase sensitivity -> increase defaultWindowLevelMultiplier ans decreases defaultWindowRange,
-  **/
-  defaultWindowLevelMultiplier: 0.5,
-  defaultWindowRange: 4096,
+   **/
+  defaultWindowLevelMultiplier: 0.125,
+  defaultWindowRange: 8192,
   // filterQueryParam: false,
   dataSources: [
     {
