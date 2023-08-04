@@ -11,6 +11,7 @@ window.config = {
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
   maxFramesInVolume: 400,
+  androidMaxFramesInVolume: 600,
   //maxCacheSize: 1024 * 1000 * 300,
 
   // below flag is for performance reasons, but it might not work for all servers
