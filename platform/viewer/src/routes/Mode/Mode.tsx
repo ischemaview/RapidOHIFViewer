@@ -31,7 +31,8 @@ function defaultRouteInit(
     sortFunction,
   },
   deviceType,
-  hangingProtocolId
+  hangingProtocolId,
+  appConfig
 ) {
   const {
     displaySetService,
@@ -40,6 +41,7 @@ function defaultRouteInit(
     SlabSelectorService,
     OrientationService,
     ExternalInterfaceService,
+    cornerstoneCacheService,
   } = servicesManager.services;
 
   const unsubscriptions = [];
@@ -183,9 +185,34 @@ function defaultRouteInit(
       );
     });
 
+    let isAndroidCriteriaMatch = false;
+
+    if (
+      deviceType !== 'DESKTOP' &&
+      ExternalInterfaceService.getIsAndroidDevice()
+    ) {
+      if (originalSeriesDisplaySet) {
+        const originalSeriesImage = originalSeriesDisplaySet.isMultiFrame
+          ? originalSeriesDisplaySet.numImageFrames
+          : originalSeriesDisplaySet.images.length;
+
+        if (originalSeriesImage <= appConfig.androidMaxFramesInVolume) {
+          isAndroidCriteriaMatch = true;
+          cornerstoneCacheService.setMaxFramesInVolume(
+            appConfig.androidMaxFramesInVolume
+          );
+          SlabSelectorService.setSlabSize(appConfig.androidMaxFramesInVolume);
+        }
+      }
+    }
+
     if (deviceType !== 'DESKTOP') {
       //if interpolated series is present then override HP to load with interpolated one
-      if (interpolatedSeriesDisplaySet && SlabSelectorService) {
+      if (
+        interpolatedSeriesDisplaySet &&
+        SlabSelectorService &&
+        !isAndroidCriteriaMatch
+      ) {
         hangingProtocolId = hangingProtocolId + '-interpolated';
 
         SlabSelectorService.setIsInterpolatedView(true);
@@ -230,7 +257,8 @@ function defaultRouteInit(
     if (
       originalSeriesDisplaySet &&
       interpolatedSeriesDisplaySet &&
-      deviceType !== 'DESKTOP'
+      deviceType !== 'DESKTOP' &&
+      !isAndroidCriteriaMatch
     ) {
       seriesInstanceUIDsNeedsToCache.push(
         originalSeriesDisplaySet.SeriesInstanceUID
@@ -238,7 +266,11 @@ function defaultRouteInit(
     }
 
     //Send request caching Sagittal Series
-    if (sagittalSeriesDisplaySet && deviceType !== 'DESKTOP') {
+    if (
+      sagittalSeriesDisplaySet &&
+      deviceType !== 'DESKTOP' &&
+      !isAndroidCriteriaMatch
+    ) {
       seriesInstanceUIDsNeedsToCache.push(
         sagittalSeriesDisplaySet.SeriesInstanceUID
       );
@@ -456,7 +488,8 @@ export default function ModeRoute({
             sortFunction,
           },
           mode?.routes[0]?.layoutTemplate().props.deviceType,
-          hangingProtocol
+          hangingProtocol,
+          appconfig
         );
       });
     }
@@ -660,7 +693,8 @@ export default function ModeRoute({
           sortFunction,
         },
         mode?.routes[0]?.layoutTemplate().props.deviceType,
-        hangingProtocolIdToUse
+        hangingProtocolIdToUse,
+        appConfig
       );
     };
 

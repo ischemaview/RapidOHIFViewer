@@ -1,6 +1,5 @@
 import guid from '../utils/guid.js';
 import { Vector3 } from 'cornerstone-math';
-import metadataProvider from './MetadataProvider.js';
 
 const OBJECT = 'object';
 
@@ -93,45 +92,58 @@ class ImageSet {
 
   sortByImagePositionPatient() {
     const images = this.rawImages;
-    const instance0 = metadataProvider.getInstance(images[0].imageId);
-    const referenceImagePositionPatient = instance0.ImagePositionPatient;
-    const ImageOrientationPatient = instance0.ImageOrientationPatient;
-    const refIppVec = new Vector3(
-      referenceImagePositionPatient[0],
-      referenceImagePositionPatient[1],
-      referenceImagePositionPatient[2]
-    );
-    const scanAxisNormal = new Vector3(
-      ImageOrientationPatient[0],
-      ImageOrientationPatient[1],
-      ImageOrientationPatient[2]
-    ).cross(
-      new Vector3(
-        ImageOrientationPatient[3],
-        ImageOrientationPatient[4],
-        ImageOrientationPatient[5]
-      )
-    );
-    const distanceImagePairs = images.map(function(image) {
-      const instance = metadataProvider.getInstance(image.imageId);
-      const eachInstanceImageOrientationPatient =
-        instance.ImageOrientationPatient;
-      const ippVec = new Vector3(eachInstanceImageOrientationPatient);
-      const positionVector = refIppVec.clone().sub(ippVec);
-      const distance = positionVector.dot(scanAxisNormal);
-      return {
-        distance,
-        image,
-      };
-    });
-    distanceImagePairs.sort(function(a, b) {
-      return b.distance - a.distance;
-    });
-    const sortedImages = distanceImagePairs.map(a => a.image);
-    images.sort(function(a, b) {
-      return sortedImages.indexOf(a) - sortedImages.indexOf(b);
-    });
+    const referenceImagePositionPatient = _getImagePositionPatient(images[0]);
+    const ImageOrientationPatient = _getImageOrientationPatient(images[0]);
+
+    if (referenceImagePositionPatient && ImageOrientationPatient) {
+      const refIppVec = new Vector3(
+        referenceImagePositionPatient[0],
+        referenceImagePositionPatient[1],
+        referenceImagePositionPatient[2]
+      );
+
+      const scanAxisNormal = new Vector3(
+        ImageOrientationPatient[0],
+        ImageOrientationPatient[1],
+        ImageOrientationPatient[2]
+      ).cross(
+        new Vector3(
+          ImageOrientationPatient[3],
+          ImageOrientationPatient[4],
+          ImageOrientationPatient[5]
+        )
+      );
+
+      const distanceImagePairs = images.map(function(image) {
+        const ippVec = new Vector3(..._getImagePositionPatient(image));
+        const positionVector = refIppVec.clone().sub(ippVec);
+        const distance = positionVector.dot(scanAxisNormal);
+
+        return {
+          distance,
+          image,
+        };
+      });
+
+      distanceImagePairs.sort(function(a, b) {
+        return b.distance - a.distance;
+      });
+
+      const sortedImages = distanceImagePairs.map(a => a.image);
+
+      images.sort(function(a, b) {
+        return sortedImages.indexOf(a) - sortedImages.indexOf(b);
+      });
+    }
   }
+}
+
+function _getImagePositionPatient(image) {
+  return image.ImagePositionPatient;
+}
+
+function _getImageOrientationPatient(image) {
+  return image.ImageOrientationPatient;
 }
 
 export default ImageSet;
