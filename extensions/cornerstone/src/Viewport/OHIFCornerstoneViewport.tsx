@@ -10,6 +10,7 @@ import {
   StackViewport,
   utilities as csUtils,
   CONSTANTS,
+  triggerEvent,
 } from '@cornerstonejs/core';
 import { Services } from '@ohif/core';
 
@@ -395,6 +396,12 @@ const OHIFCornerstoneViewport = React.memo(React.forwardRef((props, ref) => {
     }
 
     const loadViewportData = async () => {
+      const timeLog = new Date();
+      triggerEvent(
+        eventTarget,
+        'COMMON_LOG_EVENT',
+        {event: 'OHIFCornerstoneViewport.tsx - loadViewportData START', data: 'loadViewportData_start'}
+      );
       const viewportData = await cornerstoneCacheService.createViewportData(
         displaySets,
         viewportOptions,
@@ -426,6 +433,12 @@ const OHIFCornerstoneViewport = React.memo(React.forwardRef((props, ref) => {
       ).then((val) => {
         if (onViewportDataLoad) {
           onViewportDataLoad(val)
+          triggerEvent(
+            eventTarget,
+            'COMMON_LOG_EVENT',
+            {event: 'OHIFCornerstoneViewport.tsx - loadViewportData',
+            data: { startTime: timeLog, tag: 'loadViewportData_end' }}
+          );
         }
       });
     };

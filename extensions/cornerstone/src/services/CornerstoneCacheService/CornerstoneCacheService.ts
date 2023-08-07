@@ -1,5 +1,5 @@
 import { ServicesManager } from '@ohif/core';
-import { cache as cs3DCache, Enums, volumeLoader } from '@cornerstonejs/core';
+import { cache as cs3DCache, Enums, eventTarget, triggerEvent, volumeLoader } from '@cornerstonejs/core';
 
 import getCornerstoneViewportType from '../../utils/getCornerstoneViewportType';
 import {
@@ -56,6 +56,14 @@ class CornerstoneCacheService {
     dataSource: unknown,
     initialImageIndex?: number
   ): Promise<StackViewportData | VolumeViewportData> {
+
+    const timeLog = new Date();
+    triggerEvent(
+      eventTarget,
+      'COMMON_LOG_EVENT',
+      {event: 'OHIFCornerstoneViewport.tsx - loadViewportData - createViewportData START', data: 'createViewportData_start'}
+    );
+
     let viewportType = viewportOptions.viewportType as string;
 
     // Todo: Since Cornerstone 3D currently doesn't support segmentation
@@ -94,7 +102,12 @@ class CornerstoneCacheService {
     }
 
     viewportData.viewportType = cs3DViewportType;
-
+    triggerEvent(
+      eventTarget,
+      'COMMON_LOG_EVENT',
+      {event: 'OHIFCornerstoneViewport.tsx - loadViewportData - createViewportData',
+        data: { startTime: timeLog, tag: 'createViewportData_end' }}
+    );
     return viewportData;
   }
 

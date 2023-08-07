@@ -10,6 +10,8 @@ import {
   cache,
   utilities,
   CONSTANTS,
+  triggerEvent,
+  eventTarget,
 } from '@cornerstonejs/core';
 
 import { utilities as csToolsUtils } from '@cornerstonejs/tools';
@@ -244,6 +246,14 @@ class CornerstoneViewportService
     publicDisplaySetOptions: DisplaySetOptions[],
     presentations?: Presentations
   ): Promise<void> {
+
+    const timeLog = new Date();
+    triggerEvent(
+      eventTarget,
+      'COMMON_LOG_EVENT',
+      {event: 'OHIFCornerstoneViewport.tsx - loadViewportData - setViewportData START', data: 'setViewportData_start'}
+    );
+  
     const renderingEngine = this.getRenderingEngine();
     const viewportId =
       publicViewportOptions.viewportId || this.getViewportId(viewportIndex);
@@ -307,6 +317,14 @@ class CornerstoneViewportService
     renderingEngine.enableElement(viewportInput);
 
     const viewport = renderingEngine.getViewport(viewportId);
+
+    triggerEvent(
+      eventTarget,
+      'COMMON_LOG_EVENT',
+      {event: 'OHIFCornerstoneViewport.tsx - loadViewportData - setViewportData',
+      data: { startTime: timeLog, tag: 'setViewportData_end' }}
+    );
+
     return this._setDisplaySets(
       viewport,
       viewportData,
