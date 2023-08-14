@@ -161,9 +161,13 @@ export default function initWADOImageLoader(
           });
         };
 
-        window.caches.open(scope).then(cache => {
-          cacheLogic(cache, scope, xhr);
-        });
+        try {
+          window.caches.open(scope).then(cache => {
+            cacheLogic(cache, scope, xhr);
+          });
+        } catch (e) {
+          console.error('Error while writing catch, ' + e);
+        }
       },
       readCacheProxy: async function(xhr, url, resolve) {
         // open cache based on url scoping this allows efficient cache deletion
@@ -206,7 +210,7 @@ export default function initWADOImageLoader(
 
           return true;
         } catch (e) {
-          console.error(e);
+          console.error('Error while reading catch, ' + e);
 
           return false;
         }
