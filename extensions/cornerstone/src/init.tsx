@@ -125,6 +125,12 @@ export default async function init({
     clearOnModeExit: true,
   });
 
+  // Stores a map from `positionPresentationId` to a Presentation object so that
+  // an OHIFCornerstoneViewport can be redisplayed with the same position
+  stateSyncService.register('resetAction', {
+    clearOnModeExit: true,
+  });
+
   // Stores the entire ViewportGridService getState when toggling to one up
   // (e.g. via a double click) so that it can be restored when toggling back.
   stateSyncService.register('toggleOneUpViewportGridStore', {

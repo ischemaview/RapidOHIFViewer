@@ -501,6 +501,10 @@ function commandsModule({ servicesManager, commandsManager }) {
             }
           }
         );
+
+        storeState.resetAction.axial = true;
+        storeState.resetAction.coronal = true;
+        storeState.resetAction.sagittal = true;
         stateSyncService.store(storeState);
       }
 
@@ -529,6 +533,15 @@ function commandsModule({ servicesManager, commandsManager }) {
             level: defaultWindowLevel.windowCenter,
           });
         }
+        const currentStoreState = stateSyncService.getState();
+        if (defaultOrientation === 'axial') {
+          currentStoreState.resetAction.axial = false;
+        } else if (defaultOrientation === 'coronal') {
+          currentStoreState.resetAction.coronal = false;
+        } else if (defaultOrientation === 'sagittal') {
+          currentStoreState.resetAction.sagittal = false;
+        }
+        stateSyncService.store(storeState);
       });
       const toolsInGroup = Object.values(toolGroup._toolInstances);
       const crosshairsToolInstance = toolsInGroup.find(
