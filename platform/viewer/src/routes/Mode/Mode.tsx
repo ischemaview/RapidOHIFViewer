@@ -282,6 +282,14 @@ function defaultRouteInit(
         seriesInstanceUIDs: seriesInstanceUIDsNeedsToCache,
       });
     }
+
+    if (displaySets && displaySets[0] && displaySets[0].Modality) {
+      const modality = displaySets[0].Modality;
+      if (!['CT', 'PT'].includes(modality)) {
+        hangingProtocolId =
+          '@ischemaview/dicom-rapidai-extension.hangingProtocolModule.stack';
+      }
+    }
     // run the hanging protocol matching on the displaySets with the predefined
     // hanging protocol in the mode configuration
     hangingProtocolService.run(
