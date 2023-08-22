@@ -3,11 +3,9 @@ import {
   ListObjectsV2Command,
   PutObjectCommand,
   DeleteObjectsCommand,
-  GetObjectCommand
+  GetObjectCommand,
 } from '@aws-sdk/client-s3';
-import {
-  fromIni
-} from '@aws-sdk/credential-providers';
+import { fromIni } from '@aws-sdk/credential-providers';
 import decompress from 'decompress';
 import path from 'path';
 import * as fsPromise from 'fs/promises';
@@ -15,44 +13,84 @@ import commandLineArgs from 'command-line-args';
 import commandLineUsage from 'command-line-usage';
 
 const COMMAND_LINE_ARG_OPTIONS = [
-  { name: 'help', type: Boolean, alias: 'h', description: 'Display this usage guide'},
-  { name: 'region', alias: 'r', type: String, description: '{bold {italic REQUIRED:}} AWS region profile to use defined in ini credentials' },
-  { name: 'bucket', alias: 'b', type: String, description: '{bold {italic REQUIRED:}} S3 bucket name' },
+  {
+    name: 'help',
+    type: Boolean,
+    alias: 'h',
+    description: 'Display this usage guide',
+  },
+  {
+    name: 'region',
+    alias: 'r',
+    type: String,
+    description:
+      '{bold {italic REQUIRED:}} AWS region profile to use defined in ini credentials',
+  },
+  {
+    name: 'bucket',
+    alias: 'b',
+    type: String,
+    description: '{bold {italic REQUIRED:}} S3 bucket name',
+  },
   {
     name: 'sites',
     type: String,
     multiple: true,
     defaultOption: true,
-    description: '{bold {italic REQUIRED:}} case-sensitive relative path from bucket root of the site/module to iterate and re-deploy.'
-      + '\n\nUsing the --sites parameter flag is optional, as these are captured by default.\n',
-    typeLabel: 'site_module_path_1 ... site_module_path_N'
+    description:
+      '{bold {italic REQUIRED:}} case-sensitive relative path from bucket root of the site/module to iterate and re-deploy.' +
+      '\n\nUsing the --sites parameter flag is optional, as these are captured by default.\n',
+    typeLabel: 'site_module_path_1 ... site_module_path_N',
   },
-  { name: 'verbose', type: Boolean, alias: 'v', description: 'Verbose console logging'},
-  { name: 'quiet', type: Boolean, alias: 'q', description: 'Minimal console logging'},
-  { name: 'listonly', type: Boolean, alias: 'l', description: 'Only list patients for a given site/module'},
+  {
+    name: 'verbose',
+    type: Boolean,
+    alias: 'v',
+    description: 'Verbose console logging',
+  },
+  {
+    name: 'quiet',
+    type: Boolean,
+    alias: 'q',
+    description: 'Minimal console logging',
+  },
+  {
+    name: 'listonly',
+    type: Boolean,
+    alias: 'l',
+    description: 'Only list patients for a given site/module',
+  },
   {
     name: 'triggerfile',
     type: String,
     alias: 't',
-    description: 'The name of the file to re-save to trigger processing.\nDefault is outputjson.json',
-    defaultValue: 'outputjson.json'
-  }
+    description:
+      'The name of the file to re-save to trigger processing.\nDefault is outputjson.json',
+    defaultValue: 'outputjson.json',
+  },
+  {
+    name: 'platform',
+    type: String,
+    alias: 'p',
+    description: 'Update the platform version to this value',
+  },
 ];
 
 const USAGE_CONFIG = [
   {
     header: '{underline RMA site reprocessor}',
-    content: 'A nodejs utility script to trigger reprocessing for patient data via re-saving outputjson.json for a specified site module'
+    content:
+      'A nodejs utility script to trigger reprocessing for patient data via re-saving outputjson.json for a specified site module',
   },
   {
     header: '{underline Usage}',
     content: `  node rma-site-reprocessor.js <site_module_path_1> ... [site_module_path_N]\n    --region <aws_region_profile> --bucket <bucket_name> [OPTIONS]`,
-    raw: true
+    raw: true,
   },
   {
     header: '{underline Options}',
-    optionList: COMMAND_LINE_ARG_OPTIONS
-  }
+    optionList: COMMAND_LINE_ARG_OPTIONS,
+  },
 ];
 
 const USAGE = commandLineUsage(USAGE_CONFIG);
@@ -63,7 +101,7 @@ const LogLevel = {
   QuietBypass: 0x1,
   Normal: 0x2,
   Verbose: 0x4,
-  Error: 0x8
+  Error: 0x8,
 };
 
 const OPTIONS = commandLineArgs(COMMAND_LINE_ARG_OPTIONS);
@@ -71,19 +109,24 @@ const OPTIONS = commandLineArgs(COMMAND_LINE_ARG_OPTIONS);
 const VERBOSE = OPTIONS.verbose;
 const QUIET = OPTIONS.quiet;
 
-const LOG_LEVEL = VERBOSE ?
-  LogLevel.QuietBypass | LogLevel.Normal | LogLevel.Verbose | LogLevel.Error :
-  QUIET ?
-    LogLevel.QuietBypass | LogLevel.Error :
-    LogLevel.QuietBypass | LogLevel.Normal | LogLevel.Error;
+const LOG_LEVEL = VERBOSE
+  ? LogLevel.QuietBypass | LogLevel.Normal | LogLevel.Verbose | LogLevel.Error
+  : QUIET
+  ? LogLevel.QuietBypass | LogLevel.Error
+  : LogLevel.QuietBypass | LogLevel.Normal | LogLevel.Error;
 
 const S3_PATH_SEPARATOR = '/';
-const REGEX_LEADING_TRAILING_SEP = new RegExp(`(^${S3_PATH_SEPARATOR})|(${S3_PATH_SEPARATOR}$)`, 'g');
+const REGEX_LEADING_TRAILING_SEP = new RegExp(
+  `(^${S3_PATH_SEPARATOR})|(${S3_PATH_SEPARATOR}$)`,
+  'g'
+);
 const REGION_PROFILE = OPTIONS.region ?? 'isv-sandpit3';
 const BUCKET_NAME = OPTIONS.bucket;
 const SITES = OPTIONS.sites ?? [];
 const LIST_ONLY = OPTIONS.listonly;
-const TRIGGER_FILE =  !LIST_ONLY && OPTIONS.triggerfile ? OPTIONS.triggerfile : 'outputjson.json';
+const TRIGGER_FILE =
+  !LIST_ONLY && OPTIONS.triggerfile ? OPTIONS.triggerfile : 'outputjson.json';
+const PLATFORM_UPDATE_VERSION = OPTIONS.platform;
 
 if (OPTIONS.help || !REGION_PROFILE || !BUCKET_NAME || !SITES.length) {
   log(USAGE, LogLevel.QuietBypass);
@@ -91,7 +134,7 @@ if (OPTIONS.help || !REGION_PROFILE || !BUCKET_NAME || !SITES.length) {
 }
 
 const client = new S3Client({
-  credentials: fromIni({ profile: REGION_PROFILE })
+  credentials: fromIni({ profile: REGION_PROFILE }),
 });
 
 async function getBucketObjects(bucketName, prefix) {
@@ -100,7 +143,7 @@ async function getBucketObjects(bucketName, prefix) {
     // The default and maximum number of keys returned is 1000. This limits it to
     // one for demonstration purposes.
     MaxKeys: 100,
-    Prefix: prefix
+    Prefix: prefix,
   });
 
   let results = [];
@@ -109,12 +152,15 @@ async function getBucketObjects(bucketName, prefix) {
     let isTruncated = true;
 
     while (isTruncated) {
-      const { Contents, IsTruncated, NextContinuationToken } = await client.send(command);
+      const {
+        Contents,
+        IsTruncated,
+        NextContinuationToken,
+      } = await client.send(command);
       results = results.concat(Contents);
       isTruncated = IsTruncated;
       command.input.ContinuationToken = NextContinuationToken;
     }
-
   } catch (err) {
     log('Error encountered listing bucket objects', LogLevel.Error, err);
   }
@@ -135,10 +181,17 @@ function log(message, level, data) {
 
 (async function main() {
   for (let siteModulePath of SITES) {
-    const siteModulePathNormalized = siteModulePath.replace(REGEX_LEADING_TRAILING_SEP, '') + S3_PATH_SEPARATOR;
-    log(`retrieving patients for site module ${siteModulePathNormalized} - start`, LogLevel.Normal);
-    const bObjects = await getBucketObjects(BUCKET_NAME, path.join('', siteModulePathNormalized));
-    let pIndex = 0;
+    const siteModulePathNormalized =
+      siteModulePath.replace(REGEX_LEADING_TRAILING_SEP, '') +
+      S3_PATH_SEPARATOR;
+    log(
+      `retrieving patients for site module ${siteModulePathNormalized} - start`,
+      LogLevel.Normal
+    );
+    const bObjects = await getBucketObjects(
+      BUCKET_NAME,
+      path.join('', siteModulePathNormalized)
+    );
     for (let bObject of bObjects) {
       if (bObject.Key.endsWith(TRIGGER_FILE)) {
         const chunks = [];
@@ -147,8 +200,8 @@ function log(message, level, data) {
           log(`Downloading file: ${bObject.Key} - start`, LogLevel.Verbose);
           const getObjectCommand = new GetObjectCommand({
             Bucket: BUCKET_NAME,
-            Key: bObject.Key
-          })
+            Key: bObject.Key,
+          });
           const response = await client.send(getObjectCommand);
 
           for await (let chunk of response.Body) {
@@ -163,18 +216,49 @@ function log(message, level, data) {
             const outputObj = JSON.parse(jsonData);
 
             log(
-              `{`
-              + `\n  "Patient": "${outputObj.Patient.PatientName || ( outputObj.Patient.PatientAge + ',' +outputObj.Patient.PatientSex)}",`
-              + `\n  "ID": "${outputObj.Patient.PatientID}",`
-              + `\n  "TaskID": "${outputObj.JobManagerTaskID}",`
-              + `\n  "StudyUID": "${outputObj.StudyInstanceUID}",`
-              + `\n  "SeriesUID": "${outputObj.SeriesInstanceUID}"`
-              + `\n},`, LogLevel.Normal);
+              `{` +
+                `\n  "Patient": "${outputObj.Patient.PatientName ||
+                  outputObj.Patient.PatientAge +
+                    ',' +
+                    outputObj.Patient.PatientSex}",` +
+                `\n  "ID": "${outputObj.Patient.PatientID}",` +
+                `\n  "TaskID": "${outputObj.JobManagerTaskID}",` +
+                `\n  "StudyUID": "${outputObj.StudyInstanceUID}",` +
+                `\n  "SeriesUID": "${outputObj.SeriesInstanceUID}"` +
+                `\n},`,
+              LogLevel.Normal
+            );
             continue;
           }
-
         } catch (e) {
           log(`ERROR Downloading file: ${bObject.Key}`, LogLevel.Error, e);
+        }
+
+        let finalBuffer = new Buffer.concat(chunks);
+        if (TRIGGER_FILE === 'outputjson.json' && PLATFORM_UPDATE_VERSION) {
+          log(
+            `Updating platform version to ${PLATFORM_UPDATE_VERSION} - start`,
+            LogLevel.Verbose
+          );
+          const buffer = Buffer.concat(chunks);
+          const jsonData = buffer.toString('utf-8');
+          const outputObj = JSON.parse(jsonData);
+          log(
+            `Updating platform version to ${PLATFORM_UPDATE_VERSION} - current RapidVersion ${outputObj.Version.RapidVersion}`,
+            LogLevel.Verbose
+          );
+          outputObj.Version.RapidVersion = outputObj.Version.RapidVersion.split(
+            ' '
+          )
+            .slice(0, 2)
+            .concat(OPTIONS.platform)
+            .join(' ');
+
+          finalBuffer = Buffer.from(JSON.stringify(outputObj, 'utf-8'));
+          log(
+            `Updating platform version to ${PLATFORM_UPDATE_VERSION} - complete`,
+            LogLevel.Verbose
+          );
         }
 
         try {
@@ -183,18 +267,22 @@ function log(message, level, data) {
             Bucket: BUCKET_NAME,
             Key: bObject.Key,
             ContentType: bObject.ContentType,
-            Body: new Buffer.concat(chunks)
+            Body: finalBuffer,
           });
 
           const putResult = await client.send(putObjectCommand);
           log(`Uploading file: ${bObject.Key} - complete`, LogLevel.Verbose);
         } catch (e) {
-
+          log(
+            `ERRORß Uploading file: ${bObject.Key} - ${e.toString()}`,
+            LogLevel.Error
+          );
         }
       }
-
     }
-    log(`retrieving patients for site module ${siteModulePathNormalized} - complete`, LogLevel.Normal);
+    log(
+      `retrieving patients for site module ${siteModulePathNormalized} - complete`,
+      LogLevel.Normal
+    );
   }
-
 })();
