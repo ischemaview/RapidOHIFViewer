@@ -154,16 +154,31 @@ export default function initWADOImageLoader(
 
           return cache.put(req, res).catch(error => {
             if (error.name === 'QuotaExceededError') {
+              window.services.ExternalInterfaceService.sendLogEvents(
+                4,
+                'Quota exceed error while write cache, ' + error
+              );
               triggerQuotaError();
             } else {
+              window.services.ExternalInterfaceService.sendLogEvents(
+                4,
+                'Error occured while write cache, ' + error
+              );
               console.error(error);
             }
           });
         };
 
-        window.caches.open(scope).then(cache => {
-          cacheLogic(cache, scope, xhr);
-        });
+        try {
+          window.caches.open(scope).then(cache => {
+            cacheLogic(cache, scope, xhr);
+          });
+        } catch (e) {
+          window.services.ExternalInterfaceService.sendLogEvents(
+            4,
+            'Error occured while opening cache, ' + e
+          );
+        }
       },
       readCacheProxy: async function(xhr, url, resolve) {
         // open cache based on url scoping this allows efficient cache deletion
@@ -190,22 +205,26 @@ export default function initWADOImageLoader(
 
           xhr.getResponseHeader = name => res.headers.get(name);
           const arrayBuffer = res.arrayBuffer();
-          const contentLength = arrayBuffer.byteLength;
+          //const contentLength = arrayBuffer.byteLength;
 
           resolve(arrayBuffer);
 
-          const req = new Request(url, {
-            headers: {
-              'dicom-last-put-date': new Date().toUTCString(),
-              'dicom-last-viewed-date': new Date().toUTCString(),
-              'dicom-content-length': `${contentLength}`,
-            },
-          });
+          // const req = new Request(url, {
+          //   headers: {
+          //     'dicom-last-put-date': new Date().toUTCString(),
+          //     'dicom-last-viewed-date': new Date().toUTCString(),
+          //     'dicom-content-length': `${contentLength}`,
+          //   },
+          // });
 
-          cache.put(req, resClone);
+          // cache.put(req, resClone);
 
           return true;
         } catch (e) {
+          window.services.ExternalInterfaceService.sendLogEvents(
+            4,
+            'Error occur while read cache, ' + e
+          );
           console.error(e);
 
           return false;
