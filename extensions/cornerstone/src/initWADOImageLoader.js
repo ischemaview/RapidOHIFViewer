@@ -80,7 +80,7 @@ export default function initWADOImageLoader(
       errorHandler.getHTTPErrorHandler(error);
     },
     withCredentials: true,
-    readCache: true,
+    readCache: false,
     writeCache: false,
     cache: {
       getScope: function(url) {
