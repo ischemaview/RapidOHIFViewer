@@ -86,10 +86,36 @@ class CornerstoneCacheService {
       cs3DViewportType === Enums.ViewportType.ORTHOGRAPHIC ||
       cs3DViewportType === Enums.ViewportType.VOLUME_3D
     ) {
+      const { SlabSelectorService } = this.servicesManager.services;
+
+      let targetBuffer = null;
+      if (SlabSelectorService && SlabSelectorService.getSlabClicked()) {
+        SlabSelectorService.resetSlabClicked();
+        let interpolatedVolumeId = null;
+        let originalVolumeId = null;
+
+        originalVolumeId = `${VOLUME_LOADER_SCHEME}:${SlabSelectorService.getOriginalSeriesDisplaySetId()}`;
+        interpolatedVolumeId = `${VOLUME_LOADER_SCHEME}:${SlabSelectorService.getInterpolatedSeriesDisplaySetId()}`;
+
+        const originalVolume = cs3DCache.getVolume(originalVolumeId);
+        if (originalVolume) {
+          targetBuffer = originalVolume?.getScalarData()?.buffer;
+          cs3DCache.removeVolumeLoadObject(originalVolumeId);
+          this.volumeImageIds.delete(originalVolumeId);
+        }
+
+        const interpolatedVolume = cs3DCache.getVolume(interpolatedVolumeId);
+        if (interpolatedVolume) {
+          targetBuffer = interpolatedVolume?.getScalarData()?.buffer;
+          cs3DCache.removeVolumeLoadObject(interpolatedVolumeId);
+          this.volumeImageIds.delete(interpolatedVolumeId);
+        }
+      }
       viewportData = await this._getVolumeViewportData(
         dataSource,
         displaySets,
-        cs3DViewportType
+        cs3DViewportType,
+        targetBuffer
       );
     }
 

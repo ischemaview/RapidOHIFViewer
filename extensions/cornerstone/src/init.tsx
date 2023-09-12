@@ -92,7 +92,7 @@ export default async function init({
     stateSyncService,
   } = servicesManager.services;
 
-  window.services = servicesManager.services;
+  //window.services = servicesManager.services;
   cornerstoneCacheService.setMaxFramesInVolume(appConfig?.maxFramesInVolume);
 
   if (

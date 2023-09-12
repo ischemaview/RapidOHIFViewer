@@ -188,8 +188,8 @@ function defaultRouteInit(
     let isAndroidCriteriaMatch = false;
 
     if (
-      deviceType !== 'DESKTOP' &&
-      ExternalInterfaceService.getIsAndroidDevice()
+      deviceType !== 'DESKTOP' //&&
+      //ExternalInterfaceService.getIsAndroidDevice()
     ) {
       if (originalSeriesDisplaySet) {
         const originalSeriesImage = originalSeriesDisplaySet.isMultiFrame
