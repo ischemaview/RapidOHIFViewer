@@ -11,16 +11,8 @@ window.config = {
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
   maxFramesInVolume: 400,
-  androidMaxFramesInVolume: 650,
-  // TODO : removed
-  // used to set slab size for android device through external interface launch,
-  // For URL launch android and IOS will use this setting.
-  slabSize: 400,
-  // used to set slab size for all IOS device through external interface launch,
-  // For URL launch this setting is not used.
-  iosSlabSize: 300,
-  //maxCacheSize: 1024 * 1000 * 300,
-
+  ios17MaxFramesInVolume: 400,
+  androidMaxFramesInVolume: 600,
   // below flag is for performance reasons, but it might not work for all servers
   omitQuotationForMultipartRequest: true,
   showWarningMessageForCrossOrigin: false,
@@ -77,12 +69,12 @@ window.config = {
       sourceName: 'dicomweb',
       configuration: {
         name: 'aws',
-        // wadoUriRoot: '{siteUrl}',
-        // qidoRoot: '{siteUrl}',
-        // wadoRoot: '{siteUrl}',
-        wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
-        qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
-        wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        wadoUriRoot: '{siteUrl}',
+        qidoRoot: '{siteUrl}',
+        wadoRoot: '{siteUrl}',
+        // wadoUriRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        // qidoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
+        // wadoRoot: 'https://d1zt0lkqsoz8si.cloudfront.net/chs_health/chs_dignity/dicomweb',
         qidoSupportsIncludeField: false,
         supportsReject: false,
         imageRendering: 'wadors',
