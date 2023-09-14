@@ -186,22 +186,53 @@ function defaultRouteInit(
     });
 
     let isAndroidCriteriaMatch = false;
+    let isIosCriteriaMatch = false;
 
-    if (
-      deviceType !== 'DESKTOP' &&
-      ExternalInterfaceService.getIsAndroidDevice()
-    ) {
+    if (deviceType !== 'DESKTOP') {
       if (originalSeriesDisplaySet) {
         const originalSeriesImage = originalSeriesDisplaySet.isMultiFrame
           ? originalSeriesDisplaySet.numImageFrames
           : originalSeriesDisplaySet.images.length;
 
-        if (originalSeriesImage <= appConfig.androidMaxFramesInVolume) {
+        if (
+          ExternalInterfaceService.getIsAndroidDevice() &&
+          originalSeriesImage <= appConfig.originalSeriesLoadCreteria.android
+        ) {
           isAndroidCriteriaMatch = true;
           cornerstoneCacheService.setMaxFramesInVolume(
-            appConfig.androidMaxFramesInVolume
+            appConfig.originalSeriesLoadCreteria.android
           );
-          SlabSelectorService.setSlabSize(appConfig.androidMaxFramesInVolume);
+          SlabSelectorService.setSlabSize(
+            appConfig.originalSeriesLoadCreteria.android
+          );
+        }
+
+        if (ExternalInterfaceService.getIsIosDevice()) {
+          if (ExternalInterfaceService.getIsIos17Device()) {
+            if (
+              originalSeriesImage <= appConfig.originalSeriesLoadCreteria.ios17
+            ) {
+              isIosCriteriaMatch = true;
+              cornerstoneCacheService.setMaxFramesInVolume(
+                appConfig.originalSeriesLoadCreteria.ios17
+              );
+              SlabSelectorService.setSlabSize(
+                appConfig.originalSeriesLoadCreteria.ios17
+              );
+            }
+          } else {
+            if (
+              originalSeriesImage <= appConfig.originalSeriesLoadCreteria.ios
+            ) {
+              isIosCriteriaMatch = true;
+              cornerstoneCacheService.setMaxFramesInVolume(
+                appConfig.originalSeriesLoadCreteria.ios
+              );
+              SlabSelectorService.setSlabSize(
+                appConfig.originalSeriesLoadCreteria.ios
+              );
+            }
+          }
         }
       }
     }
@@ -211,7 +242,8 @@ function defaultRouteInit(
       if (
         interpolatedSeriesDisplaySet &&
         SlabSelectorService &&
-        !isAndroidCriteriaMatch
+        !isAndroidCriteriaMatch &&
+        !isIosCriteriaMatch
       ) {
         hangingProtocolId = hangingProtocolId + '-interpolated';
 

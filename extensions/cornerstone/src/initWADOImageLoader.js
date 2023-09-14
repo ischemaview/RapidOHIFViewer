@@ -81,7 +81,7 @@ export default function initWADOImageLoader(
     },
     withCredentials: true,
     readCache: true,
-    writeCache: false,
+    writeCache: true,
     cache: {
       getScope: function(url) {
         /**
@@ -156,16 +156,8 @@ export default function initWADOImageLoader(
 
           return cache.put(req, res).catch(error => {
             if (error.name === 'QuotaExceededError') {
-              window.services.ExternalInterfaceService.sendLogEvents(
-                4,
-                'Quota exceed error while write cache, ' + error
-              );
               triggerQuotaError();
             } else {
-              window.services.ExternalInterfaceService.sendLogEvents(
-                4,
-                'Error occured while write cache, ' + error
-              );
               console.error(error);
             }
           });
@@ -176,10 +168,7 @@ export default function initWADOImageLoader(
             cacheLogic(cache, scope, xhr);
           });
         } catch (e) {
-          window.services.ExternalInterfaceService.sendLogEvents(
-            4,
-            'Error occured while opening cache, ' + e
-          );
+          console.error(e);
         }
       },
       readCacheProxy: async function(xhr, url, resolve) {
@@ -203,7 +192,7 @@ export default function initWADOImageLoader(
             return false;
           }
 
-          const resClone = res.clone();
+          //onst resClone = res.clone();
 
           xhr.getResponseHeader = name => res.headers.get(name);
           const arrayBuffer = res.arrayBuffer();
@@ -223,12 +212,7 @@ export default function initWADOImageLoader(
 
           return true;
         } catch (e) {
-          window.services.ExternalInterfaceService.sendLogEvents(
-            4,
-            'Error occur while read cache, ' + e
-          );
           console.error(e);
-
           return false;
         }
       },
