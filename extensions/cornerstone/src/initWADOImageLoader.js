@@ -81,7 +81,7 @@ export default function initWADOImageLoader(
     },
     withCredentials: true,
     readCache: true,
-    writeCache: true,
+    writeCache: false,
     cache: {
       getScope: function(url) {
         /**
