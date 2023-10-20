@@ -1,0 +1,85 @@
+.viewport-wrapper {
+  width: 100%;
+  height: 100%; /* MUST have `height` to prevent resize infinite loop */
+  position: relative;
+}
+
+.cornerstone-viewport-element {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: black;
+
+  /* Prevent the blue outline in Chrome when a viewport is selected */
+  outline: 0 !important;
+
+  /* Prevents the entire page from getting larger
+     when the magnify tool is near the sides/corners of the page */
+  overflow: hidden;
+}
+
+/*
+custom overlay panels: top-left, top-right, bottom-left and bottom-right
+If any text to be displayed on the overlay is too long to hold on a single
+line, it will be truncated with ellipsis in the end.
+*/
+.viewport-overlay {
+  max-width: 47%;
+}
+/* .viewport-overlay span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+} */
+
+.viewport-overlay.left-viewport {
+  text-align: left;
+}
+
+.viewport-overlay.right-viewport-scrollbar {
+  text-align: right;
+}
+.viewport-overlay.right-viewport-scrollbar .flex.flex-row {
+  justify-content: flex-end;
+}
+
+.ViewportOrientationMarkers {
+  --marker-width: 100px;
+  --marker-height: 100px;
+  --scrollbar-width: 20px;
+  pointer-events: none;
+  font-size: 15px;
+  line-height: 18px;
+}
+.ViewportOrientationMarkers .orientation-marker {
+  position: absolute;
+}
+.ViewportOrientationMarkers .top-mid {
+  top: 0.6rem;
+  left: 50%;
+}
+.ViewportOrientationMarkers .left-mid {
+  top: 47%;
+  left: 5px;
+}
+.ViewportOrientationMarkers .right-mid {
+  top: 47%;
+  left: calc(100% - var(--marker-width) - var(--scrollbar-width));
+}
+.ViewportOrientationMarkers .bottom-mid {
+  top: calc(100% - var(--marker-height) - 0.6rem);
+  left: 47%;
+}
+.ViewportOrientationMarkers .right-mid .orientation-marker-value {
+  display: flex;
+  justify-content: flex-end;
+  min-width: var(--marker-width);
+}
+.ViewportOrientationMarkers .bottom-mid .orientation-marker-value {
+  display: flex;
+  justify-content: flex-start;
+  min-height: var(--marker-height);
+  flex-direction: column-reverse;
+}
+
