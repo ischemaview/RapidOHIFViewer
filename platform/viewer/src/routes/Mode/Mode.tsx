@@ -31,7 +31,8 @@ function defaultRouteInit(
     sortFunction,
   },
   deviceType,
-  hangingProtocolId
+  hangingProtocolId,
+  appConfig
 ) {
   const {
     displaySetService,
@@ -40,6 +41,7 @@ function defaultRouteInit(
     SlabSelectorService,
     OrientationService,
     ExternalInterfaceService,
+    cornerstoneCacheService,
   } = servicesManager.services;
 
   const unsubscriptions = [];
@@ -183,9 +185,34 @@ function defaultRouteInit(
       );
     });
 
+    let isAndroidCriteriaMatch = false;
+
+    if (
+      deviceType !== 'DESKTOP' &&
+      ExternalInterfaceService.getIsAndroidDevice()
+    ) {
+      if (originalSeriesDisplaySet) {
+        const originalSeriesImage = originalSeriesDisplaySet.isMultiFrame
+          ? originalSeriesDisplaySet.numImageFrames
+          : originalSeriesDisplaySet.images.length;
+
+        if (originalSeriesImage <= appConfig.androidMaxFramesInVolume) {
+          isAndroidCriteriaMatch = true;
+          cornerstoneCacheService.setMaxFramesInVolume(
+            appConfig.androidMaxFramesInVolume
+          );
+          SlabSelectorService.setSlabSize(appConfig.androidMaxFramesInVolume);
+        }
+      }
+    }
+
     if (deviceType !== 'DESKTOP') {
       //if interpolated series is present then override HP to load with interpolated one
-      if (interpolatedSeriesDisplaySet && SlabSelectorService) {
+      if (
+        interpolatedSeriesDisplaySet &&
+        SlabSelectorService &&
+        !isAndroidCriteriaMatch
+      ) {
         hangingProtocolId = hangingProtocolId + '-interpolated';
 
         SlabSelectorService.setIsInterpolatedView(true);
@@ -209,41 +236,52 @@ function defaultRouteInit(
     }
 
     if (originalSeriesDisplaySet && SlabSelectorService) {
-      SlabSelectorService.setNumberOfSlice(
-        originalSeriesDisplaySet.images.length
-      );
+      if (originalSeriesDisplaySet.isMultiFrame) {
+        SlabSelectorService.setNumberOfSlice(
+          originalSeriesDisplaySet.numImageFrames
+        );
+      } else {
+        SlabSelectorService.setNumberOfSlice(
+          originalSeriesDisplaySet.images.length
+        );
+      }
 
       SlabSelectorService.setOriginalSeriesDisplaySetId(
         originalSeriesDisplaySet.displaySetInstanceUID
       );
     }
 
-    const seriesInstanceUIDsNeedsToCache: Array<string> = [];
+    //const seriesInstanceUIDsNeedsToCache: Array<string> = [];
 
     //Send request caching Original Series
-    if (
-      originalSeriesDisplaySet &&
-      interpolatedSeriesDisplaySet &&
-      deviceType !== 'DESKTOP'
-    ) {
-      seriesInstanceUIDsNeedsToCache.push(
-        originalSeriesDisplaySet.SeriesInstanceUID
-      );
-    }
+    // if (
+    //   originalSeriesDisplaySet &&
+    //   interpolatedSeriesDisplaySet &&
+    //   deviceType !== 'DESKTOP' &&
+    //   !isAndroidCriteriaMatch
+    // ) {
+    //   seriesInstanceUIDsNeedsToCache.push(
+    //     originalSeriesDisplaySet.SeriesInstanceUID
+    //   );
+    // }
 
     //Send request caching Sagittal Series
-    if (sagittalSeriesDisplaySet && deviceType !== 'DESKTOP') {
-      seriesInstanceUIDsNeedsToCache.push(
-        sagittalSeriesDisplaySet.SeriesInstanceUID
-      );
-    }
+    // if (
+    //   sagittalSeriesDisplaySet &&
+    //   deviceType !== 'DESKTOP' &&
+    //   !isAndroidCriteriaMatch
+    // ) {
+    //   seriesInstanceUIDsNeedsToCache.push(
+    //     sagittalSeriesDisplaySet.SeriesInstanceUID
+    //   );
+    // }
 
-    if (seriesInstanceUIDsNeedsToCache.length > 0 && ExternalInterfaceService) {
-      ExternalInterfaceService.setSeriesCache({
-        studyInstanceUID: activeStudy.StudyInstanceUID,
-        seriesInstanceUIDs: seriesInstanceUIDsNeedsToCache,
-      });
-    }
+    // if (seriesInstanceUIDsNeedsToCache.length > 0 && ExternalInterfaceService) {
+    //   ExternalInterfaceService.setSeriesCache({
+    //     studyInstanceUID: activeStudy.StudyInstanceUID,
+    //     seriesInstanceUIDs: seriesInstanceUIDsNeedsToCache,
+    //   });
+    // }
     // run the hanging protocol matching on the displaySets with the predefined
     // hanging protocol in the mode configuration
     hangingProtocolService.run(
@@ -450,7 +488,8 @@ export default function ModeRoute({
             sortFunction,
           },
           mode?.routes[0]?.layoutTemplate().props.deviceType,
-          hangingProtocol
+          hangingProtocol,
+          appconfig
         );
       });
     }
@@ -654,7 +693,8 @@ export default function ModeRoute({
           sortFunction,
         },
         mode?.routes[0]?.layoutTemplate().props.deviceType,
-        hangingProtocolIdToUse
+        hangingProtocolIdToUse,
+        appConfig
       );
     };
 

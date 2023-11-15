@@ -46,7 +46,11 @@ class ImageSet {
      * displaySetService.setDisplaySetMetadataInvalidated(displaySetUID)
      */
     const imagesMapper = this.getAttribute('imagesMapper');
-    if (imagesMapper && imagesMapper instanceof Function) {
+    if (
+      !this.getAttribute('isMultiFrame') &&
+      imagesMapper &&
+      imagesMapper instanceof Function
+    ) {
       return imagesMapper(this.rawImages);
     }
     return this.rawImages;
@@ -89,47 +93,48 @@ class ImageSet {
   sortByImagePositionPatient() {
     const images = this.rawImages;
     const referenceImagePositionPatient = _getImagePositionPatient(images[0]);
-
-    const refIppVec = new Vector3(
-      referenceImagePositionPatient[0],
-      referenceImagePositionPatient[1],
-      referenceImagePositionPatient[2]
-    );
-
     const ImageOrientationPatient = _getImageOrientationPatient(images[0]);
 
-    const scanAxisNormal = new Vector3(
-      ImageOrientationPatient[0],
-      ImageOrientationPatient[1],
-      ImageOrientationPatient[2]
-    ).cross(
-      new Vector3(
-        ImageOrientationPatient[3],
-        ImageOrientationPatient[4],
-        ImageOrientationPatient[5]
-      )
-    );
+    if (referenceImagePositionPatient && ImageOrientationPatient) {
+      const refIppVec = new Vector3(
+        referenceImagePositionPatient[0],
+        referenceImagePositionPatient[1],
+        referenceImagePositionPatient[2]
+      );
 
-    const distanceImagePairs = images.map(function(image) {
-      const ippVec = new Vector3(..._getImagePositionPatient(image));
-      const positionVector = refIppVec.clone().sub(ippVec);
-      const distance = positionVector.dot(scanAxisNormal);
+      const scanAxisNormal = new Vector3(
+        ImageOrientationPatient[0],
+        ImageOrientationPatient[1],
+        ImageOrientationPatient[2]
+      ).cross(
+        new Vector3(
+          ImageOrientationPatient[3],
+          ImageOrientationPatient[4],
+          ImageOrientationPatient[5]
+        )
+      );
 
-      return {
-        distance,
-        image,
-      };
-    });
+      const distanceImagePairs = images.map(function(image) {
+        const ippVec = new Vector3(..._getImagePositionPatient(image));
+        const positionVector = refIppVec.clone().sub(ippVec);
+        const distance = positionVector.dot(scanAxisNormal);
 
-    distanceImagePairs.sort(function(a, b) {
-      return b.distance - a.distance;
-    });
+        return {
+          distance,
+          image,
+        };
+      });
 
-    const sortedImages = distanceImagePairs.map(a => a.image);
+      distanceImagePairs.sort(function(a, b) {
+        return b.distance - a.distance;
+      });
 
-    images.sort(function(a, b) {
-      return sortedImages.indexOf(a) - sortedImages.indexOf(b);
-    });
+      const sortedImages = distanceImagePairs.map(a => a.image);
+
+      images.sort(function(a, b) {
+        return sortedImages.indexOf(a) - sortedImages.indexOf(b);
+      });
+    }
   }
 }
 
