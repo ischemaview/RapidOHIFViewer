@@ -1866,10 +1866,7 @@ html.color-scheme-light[data-rapid-layout=tablet] rapid-form-fieldset[_rapid-rea
       overflow: auto;
       position: relative;
       height: inherit;
-      width: 100%;
-      -webkit-box-pack: center;
-          -ms-flex-pack: center;
-              justify-content: center; }
+      width: 100%; }
       .bottomToolbarMobile .bottomToolbarMobileIcon .control .options {
         position: absolute;
         white-space: nowrap;
