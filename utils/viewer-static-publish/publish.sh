@@ -6,6 +6,7 @@ if [ -z "$1" ]
     echo "Path to dist not supplied"
     exit 1
 fi
+VERSION_PARAMS="${2:-patch}"
 TARGET_ROOT=./platform/viewer-static
 TARGET_PATH=${TARGET_ROOT}/dist
 rm -rf ${TARGET_PATH}
@@ -13,7 +14,9 @@ cp -R $1 ${TARGET_PATH}
 git add -f ${TARGET_PATH}
 git commit -m "latest static assets"
 cd ${TARGET_ROOT}
-VERSION=$(npm version patch --workspaces=false)
+SCRIPT="npm version  $VERSION_PARAMS --workspaces=false"
+echo $SCRIPT
+VERSION=$($SCRIPT)
 git add .
 TAG="viewer-static@$(cut -c 2-99 <<< ${VERSION})"
 git commit -m "${TAG}"
