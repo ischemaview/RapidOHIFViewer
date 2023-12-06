@@ -1,6 +1,6 @@
 {
   "name": "@ischemaview/rapid-dicom-viewer",
-  "version": "1.21.34",
+  "version": "1.21.35",
   "description": "rapid-dicom-viewer built and bundled into static assets",
   "main": "index.html",
   "files": [
