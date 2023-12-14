@@ -157,5 +157,6 @@
   },
   "publishConfig": {
     "registry": "https://nexus.infrastructure.rapid-sys.com/repository/npm-internal"
-  }
+  },
+  "version": "0.0.1-0"
 }
