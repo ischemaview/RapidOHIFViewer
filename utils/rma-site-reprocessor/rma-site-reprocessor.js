@@ -33,6 +33,24 @@ const COMMAND_LINE_ARG_OPTIONS = [
     description: '{bold {italic REQUIRED:}} S3 bucket name',
   },
   {
+    name: 'copy',
+    alias: 'c',
+    type: Boolean,
+    description: 'Copy mode, source to destination',
+  },
+  {
+    name: 'dest_region',
+    alias: 'd',
+    type: String,
+    description: 'Destination S3 bucket name for copy mode',
+  },
+  {
+    name: 'dest_bucket',
+    alias: 'e',
+    type: String,
+    description: 'Destination S3 bucket name for copy mode',
+  },
+  {
     name: 'sites',
     type: String,
     multiple: true,
@@ -74,6 +92,25 @@ const COMMAND_LINE_ARG_OPTIONS = [
     alias: 'p',
     description: 'Update the platform version to this value',
   },
+  {
+    name: 'use_dest_site',
+    type: Boolean,
+    alias: 'u',
+    description:
+      'Replace system/site in path references including inside destination json files',
+  },
+  {
+    name: 'server_uuid',
+    type: String,
+    alias: 's',
+    description: 'Server uuid to use when converting to destination site',
+  },
+  {
+    name: 'patientId',
+    type: String,
+    alias: 'x',
+    description: 'Replace patient RapidId',
+  },
 ];
 
 const USAGE_CONFIG = [
@@ -84,7 +121,10 @@ const USAGE_CONFIG = [
   },
   {
     header: '{underline Usage}',
-    content: `  node rma-site-reprocessor.js <site_module_path_1> ... [site_module_path_N]\n    --region <aws_region_profile> --bucket <bucket_name> [OPTIONS]`,
+    content:
+      `  node rma-site-reprocessor.js <site_module_path_1> ... [site_module_path_N]\n    --region <aws_region_profile> --bucket <bucket_name> [OPTIONS]\n` +
+      `\n node rma-site-reprocessor.js --copy <src_s3_path_1> <dest_s3_path_2>\n    --region <src aws_region_profile> --bucket <src bucket_name>` +
+      `\n    --dest_region <dest_aws_region_profile> --dest_bucket <dest_bucket_name>`,
     raw: true,
   },
   {
@@ -120,14 +160,19 @@ const REGEX_LEADING_TRAILING_SEP = new RegExp(
   `(^${S3_PATH_SEPARATOR})|(${S3_PATH_SEPARATOR}$)`,
   'g'
 );
-const REGION_PROFILE = OPTIONS.region ?? 'isv-sandpit3';
-const BUCKET_NAME = OPTIONS.bucket;
+const REGION_PROFILE = OPTIONS.region ?? 'sandpit3';
+const BUCKET_NAME = OPTIONS.bucket ?? 'ischemaview-sandpit3-us-west-2';
 const SITES = OPTIONS.sites ?? [];
 const LIST_ONLY = OPTIONS.listonly;
 const TRIGGER_FILE =
   !LIST_ONLY && OPTIONS.triggerfile ? OPTIONS.triggerfile : 'outputjson.json';
 const PLATFORM_UPDATE_VERSION = OPTIONS.platform;
-
+const COPY_MODE = OPTIONS.copy;
+const DEST_REGION_PROFILE = OPTIONS.dest_region ?? REGION_PROFILE;
+const DEST_BUCKET_NAME = OPTIONS.dest_bucket_name ?? BUCKET_NAME;
+const USE_DEST_SITE = OPTIONS.use_dest_site ?? false;
+const SERVER_UUID = OPTIONS.server_uuid;
+const RAPIDID = OPTIONS.patientId;
 if (OPTIONS.help || !REGION_PROFILE || !BUCKET_NAME || !SITES.length) {
   log(USAGE, LogLevel.QuietBypass);
   process.exit(0);
@@ -135,6 +180,10 @@ if (OPTIONS.help || !REGION_PROFILE || !BUCKET_NAME || !SITES.length) {
 
 const client = new S3Client({
   credentials: fromIni({ profile: REGION_PROFILE }),
+});
+
+const clientDestination = new S3Client({
+  credentials: fromIni({ profile: DEST_REGION_PROFILE }),
 });
 
 async function getBucketObjects(bucketName, prefix) {
@@ -180,41 +229,59 @@ function log(message, level, data) {
 }
 
 (async function main() {
+  let siteModulePathIndex = -1;
   for (let siteModulePath of SITES) {
+    siteModulePathIndex++;
     const siteModulePathNormalized =
       siteModulePath.replace(REGEX_LEADING_TRAILING_SEP, '') +
-      S3_PATH_SEPARATOR;
-    log(
-      `retrieving patients for site module ${siteModulePathNormalized} - start`,
-      LogLevel.Normal
-    );
-    const bObjects = await getBucketObjects(
-      BUCKET_NAME,
-      path.join('', siteModulePathNormalized)
-    );
+      (siteModulePath.endsWith('.json') ? '' : S3_PATH_SEPARATOR);
+    if (COPY_MODE) {
+      if (siteModulePathIndex > 0) {
+        log('copy operation - complete', LogLevel.Normal);
+        return;
+      } else {
+        log(
+          `copy operation ${SITES[0]} => ${SITES[1]} - start`,
+          LogLevel.Normal
+        );
+      }
+    } else {
+      log(
+        `retrieving patients for site module ${siteModulePathNormalized} - start`,
+        LogLevel.Normal
+      );
+    }
+
+    let bObjects;
+    try {
+      bObjects = await getBucketObjects(
+        BUCKET_NAME,
+        path.join('', siteModulePathNormalized)
+      );
+    } catch (error) {
+      log('Error getting bucket objects', LogLevel.Error, error);
+    }
+
     for (let bObject of bObjects) {
-      if (bObject.Key.endsWith(TRIGGER_FILE)) {
+      if (COPY_MODE || bObject.Key.endsWith(TRIGGER_FILE)) {
         const chunks = [];
 
+        let response_getObject;
         try {
           log(`Downloading file: ${bObject.Key} - start`, LogLevel.Verbose);
           const getObjectCommand = new GetObjectCommand({
             Bucket: BUCKET_NAME,
             Key: bObject.Key,
           });
-          const response = await client.send(getObjectCommand);
-
-          for await (let chunk of response.Body) {
+          response_getObject = await client.send(getObjectCommand);
+          for await (let chunk of response_getObject.Body) {
             chunks.push(chunk);
           }
-
           log(`Downloading file: ${bObject.Key} - complete`, LogLevel.Verbose);
-
           if (LIST_ONLY) {
             const buffer = Buffer.concat(chunks);
             const jsonData = buffer.toString('utf-8');
             const outputObj = JSON.parse(jsonData);
-
             log(
               `{` +
                 `\n  "Patient": "${outputObj.Patient.PatientName ||
@@ -235,6 +302,50 @@ function log(message, level, data) {
         }
 
         let finalBuffer = new Buffer.concat(chunks);
+
+        let destinationPath = bObject.Key;
+        if (COPY_MODE) {
+          if (USE_DEST_SITE) {
+            const srcPathParts = bObject.Key.split('/');
+            const srcSystemSite = `${srcPathParts[0]}/${srcPathParts[1]}`;
+            const destPathParts = SITES[1].split('/');
+            const destSystemSite = `${destPathParts[0]}/${destPathParts[1]}`;
+
+            const keyWithoutSystemSite = bObject.Key.replace(srcSystemSite, '');
+            destinationPath = `${destSystemSite}${keyWithoutSystemSite}`;
+
+            const isRootLevelFile = srcPathParts.length === 5;
+            const filename = srcPathParts.at(-1);
+            const isJsonFile = filename.endsWith('.json');
+
+            if (isRootLevelFile && isJsonFile) {
+              const buffer = Buffer.concat(chunks);
+              const jsonData = buffer.toString('utf-8');
+              const regex_bucket = new RegExp(BUCKET_NAME, 'g');
+              const regex_system = new RegExp(`\\b${srcPathParts[0]}\\b`, 'g');
+              const regex_site = new RegExp(`\\b${srcPathParts[1]}\\b`, 'g');
+              let finalJsonData = jsonData
+                .replace(regex_bucket, DEST_BUCKET_NAME)
+                .replace(regex_system, destPathParts[0])
+                .replace(regex_site, destPathParts[1]);
+
+              if ((SERVER_UUID || RAPIDID) && filename === 'outputjson.json') {
+                const jObject = JSON.parse(finalJsonData);
+                if (SERVER_UUID) {
+                  jObject.ServerId = SERVER_UUID;
+                }
+                if (RAPIDID) {
+                  jObject.Patient.RAPIDId = RAPIDID;
+                }
+                finalJsonData = JSON.stringify(jObject);
+              }
+              finalBuffer = Buffer.from(finalJsonData, 'utf-8');
+            }
+          } else {
+            destinationPath = `${SITES[1]}/${destinationPath}`;
+          }
+        }
+
         if (TRIGGER_FILE === 'outputjson.json' && PLATFORM_UPDATE_VERSION) {
           log(
             `Updating platform version to ${PLATFORM_UPDATE_VERSION} - start`,
@@ -262,27 +373,39 @@ function log(message, level, data) {
         }
 
         try {
-          log(`Uploading file: ${bObject.Key} - start`, LogLevel.Verbose);
+          log(
+            `Uploading file: ${DEST_BUCKET_NAME}/${destinationPath} - start`,
+            LogLevel.Verbose
+          );
           const putObjectCommand = new PutObjectCommand({
-            Bucket: BUCKET_NAME,
-            Key: bObject.Key,
-            ContentType: bObject.ContentType,
+            Bucket: DEST_BUCKET_NAME,
+            Key: destinationPath,
+            CacheControl: response_getObject.CacheControl,
+            ContentDisposition: response_getObject.ContentDisposition,
+            ContentEncoding: response_getObject.ContentEncoding,
+            ContentLanguage: response_getObject.ContentLanguage,
+            ContentType: response_getObject.ContentType,
             Body: finalBuffer,
           });
 
-          const putResult = await client.send(putObjectCommand);
-          log(`Uploading file: ${bObject.Key} - complete`, LogLevel.Verbose);
+          const putResult = await clientDestination.send(putObjectCommand);
+          log(
+            `Uploading file: ${DEST_BUCKET_NAME}/${destinationPath} - complete`,
+            LogLevel.Verbose
+          );
         } catch (e) {
           log(
-            `ERRORß Uploading file: ${bObject.Key} - ${e.toString()}`,
+            `ERRORß Uploading file: ${destinationPath} - ${e.toString()}`,
             LogLevel.Error
           );
         }
       }
     }
-    log(
-      `retrieving patients for site module ${siteModulePathNormalized} - complete`,
-      LogLevel.Normal
-    );
+    if (!COPY_MODE) {
+      log(
+        `retrieving patients for site module ${siteModulePathNormalized} - complete`,
+        LogLevel.Normal
+      );
+    }
   }
 })();
