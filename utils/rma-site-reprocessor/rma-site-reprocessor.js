@@ -169,7 +169,7 @@ const TRIGGER_FILE =
 const PLATFORM_UPDATE_VERSION = OPTIONS.platform;
 const COPY_MODE = OPTIONS.copy;
 const DEST_REGION_PROFILE = OPTIONS.dest_region ?? REGION_PROFILE;
-const DEST_BUCKET_NAME = OPTIONS.dest_bucket_name ?? BUCKET_NAME;
+const DEST_BUCKET_NAME = OPTIONS.dest_bucket ?? BUCKET_NAME;
 const USE_DEST_SITE = OPTIONS.use_dest_site ?? false;
 const SERVER_UUID = OPTIONS.server_uuid;
 const RAPIDID = OPTIONS.patientId;
@@ -261,12 +261,15 @@ function log(message, level, data) {
     } catch (error) {
       log('Error getting bucket objects', LogLevel.Error, error);
     }
-
+    const totalObjects = bObjects.length;
+    let currentObjectIndex = 0;
     for (let bObject of bObjects) {
+      currentObjectIndex++;
       if (COPY_MODE || bObject.Key.endsWith(TRIGGER_FILE)) {
         const chunks = [];
 
         let response_getObject;
+        let resp;
         try {
           log(`Downloading file: ${bObject.Key} - start`, LogLevel.Verbose);
           const getObjectCommand = new GetObjectCommand({
@@ -305,6 +308,10 @@ function log(message, level, data) {
 
         let destinationPath = bObject.Key;
         if (COPY_MODE) {
+          log(
+            `Copying ${currentObjectIndex}/${totalObjects}`,
+            LogLevel.Verbose
+          );
           if (USE_DEST_SITE) {
             const srcPathParts = bObject.Key.split('/');
             const srcSystemSite = `${srcPathParts[0]}/${srcPathParts[1]}`;
@@ -329,13 +336,28 @@ function log(message, level, data) {
                 .replace(regex_system, destPathParts[0])
                 .replace(regex_site, destPathParts[1]);
 
-              if ((SERVER_UUID || RAPIDID) && filename === 'outputjson.json') {
+              if (
+                (SERVER_UUID || RAPIDID) &&
+                (filename === 'outputjson.json' ||
+                  filename === 'output.json' ||
+                  filename === 'site_params.json')
+              ) {
                 const jObject = JSON.parse(finalJsonData);
                 if (SERVER_UUID) {
-                  jObject.ServerId = SERVER_UUID;
+                  if (filename === 'site_params.json') {
+                    jObject.ServerId = SERVER_UUID;
+                  } else if (filename === 'output.json') {
+                    jObject.DeviceSerialNumber = SERVER_UUID;
+                  } else if (filename === 'outputjson.json') {
+                    jObject.ServerId = SERVER_UUID;
+                  }
                 }
                 if (RAPIDID) {
-                  jObject.Patient.RAPIDId = RAPIDID;
+                  if (filename === 'site_params.json') {
+                    jObject.RAPIDId = RAPIDID;
+                  } else if (filename === 'outputjson.json') {
+                    jObject.Patient.RAPIDId = RAPIDID;
+                  }
                 }
                 finalJsonData = JSON.stringify(jObject);
               }
@@ -351,7 +373,7 @@ function log(message, level, data) {
             `Updating platform version to ${PLATFORM_UPDATE_VERSION} - start`,
             LogLevel.Verbose
           );
-          const buffer = Buffer.concat(chunks);
+          const buffer = finalBuffer;
           const jsonData = buffer.toString('utf-8');
           const outputObj = JSON.parse(jsonData);
           log(
@@ -361,7 +383,7 @@ function log(message, level, data) {
           outputObj.Version.RapidVersion = outputObj.Version.RapidVersion.split(
             ' '
           )
-            .slice(0, 2)
+            .slice(0, 1)
             .concat(OPTIONS.platform)
             .join(' ');
 
