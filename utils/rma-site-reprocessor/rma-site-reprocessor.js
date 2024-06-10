@@ -5,7 +5,7 @@ import {
   DeleteObjectsCommand,
   GetObjectCommand,
 } from '@aws-sdk/client-s3';
-import { fromIni } from '@aws-sdk/credential-providers';
+import { fromIni, fromSSO } from '@aws-sdk/credential-providers';
 import decompress from 'decompress';
 import path from 'path';
 import * as fsPromise from 'fs/promises';
@@ -100,6 +100,12 @@ const COMMAND_LINE_ARG_OPTIONS = [
       'Replace system/site in path references including inside destination json files',
   },
   {
+    name: 'use_dest_system',
+    type: Boolean,
+    alias: 'y',
+    description: 'Expect and replace only system in path references',
+  },
+  {
     name: 'server_uuid',
     type: String,
     alias: 's',
@@ -110,6 +116,24 @@ const COMMAND_LINE_ARG_OPTIONS = [
     type: String,
     alias: 'x',
     description: 'Replace patient RapidId',
+  },
+  {
+    name: 'overwrite',
+    type: Boolean,
+    alias: 'o',
+    description: 'Overwrite existing files in destination bucket',
+  },
+  {
+    name: 'singlefile',
+    type: Boolean,
+    alias: 'f',
+    description: 'Single file copy only',
+  },
+  {
+    name: 'iniauth',
+    type: Boolean,
+    alias: 'i',
+    description: 'Use ini credentials for authentication instead of SSO',
   },
 ];
 
@@ -171,22 +195,35 @@ const COPY_MODE = OPTIONS.copy;
 const DEST_REGION_PROFILE = OPTIONS.dest_region ?? REGION_PROFILE;
 const DEST_BUCKET_NAME = OPTIONS.dest_bucket ?? BUCKET_NAME;
 const USE_DEST_SITE = OPTIONS.use_dest_site ?? false;
+const USE_DEST_SYSTEM = OPTIONS.use_dest_system ?? false;
 const SERVER_UUID = OPTIONS.server_uuid;
 const RAPIDID = OPTIONS.patientId;
+const OVERWRITE = OPTIONS.overwrite ?? false;
+const SINGLEFILE = OPTIONS.singlefile ?? false;
+const INIAUTH = OPTIONS.iniauth ?? false;
 if (OPTIONS.help || !REGION_PROFILE || !BUCKET_NAME || !SITES.length) {
   log(USAGE, LogLevel.QuietBypass);
   process.exit(0);
 }
 
 const client = new S3Client({
-  credentials: fromIni({ profile: REGION_PROFILE }),
+  credentials: INIAUTH
+    ? fromIni({ profile: REGION_PROFILE })
+    : fromSSO({
+        profile: REGION_PROFILE,
+      }),
 });
 
 const clientDestination = new S3Client({
-  credentials: fromIni({ profile: DEST_REGION_PROFILE }),
+  credentials: INIAUTH
+    ? fromIni({ profile: DEST_REGION_PROFILE })
+    : fromSSO({
+        profile: DEST_REGION_PROFILE,
+      }),
 });
 
-async function getBucketObjects(bucketName, prefix) {
+async function getBucketObjects(bucketName, prefix, clientInner) {
+  clientInner = clientInner ?? client;
   const command = new ListObjectsV2Command({
     Bucket: bucketName,
     // The default and maximum number of keys returned is 1000. This limits it to
@@ -205,7 +242,7 @@ async function getBucketObjects(bucketName, prefix) {
         Contents,
         IsTruncated,
         NextContinuationToken,
-      } = await client.send(command);
+      } = await clientInner.send(command);
       results = results.concat(Contents);
       isTruncated = IsTruncated;
       command.input.ContinuationToken = NextContinuationToken;
@@ -234,7 +271,7 @@ function log(message, level, data) {
     siteModulePathIndex++;
     const siteModulePathNormalized =
       siteModulePath.replace(REGEX_LEADING_TRAILING_SEP, '') +
-      (siteModulePath.endsWith('.json') ? '' : S3_PATH_SEPARATOR);
+      (siteModulePath.endsWith('.json') || SINGLEFILE ? '' : S3_PATH_SEPARATOR);
     if (COPY_MODE) {
       if (siteModulePathIndex > 0) {
         log('copy operation - complete', LogLevel.Normal);
@@ -261,15 +298,95 @@ function log(message, level, data) {
     } catch (error) {
       log('Error getting bucket objects', LogLevel.Error, error);
     }
+
     const totalObjects = bObjects.length;
     let currentObjectIndex = 0;
+
+    if (bObjects.length === 1 && bObjects[0] === undefined) {
+      log(
+        `No objects found for path ${siteModulePathNormalized}`,
+        LogLevel.Normal
+      );
+      continue;
+    }
+
+    let destinationPathBase = '';
+    if (USE_DEST_SITE || USE_DEST_SYSTEM) {
+      const srcPathParts = siteModulePathNormalized.split('/');
+      const srcSystemSite = `${srcPathParts[0]}${
+        USE_DEST_SYSTEM ? '' : '/' + srcPathParts[1]
+      }`;
+      const destPathParts = SITES[1].split('/');
+      const destSystemSite = `${destPathParts[0]}${
+        USE_DEST_SYSTEM ? '' : '/' + destPathParts[1]
+      }`;
+      const regEx = new RegExp('^' + srcSystemSite + '\\b', 'g');
+      const keyWithoutSystemSite = siteModulePathNormalized.replace(regEx, '');
+      destinationPathBase = `${destSystemSite}${keyWithoutSystemSite}`.replace(
+        REGEX_LEADING_TRAILING_SEP,
+        ''
+      );
+    }
+    let destinationObjects;
+    if (COPY_MODE) {
+      try {
+        destinationObjects = await getBucketObjects(
+          DEST_BUCKET_NAME,
+          destinationPathBase,
+          clientDestination
+        );
+      } catch (error) {
+        log('Error getting bucket objects', LogLevel.Error, error);
+      }
+    }
+
+    if (SINGLEFILE) {
+      const filePathNormalized = siteModulePath.replace(
+        REGEX_LEADING_TRAILING_SEP,
+        ''
+      );
+      bObjects = bObjects.filter(b => b.Key === filePathNormalized);
+      if (!bObjects.length) {
+        log(
+          `No matching file found for path ${filePathNormalized}`,
+          LogLevel.Error
+        );
+        return;
+      }
+    }
+
     for (let bObject of bObjects) {
       currentObjectIndex++;
       if (COPY_MODE || bObject.Key.endsWith(TRIGGER_FILE)) {
         const chunks = [];
 
         let response_getObject;
-        let resp;
+        let destinationPath = bObject.Key;
+        if (!OVERWRITE && COPY_MODE) {
+          if (USE_DEST_SITE || USE_DEST_SYSTEM) {
+            const srcPathParts = bObject.Key.split('/');
+            const srcSystemSite = `${srcPathParts[0]}${
+              USE_DEST_SYSTEM ? '' : '/' + srcPathParts[1]
+            }`;
+            const destPathParts = SITES[1].split('/');
+            const destSystemSite = `${destPathParts[0]}${
+              USE_DEST_SYSTEM ? '' : '/' + destPathParts[1]
+            }`;
+
+            const regEx = new RegExp('^' + srcSystemSite + '\\b', 'g');
+
+            const keyWithoutSystemSite = destinationPath.replace(regEx, '');
+            destinationPath = `${destSystemSite}${keyWithoutSystemSite}`;
+          }
+
+          if (destinationObjects.some(o => o?.Key === destinationPath)) {
+            log(
+              `File already exists in destination bucket: ${destinationPath}`,
+              LogLevel.Normal
+            );
+            continue;
+          }
+        }
         try {
           log(`Downloading file: ${bObject.Key} - start`, LogLevel.Verbose);
           const getObjectCommand = new GetObjectCommand({
@@ -306,20 +423,13 @@ function log(message, level, data) {
 
         let finalBuffer = new Buffer.concat(chunks);
 
-        let destinationPath = bObject.Key;
         if (COPY_MODE) {
           log(
             `Copying ${currentObjectIndex}/${totalObjects}`,
             LogLevel.Verbose
           );
-          if (USE_DEST_SITE) {
+          if (USE_DEST_SITE || USE_DEST_SYSTEM) {
             const srcPathParts = bObject.Key.split('/');
-            const srcSystemSite = `${srcPathParts[0]}/${srcPathParts[1]}`;
-            const destPathParts = SITES[1].split('/');
-            const destSystemSite = `${destPathParts[0]}/${destPathParts[1]}`;
-
-            const keyWithoutSystemSite = bObject.Key.replace(srcSystemSite, '');
-            destinationPath = `${destSystemSite}${keyWithoutSystemSite}`;
 
             const isRootLevelFile = srcPathParts.length === 5;
             const filename = srcPathParts.at(-1);
@@ -331,6 +441,7 @@ function log(message, level, data) {
               const regex_bucket = new RegExp(BUCKET_NAME, 'g');
               const regex_system = new RegExp(`\\b${srcPathParts[0]}\\b`, 'g');
               const regex_site = new RegExp(`\\b${srcPathParts[1]}\\b`, 'g');
+              const destPathParts = destinationPath.split('/');
               let finalJsonData = jsonData
                 .replace(regex_bucket, DEST_BUCKET_NAME)
                 .replace(regex_system, destPathParts[0])
