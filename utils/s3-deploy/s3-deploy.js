@@ -4,7 +4,7 @@ import {
   PutObjectCommand,
   DeleteObjectsCommand,
 } from '@aws-sdk/client-s3';
-import { fromIni } from '@aws-sdk/credential-providers';
+import { fromIni, fromSSO } from '@aws-sdk/credential-providers';
 import decompress from 'decompress';
 import path from 'path';
 import * as fsPromise from 'fs/promises';
@@ -23,7 +23,7 @@ const COMMAND_LINE_ARG_OPTIONS = [
     alias: 'r',
     type: String,
     description:
-      '{bold {italic REQUIRED:}} AWS region profile to use defined in ini credentials',
+      '{bold {italic REQUIRED:}} AWS region profile to use defined for SSO credentials',
   },
   {
     name: 'bucket',
@@ -152,7 +152,7 @@ const CONTENT_TYPE_BY_EXT = {
 };
 
 const client = new S3Client({
-  credentials: fromIni({ profile: REGION_PROFILE }),
+  credentials: fromSSO({ profile: REGION_PROFILE }),
 });
 
 async function unzipFile(sourcePath, destinationPath) {
